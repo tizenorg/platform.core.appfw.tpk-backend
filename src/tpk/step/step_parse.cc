@@ -96,6 +96,8 @@ bool StepParse::LocateConfigFile() {
 bf::path StepParse::LocateConfigFile() const {
   boost::filesystem::path path;
   if (!context_->xml_path.get().empty()) {
+    // FIXME: this is handling already installed in fs app in direct manifest
+    // installation mode
     path = context_->xml_path.get();
   } else {
     path = context_->unpacked_dir_path.get();
@@ -148,7 +150,10 @@ bool StepParse::FillPackageInfo(manifest_x* manifest) {
   manifest->support_disable = strdup("false");
   manifest->version = strdup(pkg_info->version().c_str());
   manifest->installlocation = strdup(pkg_info->install_location().c_str());
-  manifest->api_version = strdup(pkg_info->api_version().c_str());
+  if (!pkg_info->api_version().empty())
+    manifest->api_version = strdup(pkg_info->api_version().c_str());
+  else
+    manifest->api_version = strdup(TIZEN_VERSION);
 
   for (auto& pair : pkg_info->labels()) {
     label_x* label = reinterpret_cast<label_x*>(calloc(1, sizeof(label_x)));
