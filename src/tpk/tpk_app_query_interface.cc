@@ -44,23 +44,17 @@ std::string GetInstallationPackagePath(int argc, char** argv) {
   return path;
 }
 
-std::string GetXmlPath(int argc, char** argv) {
-  std::string path;
+std::string GetPkgIdFromCmd(int argc, char** argv) {
+  std::string pkgid;
   for (int i = 0; i < argc; ++i) {
-    if (!strcmp(argv[i], "-x")) {
+    if (!strcmp(argv[i], "-y")) {
       if (i + 1 < argc) {
-        path = argv[i + 1];
+        pkgid = argv[i + 1];
         break;
       }
     }
   }
-  return path;
-}
-
-std::string GetPkgIdFromXml(const std::string&path) {
-  bf::path xml_path(path);
-
-  return xml_path.stem().string();
+  return pkgid;
 }
 
 std::string GetPkgIdFromPath(const std::string& path) {
@@ -101,11 +95,7 @@ bool TpkAppQueryInterface::IsAppInstalledByArgv(int argc, char** argv) {
   std::string pkg_id;
   if (path.empty()) {
     // check if it is manifest direct install
-    path = GetXmlPath(argc, argv);
-    if (path.empty())
-      return false;
-
-    pkg_id = GetPkgIdFromXml(path);
+    pkg_id = GetPkgIdFromCmd(argc, argv);
   } else {
     pkg_id = GetPkgIdFromPath(path);
   }
