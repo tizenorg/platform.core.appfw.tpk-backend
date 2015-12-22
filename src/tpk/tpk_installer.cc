@@ -192,8 +192,6 @@ void TpkInstaller::RecoverySteps() {
 void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<tpk::parse::StepParse>();
-  AddStep<ci::security::StepCheckSignature>();
-  AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
@@ -203,10 +201,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
 void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<tpk::parse::StepParse>();
-  AddStep<ci::security::StepCheckSignature>();
-  AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
-  AddStep<ci::security::StepCheckOldCertificate>();
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
