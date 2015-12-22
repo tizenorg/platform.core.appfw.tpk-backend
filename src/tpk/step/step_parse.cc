@@ -23,6 +23,7 @@
 #include <manifest_parser/manifest_constants.h>
 
 #include <pkgmgr/pkgmgr_parser.h>
+#include <pkgmgr-info.h>
 
 #include <chrono>
 #include <cstdio>
@@ -73,6 +74,49 @@ common_installer::Step::Status StepParse::precheck() {
   }
 
   return common_installer::Step::Status::OK;
+}
+
+bf::path StepParse::FindIcon(const std::string& filename) {
+
+  bf::path icon_path;
+  bf::path app_path;
+
+  if (filename.length() == 0)
+    return icon_path;
+
+  if (index(filename.c_str(), '/'))
+    return filename;
+
+  icon_path = bf::path(getIconPath(context_->uid.get())) / filename;
+  if (access(icon_path.c_str(), F_OK) == 0)
+    return icon_path;
+
+  icon_path = bf::path(getIconPath(context_->uid.get()) / bf::path("default/small") / filename);
+  if (access(icon_path.c_str(), F_OK) == 0)
+    return icon_path;
+
+  if (context_->uid.get() == GLOBAL_USER)
+    app_path = tzplatform_getenv(TZ_SYS_RW_APP);
+  else {
+    tzplatform_set_user(context_->uid.get());
+    app_path = tzplatform_getenv(TZ_USER_APP);
+    tzplatform_reset_user();
+  }
+
+  icon_path = app_path / context_->pkgid.get() / filename;
+  if (access(icon_path.c_str(), F_OK) == 0)
+    return icon_path;
+
+  icon_path = app_path / context_->pkgid.get() / bf::path("res/icons") / filename;
+  if (access(icon_path.c_str(), F_OK) == 0)
+    return icon_path;
+
+  icon_path = app_path / context_->pkgid.get() / bf::path("shared/res") / filename;
+  if (access(icon_path.c_str(), F_OK) == 0)
+    return icon_path;
+
+  icon_path = "";
+  return icon_path;
 }
 
 bool StepParse::LocateConfigFile() {
@@ -143,12 +187,15 @@ bool StepParse::FillPackageInfo(manifest_x* manifest) {
   manifest->ns = strdup(pkg_info->xmlns().c_str());
   manifest->package = strdup(pkg_info->package().c_str());
   manifest->nodisplay_setting = strdup(pkg_info->nodisplay_setting().c_str());
-  manifest->type = strdup("tpk");
   manifest->appsetting = strdup("false");
   manifest->support_disable = strdup("false");
   manifest->version = strdup(pkg_info->version().c_str());
   manifest->installlocation = strdup(pkg_info->install_location().c_str());
   manifest->api_version = strdup(pkg_info->api_version().c_str());
+  if (context_->pkg_type.get().compare("rpm") == 0)
+    manifest->type = strdup("rpm");
+  else
+    manifest->type = strdup("tpk");
 
   for (auto& pair : pkg_info->labels()) {
     label_x* label = reinterpret_cast<label_x*>(calloc(1, sizeof(label_x)));
@@ -250,9 +297,6 @@ bool StepParse::FillWidgetApplication(manifest_x* manifest) {
     application_x* widget_app =
         static_cast<application_x*>(calloc(1, sizeof(application_x)));
     widget_app->appid = strdup(application.widget_info.appid().c_str());
-    widget_app->exec = strdup((context_->root_application_path.get()
-                           / manifest->package / "bin"
-                           / application.widget_info.exec()).c_str());
     widget_app->launch_mode =
         strdup(application.widget_info.launch_mode().c_str());
     widget_app->multiple = strdup(application.widget_info.multiple().c_str());
@@ -275,6 +319,12 @@ bool StepParse::FillWidgetApplication(manifest_x* manifest) {
     widget_app->package = strdup(manifest->package);
     widget_app->support_disable = strdup(manifest->support_disable);
     manifest->application = g_list_append(manifest->application, widget_app);
+    if (strncmp(context_->pkg_type.get().c_str(), "rpm", strlen("rpm")) == 0)
+      widget_app->exec = strdup(application.widget_info.exec().c_str());
+    else
+      widget_app->exec = strdup((context_->root_application_path.get()
+                            / manifest->package / "bin"
+                            / application.widget_info.exec()).c_str());
 
     if (!FillApplicationIconPaths(widget_app, application.app_icons))
       return false;
@@ -304,9 +354,6 @@ bool StepParse::FillServiceApplication(manifest_x* manifest) {
     service_app->appid = strdup(application.sa_info.appid().c_str());
     service_app->autorestart =
         strdup(application.sa_info.auto_restart().c_str());
-    service_app->exec = strdup((context_->root_application_path.get()
-                           / manifest->package / "bin"
-                           / application.sa_info.exec()).c_str());
     service_app->onboot = strdup(application.sa_info.on_boot().c_str());
     service_app->type = strdup(application.sa_info.type().c_str());
     service_app->process_pool =
@@ -328,6 +375,12 @@ bool StepParse::FillServiceApplication(manifest_x* manifest) {
     service_app->package = strdup(manifest->package);
     service_app->support_disable = strdup(manifest->support_disable);
     manifest->application = g_list_append(manifest->application, service_app);
+    if (strncmp(context_->pkg_type.get().c_str(), "rpm", strlen("rpm")) == 0)
+      service_app->exec = strdup(application.sa_info.exec().c_str());
+    else
+      service_app->exec = strdup((context_->root_application_path.get()
+                            / manifest->package / "bin"
+                            / application.sa_info.exec()).c_str());
 
     if (!FillAppControl(service_app,  application.app_control))
       return false;
@@ -360,9 +413,6 @@ bool StepParse::FillUIApplication(manifest_x* manifest) {
     application_x* ui_app =
         static_cast<application_x*>(calloc(1, sizeof(application_x)));
     ui_app->appid = strdup(application.ui_info.appid().c_str());
-    ui_app->exec = strdup((context_->root_application_path.get()
-                           / manifest->package / "bin"
-                           / application.ui_info.exec()).c_str());
     ui_app->launch_mode = strdup(application.ui_info.launch_mode().c_str());
     ui_app->multiple = strdup(application.ui_info.multiple().c_str());
     ui_app->nodisplay = strdup(application.ui_info.nodisplay().c_str());
@@ -398,6 +448,13 @@ bool StepParse::FillUIApplication(manifest_x* manifest) {
     ui_app->package = strdup(manifest->package);
     ui_app->support_disable = strdup(manifest->support_disable);
     manifest->application = g_list_append(manifest->application, ui_app);
+    if (strncmp(context_->pkg_type.get().c_str(), "rpm", strlen("rpm")) == 0)
+      ui_app->exec = strdup(application.ui_info.exec().c_str());
+    else
+      ui_app->exec = strdup((context_->root_application_path.get()
+                            / manifest->package / "bin"
+                            / application.ui_info.exec()).c_str());
+
 
     if (!FillAppControl(ui_app, application.app_control))
       return false;
@@ -460,7 +517,7 @@ bool StepParse::FillApplicationIconPaths(application_x* app,
     // NOTE: name is an attribute, but the xml writer uses it as text.
     // This must be fixed in whole app-installer modules, including wgt.
     // Current implementation is just for compatibility.
-    icon->text = strdup(application_icon.path().c_str());
+    icon->text = strdup(FindIcon(application_icon.path()).c_str());
     icon->name = strdup(application_icon.path().c_str());
     icon->lang = strdup(DEFAULT_LOCALE);
     app->icon = g_list_append(app->icon, icon);
