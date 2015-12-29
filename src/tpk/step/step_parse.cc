@@ -85,19 +85,17 @@ bf::path StepParse::FindIcon(const std::string& filename) {
   if (filename.length() == 0)
     return icon_path;
 
-  // icon path of tpk app will be modified later
-  if (context_->pkg_type.get().compare("rpm") != 0)
-    return filename;
-
   if (index(filename.c_str(), '/'))
     return filename;
 
+  // FIXME: icons for preloaded apps should also be moved to "shared/res"
   icon_path = bf::path(getIconPath(context_->uid.get())) / filename;
   if (access(icon_path.c_str(), F_OK) == 0)
     return icon_path;
 
-  icon_path = bf::path(getIconPath(context_->uid.get()) / bf::path("default/small") / filename);
-  if (access(icon_path.c_str(), F_OK) == 0)
+  icon_path = bf::path(
+      getIconPath(context_->uid.get()) / bf::path("default/small/") / filename);
+  if (bf::exists(icon_path))
     return icon_path;
 
   if (context_->uid.get() == GLOBAL_USER)
@@ -108,17 +106,27 @@ bf::path StepParse::FindIcon(const std::string& filename) {
     tzplatform_reset_user();
   }
 
-  icon_path = app_path / context_->pkgid.get() / filename;
-  if (access(icon_path.c_str(), F_OK) == 0)
+  icon_path =
+      context_->unpacked_dir_path.get() / bf::path("shared/res") / filename;
+  if (bf::exists(icon_path)) {
+    icon_path =
+        app_path / context_->pkgid.get() / bf::path("shared/res") / filename;
     return icon_path;
+  }
 
-  icon_path = app_path / context_->pkgid.get() / bf::path("res/icons") / filename;
-  if (access(icon_path.c_str(), F_OK) == 0)
+  icon_path =
+      context_->unpacked_dir_path.get() / bf::path("res/icons") / filename;
+  if (bf::exists(icon_path)) {
+    icon_path =
+        app_path / context_->pkgid.get() / bf::path("res/icons") / filename;
     return icon_path;
+  }
 
-  icon_path = app_path / context_->pkgid.get() / bf::path("shared/res") / filename;
-  if (access(icon_path.c_str(), F_OK) == 0)
+  icon_path = context_->unpacked_dir_path.get() / filename;
+  if (bf::exists(icon_path)) {
+    icon_path = app_path / context_->pkgid.get() / filename;
     return icon_path;
+  }
 
   icon_path = "";
   return icon_path;
@@ -669,6 +677,14 @@ common_installer::Step::Status StepParse::process() {
     return common_installer::Step::Status::ERROR;
   }
 
+  // Copy data from ManifestData to InstallerContext
+  std::shared_ptr<const PackageInfo> info =
+      std::static_pointer_cast<const PackageInfo>(
+          parser_->GetManifestData(
+              app_keys::kManifestKey));
+
+  context_->pkgid.set(info->package());
+
   manifest_x* manifest =
       static_cast<manifest_x*>(calloc(1, sizeof(manifest_x)));
 
@@ -680,14 +696,6 @@ common_installer::Step::Status StepParse::process() {
 
   if (!context_->tep_path.get().empty())
     manifest->tep_name = context_->tep_path.get().c_str();
-
-  // Copy data from ManifestData to InstallerContext
-  std::shared_ptr<const PackageInfo> info =
-      std::static_pointer_cast<const PackageInfo>(
-          parser_->GetManifestData(
-              app_keys::kManifestKey));
-
-  context_->pkgid.set(manifest->package);
 
   // write pkgid for recovery file
   if (context_->recovery_info.get().recovery_file) {
