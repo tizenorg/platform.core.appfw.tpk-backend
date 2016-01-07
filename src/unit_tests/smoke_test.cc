@@ -318,8 +318,8 @@ class SmokeTest : public testing::Test {
 };
 
 TEST_F(SmokeTest, DeltaMode_Tpk) {
-  bf::path path = "/usr/share/app-installers-ut/test_samples/smoke/DeltaMode_Tpk.tpk";  // NOLINT
-  std::string delta_package = "/usr/share/app-installers-ut/test_samples/smoke/DeltaMode_Tpk.delta"; // NOLINT
+  bf::path path = "/usr/share/tpk-backend-ut/test_samples/smoke/DeltaMode_Tpk.tpk";  // NOLINT
+  std::string delta_package = "/usr/share/tpk-backend-ut/test_samples/smoke/DeltaMode_Tpk.delta"; // NOLINT
   std::string pkgid = "smokeapp18";
   std::string appid = "smokeapp18.DeltaModeTpk";
   ASSERT_EQ(DeltaInstall(path, delta_package),
@@ -336,7 +336,7 @@ TEST_F(SmokeTest, DeltaMode_Tpk) {
 }
 
 TEST_F(SmokeTest, InstallationMode_Tpk) {
-  bf::path path = "/usr/share/app-installers-ut/test_samples/smoke/InstallationMode_Tpk.tpk";  // NOLINT
+  bf::path path = "/usr/share/tpk-backend-ut/test_samples/smoke/InstallationMode_Tpk.tpk";  // NOLINT
   std::string pkgid = "smokeapp12";
   std::string appid = "smokeapp12.InstallationModeTpk";
   ASSERT_EQ(Install(path), ci::AppInstaller::Result::OK);
@@ -344,8 +344,8 @@ TEST_F(SmokeTest, InstallationMode_Tpk) {
 }
 
 TEST_F(SmokeTest, UpdateMode_Tpk) {
-  bf::path path_old = "/usr/share/app-installers-ut/test_samples/smoke/UpdateMode_Tpk.tpk";  // NOLINT
-  bf::path path_new = "/usr/share/app-installers-ut/test_samples/smoke/UpdateMode_Tpk_2.tpk";  // NOLINT
+  bf::path path_old = "/usr/share/tpk-backend-ut/test_samples/smoke/UpdateMode_Tpk.tpk";  // NOLINT
+  bf::path path_new = "/usr/share/tpk-backend-ut/test_samples/smoke/UpdateMode_Tpk_2.tpk";  // NOLINT
   std::string pkgid = "smokeapp13";
   std::string appid = "smokeapp13.UpdateModeTpk";
   ASSERT_EQ(Update(path_old, path_new), ci::AppInstaller::Result::OK);
@@ -355,7 +355,7 @@ TEST_F(SmokeTest, UpdateMode_Tpk) {
 }
 
 TEST_F(SmokeTest, DeinstallationMode_Tpk) {
-  bf::path path = "/usr/share/app-installers-ut/test_samples/smoke/DeinstallationMode_Tpk.tpk";  // NOLINT
+  bf::path path = "/usr/share/tpk-backend-ut/test_samples/smoke/DeinstallationMode_Tpk.tpk";  // NOLINT
   std::string pkgid = "smokeapp14";
   std::string appid = "smokeapp14.DeinstallationModeTpk";
   ASSERT_EQ(Install(path), ci::AppInstaller::Result::OK);
@@ -364,7 +364,7 @@ TEST_F(SmokeTest, DeinstallationMode_Tpk) {
 }
 
 TEST_F(SmokeTest, RecoveryMode_Tpk_Installation) {
-  bf::path path = "/usr/share/app-installers-ut/test_samples/smoke/RecoveryMode_Tpk_Installation.tpk";  // NOLINT
+  bf::path path = "/usr/share/tpk-backend-ut/test_samples/smoke/RecoveryMode_Tpk_Installation.tpk";  // NOLINT
   ASSERT_DEATH(Install(path, RequestResult::CRASH), ".*");
 
   std::string pkgid = "smokeapp15";
@@ -376,8 +376,8 @@ TEST_F(SmokeTest, RecoveryMode_Tpk_Installation) {
 }
 
 TEST_F(SmokeTest, RecoveryMode_Tpk_Update) {
-  bf::path path_old = "/usr/share/app-installers-ut/test_samples/smoke/RecoveryMode_Tpk_Update.tpk";  // NOLINT
-  bf::path path_new = "/usr/share/app-installers-ut/test_samples/smoke/RecoveryMode_Tpk_Update_2.tpk";  // NOLINT
+  bf::path path_old = "/usr/share/tpk-backend-ut/test_samples/smoke/RecoveryMode_Tpk_Update.tpk";  // NOLINT
+  bf::path path_new = "/usr/share/tpk-backend-ut/test_samples/smoke/RecoveryMode_Tpk_Update_2.tpk";  // NOLINT
   RemoveAllRecoveryFiles();
   ASSERT_DEATH(Update(path_old, path_new, RequestResult::CRASH), ".*");
 
