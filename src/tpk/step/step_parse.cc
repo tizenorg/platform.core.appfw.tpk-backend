@@ -70,7 +70,7 @@ common_installer::Step::Status StepParse::precheck() {
 
   if (!boost::filesystem::exists(tmp)) {
     LOG(ERROR) << "manifest not found from the package";
-    return common_installer::Step::Status::INVALID_VALUE;
+    return common_installer::Step::Status::MANIFEST_NOT_FOUND;
   }
 
   return common_installer::Step::Status::OK;
@@ -661,12 +661,12 @@ bool StepParse::FillManifestX(manifest_x* manifest) {
 common_installer::Step::Status StepParse::process() {
   if (!LocateConfigFile()) {
     LOG(ERROR) << "No manifest file exists";
-    return common_installer::Step::Status::ERROR;
+    return common_installer::Step::Status::MANIFEST_NOT_FOUND;
   }
   parser_.reset(new tpk::parse::TPKConfigParser());
   if (!parser_->ParseManifest(path_)) {
     LOG(ERROR) << "[Parse] Parse failed. " <<  parser_->GetErrorMessage();
-    return common_installer::Step::Status::ERROR;
+    return common_installer::Step::Status::PARSE_ERROR;
   }
 
   manifest_x* manifest =
@@ -675,7 +675,7 @@ common_installer::Step::Status StepParse::process() {
   if (!FillManifestX(const_cast<manifest_x*>(manifest))) {
     LOG(ERROR) << "[Parse] Storing manifest_x failed. "
                <<  parser_->GetErrorMessage();
-    return common_installer::Step::Status::ERROR;
+    return common_installer::Step::Status::PARSE_ERROR;
   }
 
   if (!context_->tep_path.get().empty())

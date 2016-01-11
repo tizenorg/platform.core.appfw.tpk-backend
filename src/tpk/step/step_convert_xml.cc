@@ -40,7 +40,7 @@ Step::Status StepConvertXml::precheck() {
 
   if (!bf::exists(xml_path)) {
     LOG(ERROR) << "Cannot find manifest file";
-    return Step::Status::INVALID_VALUE;
+    return Step::Status::MANIFEST_NOT_FOUND;
   }
 
   xml_path_ = xml_path;
@@ -82,18 +82,18 @@ Step::Status StepConvertXml::process() {
   xmlDocPtr doc = xmlParseFile(xml_path_.string().c_str());
   if (!doc) {
     LOG(ERROR) << "Failed to parse xml file";
-    return Step::Status::ERROR;
+    return Step::Status::MANIFEST_ERROR;
   }
 
   if (!ConvertXml(doc))
-    return Step::Status::ERROR;
+    return Step::Status::MANIFEST_ERROR;
 
   bf::path new_path = bf::path(getUserManifestPath(context_->uid.get()))
       / bf::path(context_->pkgid.get());
   new_path += ".xml";
   if (xmlSaveFile(new_path.string().c_str(), doc) == -1) {
     LOG(ERROR) << "Failed to write xml file";
-    return Step::Status::ERROR;
+    return Step::Status::MANIFEST_ERROR;
   }
 
   context_->xml_path.set(new_path.string());
@@ -101,7 +101,7 @@ Step::Status StepConvertXml::process() {
   if (pkgmgr_parser_check_manifest_validation(
       context_->xml_path.get().c_str()) != 0) {
     LOG(ERROR) << "Manifest is not valid";
-    return Step::Status::ERROR;
+    return Step::Status::MANIFEST_ERROR;
   }
 
   LOG(DEBUG) << "Successfully create manifest xml "
