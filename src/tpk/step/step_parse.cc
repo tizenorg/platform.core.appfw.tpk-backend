@@ -70,7 +70,7 @@ common_installer::Step::Status StepParse::precheck() {
 
   if (!boost::filesystem::exists(tmp)) {
     LOG(ERROR) << "manifest not found from the package";
-    return common_installer::Step::Status::INVALID_VALUE;
+    return common_installer::Step::Status::MANIFEST_NOT_FOUND;
   }
 
   return common_installer::Step::Status::OK;
@@ -78,7 +78,6 @@ common_installer::Step::Status StepParse::precheck() {
 
 // TODO(jungh.yeon) : this function should be re-considered
 bf::path StepParse::FindIcon(const std::string& filename) {
-
   bf::path icon_path;
   bf::path app_path;
 
@@ -96,13 +95,14 @@ bf::path StepParse::FindIcon(const std::string& filename) {
   if (access(icon_path.c_str(), F_OK) == 0)
     return icon_path;
 
-  icon_path = bf::path(getIconPath(context_->uid.get()) / bf::path("default/small") / filename);
+  icon_path = bf::path(getIconPath(context_->uid.get()) /
+              bf::path("default/small") / filename);
   if (access(icon_path.c_str(), F_OK) == 0)
     return icon_path;
 
-  if (context_->uid.get() == GLOBAL_USER)
+  if (context_->uid.get() == GLOBAL_USER) {
     app_path = tzplatform_getenv(TZ_SYS_RW_APP);
-  else {
+  } else {
     tzplatform_set_user(context_->uid.get());
     app_path = tzplatform_getenv(TZ_USER_APP);
     tzplatform_reset_user();
@@ -661,12 +661,12 @@ bool StepParse::FillManifestX(manifest_x* manifest) {
 common_installer::Step::Status StepParse::process() {
   if (!LocateConfigFile()) {
     LOG(ERROR) << "No manifest file exists";
-    return common_installer::Step::Status::ERROR;
+    return common_installer::Step::Status::MANIFEST_NOT_FOUND;
   }
   parser_.reset(new tpk::parse::TPKConfigParser());
   if (!parser_->ParseManifest(path_)) {
     LOG(ERROR) << "[Parse] Parse failed. " <<  parser_->GetErrorMessage();
-    return common_installer::Step::Status::ERROR;
+    return common_installer::Step::Status::PARSE_ERROR;
   }
 
   manifest_x* manifest =
@@ -675,7 +675,7 @@ common_installer::Step::Status StepParse::process() {
   if (!FillManifestX(const_cast<manifest_x*>(manifest))) {
     LOG(ERROR) << "[Parse] Storing manifest_x failed. "
                <<  parser_->GetErrorMessage();
-    return common_installer::Step::Status::ERROR;
+    return common_installer::Step::Status::PARSE_ERROR;
   }
 
   if (!context_->tep_path.get().empty())
