@@ -1,0 +1,11 @@
+prefix=@PREFIX@
+exec_prefix=@PREFIX@
+libdir=@LIBDIR@
+includedir=@INCLUDEDIR@
+
+Name: tpk-installer
+Description: Tpk-installer library
+Version: @VERSION@
+Requires: app-installers pkgmgr tpk-manifest-handlers manifest-parser
+Libs: -L${libdir} -ltpk-installer
+Cflags: -I${includedir}/app-installers/

@@ -22,6 +22,14 @@ BuildRequires:  pkgconfig(tpk-manifest-handlers)
 %description
 Backend for tizen package files
 
+%package devel
+Summary:    Tpk-backend development files
+Group:      Application Framework/Package Management
+Requires:   %{name} = %{version}
+
+%description devel
+This package contains header files of tpk-installer library
+
 %package tests
 Summary: Unit tests for tpk-backend
 Requires: %{name} = %{version}
@@ -50,6 +58,12 @@ ln -s %{_bindir}/tpk-backend %{buildroot}%{_sysconfdir}/package-manager/backend/
 %license LICENSE
 %manifest tpk-backend.manifest
 %{_bindir}/tpk-backend
+%{_libdir}/libtpk-installer.so*
+
+%files devel
+%{_includedir}/app-installers/tpk/*.h
+%{_includedir}/app-installers/tpk/*/*.h
+%{_libdir}/pkgconfig/tpk-installer.pc
 
 %files tests
 %manifest tpk-backend-tests.manifest
