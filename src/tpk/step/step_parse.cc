@@ -20,7 +20,6 @@
 #include <tpk_manifest_handlers/shortcut_handler.h>
 #include <tpk_manifest_handlers/ui_application_handler.h>
 #include <tpk_manifest_handlers/widget_application_handler.h>
-#include <manifest_parser/manifest_constants.h>
 
 #include <pkgmgr/pkgmgr_parser.h>
 #include <pkgmgr-info.h>
