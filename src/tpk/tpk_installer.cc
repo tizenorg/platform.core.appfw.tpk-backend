@@ -4,7 +4,6 @@
 #include <common/step/step_configure.h>
 #include <common/step/step_backup_icons.h>
 #include <common/step/step_backup_manifest.h>
-#include <common/step/step_create_icons.h>
 #include <common/step/step_create_storage_directories.h>
 #include <common/step/step_copy.h>
 #include <common/step/step_copy_tep.h>
@@ -39,6 +38,7 @@
 #include <common/step/step_update_tep.h>
 #include "tpk/step/step_check_tpk_background_category.h"
 #include "tpk/step/step_create_symbolic_link.h"
+#include "tpk/step/step_tpk_create_icons.h"
 #include "tpk/step/step_parse.h"
 #include "tpk/step/step_parse_recovery.h"
 #include "tpk/step/step_convert_xml.h"
@@ -105,7 +105,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::filesystem::StepCopyTep>();
   AddStep<ci::filesystem::StepCreateStorageDirectories>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
-  AddStep<ci::filesystem::StepCreateIcons>();
+  AddStep<tpk::filesystem::StepTpkCreateIcons>();
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::tpk::StepConvertXml>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
@@ -128,7 +128,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::filesystem::StepCreateStorageDirectories>();
   // TODO(t.iwanek): handle coping storage directories
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
-  AddStep<ci::filesystem::StepCreateIcons>();
+  AddStep<tpk::filesystem::StepTpkCreateIcons>();
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<ci::tpk::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
@@ -170,7 +170,7 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::filesystem::StepCreateStorageDirectories>();
   // TODO(t.iwanek): handle coping storage directories
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
-  AddStep<ci::filesystem::StepCreateIcons>();
+  AddStep<tpk::filesystem::StepTpkCreateIcons>();
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<ci::tpk::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
