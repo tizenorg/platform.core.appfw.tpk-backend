@@ -112,11 +112,13 @@ bf::path StepParse::FindIcon(const std::string& filename) {
   if (access(icon_path.c_str(), F_OK) == 0)
     return icon_path;
 
-  icon_path = app_path / context_->pkgid.get() / bf::path("res/icons") / filename;
+  icon_path =
+      app_path / context_->pkgid.get() / bf::path("res/icons") / filename;
   if (access(icon_path.c_str(), F_OK) == 0)
     return icon_path;
 
-  icon_path = app_path / context_->pkgid.get() / bf::path("shared/res") / filename;
+  icon_path =
+      app_path / context_->pkgid.get() / bf::path("shared/res") / filename;
   if (access(icon_path.c_str(), F_OK) == 0)
     return icon_path;
 
