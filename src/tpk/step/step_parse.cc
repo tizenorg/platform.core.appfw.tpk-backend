@@ -154,14 +154,8 @@ bf::path StepParse::FindIcon(const std::string& filename) {
   return icon_path;
 }
 
-bool StepParse::LocateConfigFile() {
-  boost::filesystem::path manifest;
-  if (!context_->xml_path.get().empty()) {
-    manifest = context_->xml_path.get();
-  } else {
-    manifest = context_->unpacked_dir_path.get();
-    manifest /= kManifestFileName;
-  }
+bool StepParse::LocateConfig() {
+  boost::filesystem::path manifest = LocateConfigFile();
 
   LOG(DEBUG) << "manifest path: " << manifest;
 
@@ -689,7 +683,7 @@ bool StepParse::FillManifestX(manifest_x* manifest) {
 }
 
 common_installer::Step::Status StepParse::process() {
-  if (!LocateConfigFile()) {
+  if (!LocateConfig()) {
     LOG(ERROR) << "No manifest file exists";
     return common_installer::Step::Status::MANIFEST_NOT_FOUND;
   }

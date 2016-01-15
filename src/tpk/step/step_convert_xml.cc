@@ -91,6 +91,11 @@ Step::Status StepConvertXml::process() {
   bf::path new_path = bf::path(getUserManifestPath(context_->uid.get()))
       / bf::path(context_->pkgid.get());
   new_path += ".xml";
+  if (!bf::exists(new_path.parent_path())) {
+    bs::error_code error;
+    bf::create_directories(new_path.parent_path(), error);
+  }
+
   if (xmlSaveFile(new_path.string().c_str(), doc) == -1) {
     LOG(ERROR) << "Failed to write xml file";
     return Step::Status::MANIFEST_ERROR;
