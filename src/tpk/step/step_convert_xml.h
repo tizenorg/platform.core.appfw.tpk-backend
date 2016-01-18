@@ -12,8 +12,8 @@
 
 #include <common/step/step.h>
 
-namespace common_installer {
 namespace tpk {
+namespace pkgmgr {
 
 class StepConvertXml : public common_installer::Step {
  public:
@@ -31,7 +31,7 @@ class StepConvertXml : public common_installer::Step {
   SCOPE_LOG_TAG(ConvertXml)
 };
 
+}  // namespace pkgmgr
 }  // namespace tpk
-}  // namespace common_installer
 
 #endif  // TPK_STEP_STEP_CONVERT_XML_H_

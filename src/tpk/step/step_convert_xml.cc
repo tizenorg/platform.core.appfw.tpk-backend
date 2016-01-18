@@ -31,10 +31,10 @@ const char kXmlXPathAppExpr[] =
 
 }  // namespace
 
-namespace common_installer {
 namespace tpk {
+namespace pkgmgr {
 
-Step::Status StepConvertXml::precheck() {
+common_installer::Step::Status StepConvertXml::precheck() {
   bf::path xml_path = context_->pkg_path.get();
   xml_path /= "tizen-manifest.xml";
 
@@ -78,7 +78,7 @@ bool StepConvertXml::ConvertXml(xmlDocPtr doc) {
   return true;
 }
 
-Step::Status StepConvertXml::process() {
+common_installer::Step::Status StepConvertXml::process() {
   xmlDocPtr doc = xmlParseFile(xml_path_.string().c_str());
   if (!doc) {
     LOG(ERROR) << "Failed to parse xml file";
@@ -110,11 +110,11 @@ Step::Status StepConvertXml::process() {
   return Step::Status::OK;
 }
 
-Step::Status StepConvertXml::clean() {
+common_installer::Step::Status StepConvertXml::clean() {
   return Step::Status::OK;
 }
 
-Step::Status StepConvertXml::undo() {
+common_installer::Step::Status StepConvertXml::undo() {
   bs::error_code error;
 
   if (bf::exists(context_->xml_path.get()))
@@ -123,5 +123,5 @@ Step::Status StepConvertXml::undo() {
   return Step::Status::OK;
 }
 
+}  // namespace pkgmgr
 }  // namespace tpk
-}  // namespace common_installer
