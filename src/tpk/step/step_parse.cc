@@ -126,6 +126,30 @@ bf::path StepParse::FindIcon(const std::string& filename) {
     return icon_path;
   }
 
+  // FIXME: in delta mode parsing is done without full package content
+  // check destination location (as it is form of update installation)
+  icon_path =
+      app_path / context_->pkgid.get() / bf::path("shared/res") / filename;
+  if (bf::exists(icon_path)) {
+    icon_path =
+        app_path / context_->pkgid.get() / bf::path("shared/res") / filename;
+    return icon_path;
+  }
+
+  icon_path =
+      app_path / context_->pkgid.get() / bf::path("res/icons") / filename;
+  if (bf::exists(icon_path)) {
+    icon_path =
+        app_path / context_->pkgid.get() / bf::path("res/icons") / filename;
+    return icon_path;
+  }
+
+  icon_path = app_path / context_->pkgid.get() / filename;
+  if (bf::exists(icon_path)) {
+    icon_path = app_path / context_->pkgid.get() / filename;
+    return icon_path;
+  }
+
   icon_path = "";
   return icon_path;
 }
