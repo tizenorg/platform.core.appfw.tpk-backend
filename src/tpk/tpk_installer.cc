@@ -9,6 +9,7 @@
 #include <common/step/step_copy.h>
 #include <common/step/step_copy_tep.h>
 #include <common/step/step_copy_backup.h>
+#include <common/step/step_copy_storage_directories.h>
 #include <common/step/step_check_old_certificate.h>
 #include <common/step/step_delta_patch.h>
 #include <common/step/step_fail.h>
@@ -125,8 +126,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::backup::StepBackupIcons>();
   AddStep<ci::backup::StepCopyBackup>();
   AddStep<ci::filesystem::StepCopyTep>();
-  AddStep<ci::filesystem::StepCreateStorageDirectories>();
-  // TODO(t.iwanek): handle coping storage directories
+  AddStep<ci::filesystem::StepCopyStorageDirectories>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<ci::filesystem::StepCreateIcons>();
   AddStep<ci::security::StepUpdateSecurity>();
@@ -167,8 +167,7 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
   AddStep<ci::backup::StepCopyBackup>();
-  AddStep<ci::filesystem::StepCreateStorageDirectories>();
-  // TODO(t.iwanek): handle coping storage directories
+  AddStep<ci::filesystem::StepCopyStorageDirectories>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<ci::filesystem::StepCreateIcons>();
   AddStep<ci::security::StepUpdateSecurity>();
