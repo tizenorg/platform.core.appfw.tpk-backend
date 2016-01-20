@@ -31,6 +31,7 @@
 #include <common/step/step_register_security.h>
 #include <common/step/step_rollback_deinstallation_security.h>
 #include <common/step/step_rollback_installation_security.h>
+#include <common/step/step_run_parser_plugins.h>
 #include <common/step/step_check_signature.h>
 #include <common/step/step_unregister_app.h>
 #include <common/step/step_unzip.h>
@@ -109,6 +110,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::tpk::StepConvertXml>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::ActionType::Install);
 }
 
 void TpkInstaller::UpdateSteps() {
@@ -132,6 +134,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<ci::tpk::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::ActionType::Upgrade);
   /* TODO(jungh.yeon): this temporary step will be removed
   * when secondary parsing procedure has removed*/
   AddStep<ci::pkgmgr::StepUpdateTep>();
@@ -141,6 +144,7 @@ void TpkInstaller::UninstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::parse::StepParse>();
   AddStep<ci::pkgmgr::StepKillApps>();
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::ActionType::Uninstall);
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::pkgmgr::StepUnregisterApplication>();
   AddStep<ci::security::StepRollbackDeinstallationSecurity>();
