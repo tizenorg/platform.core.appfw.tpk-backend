@@ -17,6 +17,7 @@ int main(const int argc, char* argv[]) {
     LOG(ERROR) << "Failed to create pkgmgr interface";
     return -1;
   }
+
   tpk::TpkInstaller t(pkgmgr);
   if (t.Run() != ci::AppInstaller::Result::OK) {
     LOG(ERROR) << "TpkInstaller run failure";
