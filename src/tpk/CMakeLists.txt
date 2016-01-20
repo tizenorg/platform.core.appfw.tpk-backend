@@ -2,6 +2,7 @@ SET(SRCS
     step/step_check_tpk_background_category.cc
     step/step_create_symbolic_link.cc
     step/step_parse.cc
+    step/step_parse_preload.cc
     step/step_parse_recovery.cc
     step/step_convert_xml.cc
     tpk_app_query_interface.cc
