@@ -35,7 +35,7 @@ class StepParse : public common_installer::Step {
   Status precheck() override;
 
  protected:
-  virtual bool LocateConfigFile();
+  virtual bool LocateConfig();
   // This function is needed by recovery mode to override searching
   // of configuration file of the package
   virtual boost::filesystem::path LocateConfigFile() const;
