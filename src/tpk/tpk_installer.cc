@@ -40,6 +40,7 @@
 #include "tpk/step/step_check_tpk_background_category.h"
 #include "tpk/step/step_create_symbolic_link.h"
 #include "tpk/step/step_parse.h"
+#include "tpk/step/step_parse_preload.h"
 #include "tpk/step/step_parse_recovery.h"
 #include "tpk/step/step_convert_xml.h"
 
@@ -97,6 +98,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::filesystem::StepUnzip>();
   AddStep<tpk::parse::StepParse>();
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -115,6 +117,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::filesystem::StepUnzip>();
   AddStep<tpk::parse::StepParse>();
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -192,6 +195,7 @@ void TpkInstaller::RecoverySteps() {
 void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<tpk::parse::StepParse>();
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
@@ -202,6 +206,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
 void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<tpk::parse::StepParse>();
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::pkgmgr::StepKillApps>();
