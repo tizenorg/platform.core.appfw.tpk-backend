@@ -40,6 +40,7 @@
 #include <common/step/step_update_tep.h>
 #include "tpk/step/step_check_tpk_background_category.h"
 #include "tpk/step/step_create_symbolic_link.h"
+#include "tpk/step/step_parse_preload.h"
 #include "tpk/step/step_convert_xml.h"
 #include "tpk/step/step_tpk_patch_icons.h"
 
@@ -99,6 +100,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::parse::StepParseManifest>(
       ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -120,6 +122,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::parse::StepParseManifest>(
       ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -209,6 +212,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::parse::StepParseManifest>(
       ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
@@ -221,6 +225,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::parse::StepParseManifest>(
       ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::tpk::StepParsePreload>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::pkgmgr::StepKillApps>();
