@@ -148,6 +148,8 @@ bool StepParse::FillPackageInfo(manifest_x* manifest) {
   manifest->version = strdup(pkg_info->version().c_str());
   manifest->installlocation = strdup(pkg_info->install_location().c_str());
   manifest->api_version = strdup(pkg_info->api_version().c_str());
+  manifest->preload = strdup(pkg_info->preload().c_str());
+
   if (context_->pkg_type.get().compare("rpm") == 0)
     manifest->type = strdup("rpm");
   else
