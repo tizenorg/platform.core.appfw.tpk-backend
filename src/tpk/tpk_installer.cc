@@ -15,9 +15,8 @@
 #include <common/step/step_delta_patch.h>
 #include <common/step/step_fail.h>
 #include <common/step/step_kill_apps.h>
-#include <common/step/step_old_manifest.h>
 #include <common/step/step_open_recovery_file.h>
-#include <common/step/step_parse.h>
+#include <common/step/step_parse_manifest.h>
 #include <common/step/step_privilege_compatibility.h>
 #include <common/step/step_recover_application.h>
 #include <common/step/step_recover_files.h>
@@ -41,8 +40,6 @@
 #include <common/step/step_update_tep.h>
 #include "tpk/step/step_check_tpk_background_category.h"
 #include "tpk/step/step_create_symbolic_link.h"
-#include "tpk/step/step_parse.h"
-#include "tpk/step/step_parse_recovery.h"
 #include "tpk/step/step_convert_xml.h"
 #include "tpk/step/step_tpk_patch_icons.h"
 
@@ -99,7 +96,9 @@ void TpkInstaller::Prepare() {
 void TpkInstaller::InstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::filesystem::StepUnzip>();
-  AddStep<tpk::parse::StepParse>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
+      ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -118,12 +117,16 @@ void TpkInstaller::InstallSteps() {
 void TpkInstaller::UpdateSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::filesystem::StepUnzip>();
-  AddStep<tpk::parse::StepParse>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
+      ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepCheckOldCertificate>();
-  AddStep<ci::backup::StepOldManifest>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::parse::StepParseManifest::StoreLocation::BACKUP);
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
@@ -143,7 +146,9 @@ void TpkInstaller::UpdateSteps() {
 
 void TpkInstaller::UninstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
-  AddStep<ci::parse::StepParse>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::pkgmgr::StepUnregisterApplication>();
@@ -160,13 +165,17 @@ void TpkInstaller::ReinstallSteps() {
 void TpkInstaller::DeltaSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::filesystem::StepUnzip>();
-  AddStep<tpk::parse::StepParse>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
+      ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::filesystem::StepDeltaPatch>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepCheckOldCertificate>();
-  AddStep<ci::backup::StepOldManifest>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::parse::StepParseManifest::StoreLocation::BACKUP);
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
@@ -183,7 +192,9 @@ void TpkInstaller::DeltaSteps() {
 void TpkInstaller::RecoverySteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::recovery::StepOpenRecoveryFile>();
-  AddStep<tpk::parse::StepParseRecovery>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::RECOVERY,
+      ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::pkgmgr::StepRecoverApplication>();
   AddStep<ci::filesystem::StepRemoveTemporaryDirectory>();
   AddStep<ci::filesystem::StepRecoverIcons>();
@@ -195,7 +206,9 @@ void TpkInstaller::RecoverySteps() {
 
 void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
-  AddStep<tpk::parse::StepParse>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
@@ -205,7 +218,9 @@ void TpkInstaller::ManifestDirectInstallSteps() {
 
 void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
-  AddStep<tpk::parse::StepParse>();
+  AddStep<ci::parse::StepParseManifest>(
+      ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::pkgmgr::StepKillApps>();

@@ -1,8 +1,6 @@
 SET(SRCS
     step/step_check_tpk_background_category.cc
     step/step_create_symbolic_link.cc
-    step/step_parse.cc
-    step/step_parse_recovery.cc
     step/step_convert_xml.cc
     step/step_tpk_patch_icons.cc
     tpk_app_query_interface.cc
@@ -17,8 +15,8 @@ TARGET_INCLUDE_DIRECTORIES(${TARGET_TPK_BACKEND} PUBLIC "${CMAKE_CURRENT_SOURCE_
 APPLY_PKG_CONFIG(${TARGET_LIBNAME_TPK} PUBLIC
   APP_INSTALLERS_DEPS
   PKGMGR_DEPS
-  TPK_MANIFEST_HANDLERS_DEPS
   MANIFEST_PARSER_DEPS
+  TPK_MANIFEST_HANDLERS_DEPS
   Boost
 )
 
