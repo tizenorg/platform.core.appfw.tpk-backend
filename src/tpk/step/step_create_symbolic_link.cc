@@ -44,6 +44,11 @@ bool CreateSymLink(application_x* app, InstallerContext* context) {
     return false;
   }
 
+  return true;
+}
+
+bool SetExecPermission(application_x* app) {
+  boost::system::error_code boost_error;
   // Give an execution permission to the original executable
   LOG(DEBUG) << "Giving exec permission to " << app->exec;
   bf::permissions(bf::path(app->exec), bf::owner_all |
@@ -53,6 +58,7 @@ bool CreateSymLink(application_x* app, InstallerContext* context) {
     LOG(ERROR) << "Permission change failure";
     return false;
   }
+
   return true;
 }
 
@@ -75,6 +81,8 @@ Status StepCreateSymbolicLink::precheck() {
 Status StepCreateSymbolicLink::process() {
   manifest_x* m = context_->manifest_data.get();
   for (application_x* app : GListRange<application_x*>(m->application)) {
+    if (!SetExecPermission(app))
+      return Status::ERROR;
     // filter out non-tpk apps as this step is run for hybrid backend too
     if (strcmp("capp", app->type) != 0)
       continue;
@@ -89,6 +97,8 @@ Status StepCreateSymbolicLink::undo() {
   manifest_x* m = context_->manifest_data.get();
   Step::Status ret = Status::OK;
   for (application_x* app : GListRange<application_x*>(m->application)) {
+    if (!SetExecPermission(app))
+      return Status::ERROR;
     // filter out non-tpk apps as this step is run for hybrid backend too
     if (strcmp("capp", app->type) != 0)
       continue;
