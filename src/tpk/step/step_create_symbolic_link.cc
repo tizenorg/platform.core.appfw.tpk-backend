@@ -81,11 +81,11 @@ Status StepCreateSymbolicLink::precheck() {
 Status StepCreateSymbolicLink::process() {
   manifest_x* m = context_->manifest_data.get();
   for (application_x* app : GListRange<application_x*>(m->application)) {
-    if (!SetExecPermission(app))
-      return Status::ERROR;
     // filter out non-tpk apps as this step is run for hybrid backend too
     if (strcmp("capp", app->type) != 0)
       continue;
+    if (!SetExecPermission(app))
+      return Status::ERROR;
     if (!CreateSymLink(app, context_))
       return Status::ERROR;
   }
