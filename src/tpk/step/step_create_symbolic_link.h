@@ -14,7 +14,7 @@ class StepCreateSymbolicLink : public common_installer::Step {
   using Step::Step;
   Status process() override;
   Status clean() override { return Status::OK; }
-  Status undo() override;
+  Status undo() override { return Status::OK; }
   Status precheck() override;
 
   SCOPE_LOG_TAG(SymbolicLink)
