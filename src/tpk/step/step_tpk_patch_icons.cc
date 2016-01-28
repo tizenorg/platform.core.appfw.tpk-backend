@@ -41,6 +41,10 @@ bf::path LocateIcon(const bf::path& filename, const std::string& pkgid,
   return {};
 }
 
+bool IsTpkApp(application_x* app) {
+  return strcmp(app->type, "capp") == 0 || strcmp(app->type, "jsapp") == 0;
+}
+
 }  // namespace
 
 namespace tpk {
@@ -84,7 +88,7 @@ common_installer::Step::Status StepTpkPatchIcons::process() {
   bf::create_directories(common_icon_location, error);
   for (application_x* app :
       GListRange<application_x*>(context_->manifest_data.get()->application)) {
-    if (strcmp(app->type, "capp") != 0 && strcmp(app->type, "jsapp") != 0)
+    if (!IsTpkApp(app))
       continue;
     if (app->icon) {
       icon_x* icon = reinterpret_cast<icon_x*>(app->icon->data);
