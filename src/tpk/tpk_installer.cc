@@ -5,6 +5,7 @@
 #include <common/step/step_configure.h>
 #include <common/step/step_backup_icons.h>
 #include <common/step/step_backup_manifest.h>
+#include <common/step/step_clear_data.h>
 #include <common/step/step_create_icons.h>
 #include <common/step/step_create_storage_directories.h>
 #include <common/step/step_copy.h>
@@ -87,6 +88,9 @@ void TpkInstaller::Prepare() {
       break;
     case ci::RequestType::ManifestDirectUpdate:
       ManifestDirectUpdateSteps();
+      break;
+    case ci::RequestType::Clear:
+      ClearSteps();
       break;
     default:
       AddStep<ci::configuration::StepFail>();
@@ -234,6 +238,11 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
+}
+
+void TpkInstaller::ClearSteps() {
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::filesystem::StepClearData>();
 }
 
 }  // namespace tpk
