@@ -53,7 +53,7 @@ common_installer::Step::Status StepTpkPatchIcons::process() {
   bf::create_directories(common_icon_location, error);
   for (application_x* app :
       GListRange<application_x*>(context_->manifest_data.get()->application)) {
-    if (strcmp(app->type, "capp") != 0)
+    if (strcmp(app->type, "capp") != 0 && strcmp(app->type, "jsapp") != 0)
       continue;
     if (app->icon) {
       icon_x* icon = reinterpret_cast<icon_x*>(app->icon->data);
