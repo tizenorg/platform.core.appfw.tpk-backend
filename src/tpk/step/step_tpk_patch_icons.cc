@@ -53,21 +53,39 @@ common_installer::Step::Status StepTpkPatchIcons::process() {
   bf::create_directories(common_icon_location, error);
   for (application_x* app :
       GListRange<application_x*>(context_->manifest_data.get()->application)) {
-    if (strcmp(app->type, "capp") != 0)
+    if (strcmp(app->type, "capp") != 0 && strcmp(app->type, "jsapp") != 0)
       continue;
     if (app->icon) {
       icon_x* icon = reinterpret_cast<icon_x*>(app->icon->data);
       bf::path icon_text(icon->text);
-      if (!bf::exists(icon->text)) {
-        bf::path source = LocateIcon(icon_text.filename(),
-                                     context_->pkgid.get(),
-                                     context_->root_application_path.get(),
-                                     context_->uid.get());
-        if (!source.empty()) {
-          LOG(DEBUG) << "Fix location of icon: " << source << " to: "
-                     << icon_text;
-          if (!common_installer::CopyFile(source, icon_text)) {
-            return Status::ICON_ERROR;
+      if (icon_text.parent_path() != common_icon_location) {
+        // if location of icon was absolute and icon is not in common icon
+        // location, we just need to copy it and replace icon->text to insert
+        // correct information into database
+        bf::path destination = common_icon_location / app->appid;
+        if (!icon_text.extension().empty()) {
+          destination += icon_text.extension();
+        } else {
+          destination += ".png";
+        }
+        if (!common_installer::CopyFile(icon_text, destination)) {
+          return Status::ICON_ERROR;
+        }
+        free(const_cast<char*>(icon->text));
+        icon->text = strdup(destination.c_str());
+      } else {
+        // look for icon in different location if it doesn't exist
+        if (!bf::exists(icon->text)) {
+          bf::path source = LocateIcon(icon_text.filename(),
+                                       context_->pkgid.get(),
+                                       context_->root_application_path.get(),
+                                       context_->uid.get());
+          if (!source.empty()) {
+            LOG(DEBUG) << "Fix location of icon: " << source << " to: "
+                       << icon_text;
+            if (!common_installer::CopyFile(source, icon_text)) {
+              return Status::ICON_ERROR;
+            }
           }
         }
       }
