@@ -5,6 +5,8 @@
 #ifndef TPK_STEP_STEP_TPK_PATCH_ICONS_H_
 #define TPK_STEP_STEP_TPK_PATCH_ICONS_H_
 
+#include <boost/filesystem/path.hpp>
+
 #include <common/step/step.h>
 #include <manifest_parser/utils/logging.h>
 
@@ -24,6 +26,13 @@ class StepTpkPatchIcons : public common_installer::Step {
   Status clean() override { return Status::OK; }
   Status undo() override { return Status::OK; }
   Status precheck() override { return Status::OK; }
+
+ private:
+  Status ProcessIconOutsidePackage(
+      const boost::filesystem::path& common_icon_location,
+      const boost::filesystem::path& icon_text,
+      application_x* app, icon_x* icon);
+  Status FixIconLocation(const boost::filesystem::path& icon_text);
 
   SCOPE_LOG_TAG(TpkPatchIcons)
 };
