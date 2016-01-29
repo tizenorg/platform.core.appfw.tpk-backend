@@ -68,6 +68,7 @@ common_installer::Step::Status StepTpkPatchIcons::process() {
         } else {
           destination += ".png";
         }
+        LOG(WARNING) << "SOURCE: " << icon_text << " DESTINATION: " << destination;
         if (!common_installer::CopyFile(icon_text, destination)) {
           return Status::ICON_ERROR;
         }
@@ -80,6 +81,7 @@ common_installer::Step::Status StepTpkPatchIcons::process() {
                                        context_->pkgid.get(),
                                        context_->root_application_path.get(),
                                        context_->uid.get());
+          LOG(WARNING) << "LOCATE: " << source;
           if (!source.empty()) {
             LOG(DEBUG) << "Fix location of icon: " << source << " to: "
                        << icon_text;
