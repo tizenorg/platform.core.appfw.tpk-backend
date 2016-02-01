@@ -46,9 +46,11 @@ Step::Status StepParsePreload::process() {
   if (is_preload) {
     context_->manifest_data.get()->preload = strdup("true");
 
-    LOG(ERROR) << "You're not authorized to install preload app: "
-        << context_->pkgid.get().c_str();
-    return Status::OPERATION_NOT_ALLOWED;
+    if (getuid() != 0) {
+      LOG(ERROR) << "You're not authorized to install preload app: "
+          << context_->pkgid.get().c_str();
+      return Status::OPERATION_NOT_ALLOWED;
+    }
   } else {
     context_->manifest_data.get()->preload = strdup("false");
   }
