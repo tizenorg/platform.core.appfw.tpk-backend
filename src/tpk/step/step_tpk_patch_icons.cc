@@ -95,8 +95,27 @@ common_installer::Step::Status StepTpkPatchIcons::process() {
         // correct information into database
         Status status = ProcessIconOutsidePackage(common_icon_location,
                                                   icon_text, app, icon);
-        if (status != Status::OK)
-          return status;
+
+        if (status != Status::OK) {
+          // ignore copying result in offline for preload apps
+          if (strcmp(context_->manifest_data.get()->preload, "true") == 0) {
+            // FIXME: there is no destructor of icon_x exposed but we need to
+            // remove it. Removing whole list as no valid copy made of any icon.
+            g_list_free_full(app->icon, [](gpointer data) {
+                  icon_x* icon = reinterpret_cast<icon_x*>(data);
+                  free(const_cast<char*>(icon->name));
+                  free(const_cast<char*>(icon->text));
+                  free(const_cast<char*>(icon->lang));
+                  free(const_cast<char*>(icon->section));
+                  free(const_cast<char*>(icon->size));
+                  free(const_cast<char*>(icon->resolution));
+                  free(icon);
+                });
+            app->icon = nullptr;
+          } else {
+            return status;
+          }
+        }
       } else {
         // look for icon in different location if it doesn't exist
         if (!bf::exists(icon->text)) {
