@@ -12,6 +12,7 @@
 #include <common/step/step_copy_backup.h>
 #include <common/step/step_copy_storage_directories.h>
 #include <common/step/step_check_old_certificate.h>
+#include <common/step/step_check_blacklist.h>
 #include <common/step/step_delta_patch.h>
 #include <common/step/step_fail.h>
 #include <common/step/step_kill_apps.h>
@@ -101,6 +102,7 @@ void TpkInstaller::InstallSteps() {
       ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::tpk::StepParsePreload>();
+  AddStep<ci::blacklist::StepCheckBlacklist>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -123,6 +125,7 @@ void TpkInstaller::UpdateSteps() {
       ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::tpk::StepParsePreload>();
+  AddStep<ci::blacklist::StepCheckBlacklist>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -172,6 +175,7 @@ void TpkInstaller::DeltaSteps() {
       ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::filesystem::StepDeltaPatch>();
+  AddStep<ci::blacklist::StepCheckBlacklist>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
