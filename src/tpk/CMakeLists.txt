@@ -4,6 +4,7 @@ SET(SRCS
     step/step_parse_preload.cc
     step/step_convert_xml.cc
     step/step_tpk_patch_icons.cc
+    step/step_manifest_adjustment.cc
     tpk_app_query_interface.cc
     tpk_installer.cc
 )
