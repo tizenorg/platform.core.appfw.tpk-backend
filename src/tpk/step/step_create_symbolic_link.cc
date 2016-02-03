@@ -33,15 +33,33 @@ bool CreateSymLink(application_x* app, InstallerContext* context) {
     return false;
   }
 
-  // Exec path
-  // Make a symlink with the name of appid, pointing exec file
-  bf::path symlink_path = bindir / bf::path(app->appid);
-  LOG(DEBUG) << "Creating symlink " << symlink_path << " pointing " <<
-      app->exec;
-  bf::create_symlink(bf::path(app->exec), symlink_path, boost_error);
-  if (boost_error) {
-    LOG(ERROR) << "Symlink creation failure: " << symlink_path;
-    return false;
+  if (strcmp(app->ui_gadget, "true") == 0) {
+    // Ug-client path
+    // Make a symlink with the name of appid, pointing /usr/bin/ug-client
+    bf::path app_exec_path(app->exec);
+    if (!bf::exists(app_exec_path)) {
+      bf::path ug_client_path(tzplatform_mkpath(TZ_SYS_BIN, "ug-client"));
+      LOG(INFO) << "Createing symlink " << app_exec_path << " pointing " <<
+        ug_client_path;
+      bf::create_symlink(ug_client_path, app_exec_path, boost_error);
+      if (boost_error) {
+        LOG(ERROR) << "Symlink creation failure: " << app_exec_path;
+        return false;
+      }
+    }
+  } else {
+    // Exec path
+    // Make a symlink with the name of appid, pointing exec file
+    bf::path symlink_path = bindir / bf::path(app->appid);
+    if (!bf::exists(symlink_path)) {
+      LOG(DEBUG) << "Creating symlink " << symlink_path << " pointing " <<
+          app->exec;
+      bf::create_symlink(bf::path(app->exec), symlink_path, boost_error);
+      if (boost_error) {
+        LOG(ERROR) << "Symlink creation failure: " << symlink_path;
+        return false;
+      }
+    }
   }
 
   return true;
