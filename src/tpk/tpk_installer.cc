@@ -225,6 +225,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
+  AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<tpk::filesystem::StepTpkPatchIcons>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
@@ -240,6 +241,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
+  AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<tpk::filesystem::StepTpkPatchIcons>();
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();

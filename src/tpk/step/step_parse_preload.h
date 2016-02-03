@@ -2,8 +2,8 @@
 // Use of this source code is governed by a apache 2.0 license that can be
 // found in the LICENSE file.
 
-#ifndef COMMON_STEP_STEP_PARSE_PRELOAD_H_
-#define COMMON_STEP_STEP_PARSE_PRELOAD_H_
+#ifndef TPK_STEP_STEP_PARSE_PRELOAD_H_
+#define TPK_STEP_STEP_PARSE_PRELOAD_H_
 
 #include <manifest_parser/utils/logging.h>
 
@@ -28,4 +28,4 @@ class StepParsePreload : public common_installer::Step {
 }  // namespace tpk
 }  // namespace common_installer
 
-#endif  // COMMON_STEP_STEP_PARSE_PRELOAD_H_
+#endif  // TPK_STEP_STEP_PARSE_PRELOAD_H_
