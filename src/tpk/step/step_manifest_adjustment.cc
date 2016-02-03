@@ -10,6 +10,7 @@
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
+#include <string>
 
 namespace bs = boost::system;
 namespace bf = boost::filesystem;
