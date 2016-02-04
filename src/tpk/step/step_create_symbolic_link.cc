@@ -33,7 +33,7 @@ bool CreateSymLink(application_x* app, InstallerContext* context) {
     return false;
   }
 
-  if (strcmp(app->ui_gadget, "true") == 0) {
+  if (app->ui_gadget && strcmp(app->ui_gadget, "true") == 0) {
     // Ug-client path
     // Make a symlink with the name of appid, pointing /usr/bin/ug-client
     bf::path app_exec_path(app->exec);
@@ -56,10 +56,11 @@ bool CreateSymLink(application_x* app, InstallerContext* context) {
     // Exec path
     // Make a symlink with the name of appid, pointing exec file
     bf::path symlink_path = bindir / bf::path(app->appid);
-    if (!bf::exists(symlink_path)) {
+    bf::path app_exec_path(app->exec);
+    if (!bf::exists(symlink_path) && bf::exists(app_exec_path)) {
       LOG(DEBUG) << "Creating symlink " << symlink_path << " pointing " <<
-          app->exec;
-      bf::create_symlink(bf::path(app->exec), symlink_path, boost_error);
+          app_exec_path;
+      bf::create_symlink(app_exec_path, symlink_path, boost_error);
       if (boost_error) {
         LOG(ERROR) << "Symlink creation failure: " << symlink_path;
         return false;
@@ -74,12 +75,17 @@ bool SetExecPermission(application_x* app) {
   boost::system::error_code boost_error;
   // Give an execution permission to the original executable
   LOG(DEBUG) << "Giving exec permission to " << app->exec;
-  bf::permissions(bf::path(app->exec), bf::owner_all |
-      bf::group_read | bf::group_exe |
-      bf::others_read | bf::others_exe, boost_error);
-  if (boost_error) {
-    LOG(ERROR) << "Permission change failure";
-    return false;
+  bf::path app_exec_path(app->exec);
+  if (bf::exists(app_exec_path)) {
+    bf::permissions(app_exec_path, bf::owner_all |
+        bf::group_read | bf::group_exe |
+        bf::others_read | bf::others_exe, boost_error);
+    if (boost_error) {
+      LOG(ERROR) << "Permission change failure";
+      return false;
+    }
+  } else {
+    LOG(WARNING) << "file does not exist";
   }
 
   return true;
