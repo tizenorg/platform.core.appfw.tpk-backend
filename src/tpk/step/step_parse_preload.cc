@@ -26,22 +26,7 @@ namespace tpk {
 namespace bf = boost::filesystem;
 
 Step::Status StepParsePreload::process() {
-  const char* preload_manifest_val = context_->manifest_data.get()->preload;
-
-  bool is_preload = false;
-
-  if (context_->installation_mode.get() == InstallationMode::OFFLINE) {
-    if (strcmp(preload_manifest_val, "false") != 0) {
-          is_preload = true;
-    }
-  } else {
-    if (context_->request_type.get() == RequestType::ManifestDirectInstall ||
-        context_->request_type.get() == RequestType::ManifestDirectUpdate) {
-      if (strcmp(preload_manifest_val, "true") == 0) {
-        is_preload = true;
-      }
-    }
-  }
+  bool is_preload = context_->is_preload_request.get();
 
   if (is_preload) {
     context_->manifest_data.get()->preload = strdup("true");
