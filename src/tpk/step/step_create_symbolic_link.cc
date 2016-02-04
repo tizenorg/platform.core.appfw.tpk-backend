@@ -74,12 +74,17 @@ bool SetExecPermission(application_x* app) {
   boost::system::error_code boost_error;
   // Give an execution permission to the original executable
   LOG(DEBUG) << "Giving exec permission to " << app->exec;
-  bf::permissions(bf::path(app->exec), bf::owner_all |
-      bf::group_read | bf::group_exe |
-      bf::others_read | bf::others_exe, boost_error);
-  if (boost_error) {
-    LOG(ERROR) << "Permission change failure";
-    return false;
+  bf::path app_exec_path(app->exec);
+  if (bf::exists(app_exec_path)) {
+    bf::permissions(app_exec_path, bf::owner_all |
+        bf::group_read | bf::group_exe |
+        bf::others_read | bf::others_exe, boost_error);
+    if (boost_error) {
+      LOG(ERROR) << "Permission change failure";
+      return false;
+    }
+  } else {
+    LOG(WARNING) << "file does not exist";
   }
 
   return true;

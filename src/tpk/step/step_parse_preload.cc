@@ -28,31 +28,21 @@ namespace bf = boost::filesystem;
 Step::Status StepParsePreload::process() {
   const char* preload_manifest_val = context_->manifest_data.get()->preload;
 
-  bool is_preload = false;
+  if (strcmp(preload_manifest_val, "true") != 0) {
+    bool is_preload = context_->is_preload_request.get();
 
-  if (context_->installation_mode.get() == InstallationMode::OFFLINE) {
-    if (strcmp(preload_manifest_val, "false") != 0) {
-          is_preload = true;
-    }
-  } else {
-    if (context_->request_type.get() == RequestType::ManifestDirectInstall ||
-        context_->request_type.get() == RequestType::ManifestDirectUpdate) {
-      if (strcmp(preload_manifest_val, "true") == 0) {
-        is_preload = true;
+    LOG(INFO) << "is_preload : (" << is_preload << ")";
+    if (is_preload) {
+      context_->manifest_data.get()->preload = strdup("true");
+
+      if (getuid() != 0) {
+        LOG(ERROR) << "You're not authorized to install preload app: "
+            << context_->pkgid.get().c_str();
+        return Status::OPERATION_NOT_ALLOWED;
       }
+    } else {
+      context_->manifest_data.get()->preload = strdup("false");
     }
-  }
-
-  if (is_preload) {
-    context_->manifest_data.get()->preload = strdup("true");
-
-    if (getuid() != 0) {
-      LOG(ERROR) << "You're not authorized to install preload app: "
-          << context_->pkgid.get().c_str();
-      return Status::OPERATION_NOT_ALLOWED;
-    }
-  } else {
-    context_->manifest_data.get()->preload = strdup("false");
   }
 
   return Status::OK;
