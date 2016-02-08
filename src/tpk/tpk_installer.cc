@@ -122,8 +122,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
-  AddStep<ci::pkgmgr::StepRunParserPlugin>(
-      ci::PluginsLauncher::ActionType::Install);
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
 }
 
 void TpkInstaller::UpdateSteps() {
@@ -153,8 +152,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
-  AddStep<ci::pkgmgr::StepRunParserPlugin>(
-      ci::PluginsLauncher::ActionType::Upgrade);
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
   /* TODO(jungh.yeon): this temporary step will be removed
   * when secondary parsing procedure has removed*/
   AddStep<ci::pkgmgr::StepUpdateTep>();
@@ -167,7 +165,7 @@ void TpkInstaller::UninstallSteps() {
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
-      ci::PluginsLauncher::ActionType::Uninstall);
+      ci::Plugin::ActionType::Uninstall);
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::pkgmgr::StepUnregisterApplication>();
   AddStep<ci::security::StepRollbackDeinstallationSecurity>();
@@ -206,8 +204,7 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
-  AddStep<ci::pkgmgr::StepRunParserPlugin>(
-      ci::PluginsLauncher::ActionType::Upgrade);
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
 }
 
 void TpkInstaller::RecoverySteps() {
@@ -238,8 +235,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
-  AddStep<ci::pkgmgr::StepRunParserPlugin>(
-      ci::PluginsLauncher::ActionType::Install);
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
 }
 
 void TpkInstaller::ManifestDirectUpdateSteps() {
@@ -256,8 +252,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
-  AddStep<ci::pkgmgr::StepRunParserPlugin>(
-      ci::PluginsLauncher::ActionType::Upgrade);
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
 }
 
 void TpkInstaller::ClearSteps() {
