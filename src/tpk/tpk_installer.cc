@@ -40,6 +40,8 @@
 #include <common/step/step_update_app.h>
 #include <common/step/step_update_security.h>
 #include <common/step/step_update_tep.h>
+#include "common/step/step_remove_manifest.h"
+
 #include "tpk/step/step_check_tpk_background_category.h"
 #include "tpk/step/step_create_symbolic_link.h"
 #include "tpk/step/step_manifest_adjustment.h"
@@ -161,12 +163,12 @@ void TpkInstaller::UninstallSteps() {
       ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::pkgmgr::StepKillApps>();
-  AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::pkgmgr::StepUnregisterApplication>();
   AddStep<ci::security::StepRollbackDeinstallationSecurity>();
   AddStep<ci::filesystem::StepRemoveFiles>();
   AddStep<ci::filesystem::StepRemoveIcons>();
   AddStep<ci::security::StepRevokeSecurity>();
+  AddStep<ci::pkgmgr::StepRemoveManifest>();
 }
 
 void TpkInstaller::ReinstallSteps() {
