@@ -182,6 +182,7 @@ std::unique_ptr<ci::AppQueryInterface> CreateQueryInterface() {
 
 std::unique_ptr<ci::AppInstaller> CreateInstaller(ci::PkgMgrPtr pkgmgr) {
   std::unique_ptr<ci::AppInstaller> installer(new tpk::TpkInstaller(pkgmgr));
+  installer->DisableSignalForTesting();
   return installer;
 }
 
@@ -206,8 +207,8 @@ ci::AppInstaller::Result Install(const bf::path& path,
   std::unique_ptr<ci::AppQueryInterface> query_interface =
       CreateQueryInterface();
   auto pkgmgr =
-      ci::PkgMgrInterface::Create(SIZEOFARRAY(argv), const_cast<char**>(argv),
-                                  query_interface.get());
+      ci::PkgMgrInterface::CreateForTesting(
+          SIZEOFARRAY(argv), const_cast<char**>(argv), query_interface.get());
   if (!pkgmgr) {
     LOG(ERROR) << "Failed to initialize pkgmgr interface";
     return ci::AppInstaller::Result::UNKNOWN;
@@ -231,8 +232,8 @@ ci::AppInstaller::Result Uninstall(const std::string& pkgid,
   std::unique_ptr<ci::AppQueryInterface> query_interface =
       CreateQueryInterface();
   auto pkgmgr =
-      ci::PkgMgrInterface::Create(SIZEOFARRAY(argv), const_cast<char**>(argv),
-                                  query_interface.get());
+      ci::PkgMgrInterface::CreateForTesting(
+          SIZEOFARRAY(argv), const_cast<char**>(argv), query_interface.get());
   if (!pkgmgr) {
     LOG(ERROR) << "Failed to initialize pkgmgr interface";
     return ci::AppInstaller::Result::UNKNOWN;
@@ -251,8 +252,8 @@ ci::AppInstaller::Result Reinstall(const bf::path& path,
   std::unique_ptr<ci::AppQueryInterface> query_interface =
       CreateQueryInterface();
   auto pkgmgr =
-      ci::PkgMgrInterface::Create(SIZEOFARRAY(argv), const_cast<char**>(argv),
-                                  query_interface.get());
+      ci::PkgMgrInterface::CreateForTesting(
+          SIZEOFARRAY(argv), const_cast<char**>(argv), query_interface.get());
   if (!pkgmgr) {
     LOG(ERROR) << "Failed to initialize pkgmgr interface";
     return ci::AppInstaller::Result::UNKNOWN;
@@ -275,8 +276,8 @@ ci::AppInstaller::Result Recover(const bf::path& recovery_file,
   std::unique_ptr<ci::AppQueryInterface> query_interface =
       CreateQueryInterface();
   auto pkgmgr =
-      ci::PkgMgrInterface::Create(SIZEOFARRAY(argv), const_cast<char**>(argv),
-                                  query_interface.get());
+      ci::PkgMgrInterface::CreateForTesting(
+          SIZEOFARRAY(argv), const_cast<char**>(argv), query_interface.get());
   if (!pkgmgr) {
     LOG(ERROR) << "Failed to initialize pkgmgr interface";
     return ci::AppInstaller::Result::UNKNOWN;
@@ -298,10 +299,18 @@ class SmokeEnvironment : public testing::Environment {
     bf::remove_all(home_ / KUserAppsDirBackup, error);
     if (bf::exists(home_ / KUserAppsDir)) {
       bf::rename(home_ / KUserAppsDir, home_ / KUserAppsDirBackup, error);
+      if (error)
+        LOG(ERROR) << "Failed to setup test environment. Does some previous"
+                   << " test crashed? Directory: "
+                   << (home_ / KUserAppsDirBackup) << " should not exist.";
       assert(!error);
     }
     if (bf::exists(home_ / kApplicationDir)) {
       bf::rename(home_ / kApplicationDir, home_ / kApplicationDirBackup, error);
+      if (error)
+        LOG(ERROR) << "Failed to setup test environment. Does some previous"
+                   << " test crashed? Directory: "
+                   << (home_ / kApplicationDirBackup) << " should not exist.";
       assert(!error);
     }
   }
