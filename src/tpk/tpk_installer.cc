@@ -8,6 +8,7 @@
 #include <common/step/step_clear_data.h>
 #include <common/step/step_create_icons.h>
 #include <common/step/step_create_storage_directories.h>
+#include <common/step/step_create_per_user_shared_directories.h>
 #include <common/step/step_copy.h>
 #include <common/step/step_copy_tep.h>
 #include <common/step/step_copy_backup.h>
@@ -127,6 +128,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::pkgmgr::StepRegisterApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::PluginsLauncher::ActionType::Install);
+  AddStep<ci::filesystem::StepCreatePerUserSharedDirectories>();
 }
 
 void TpkInstaller::UpdateSteps() {
