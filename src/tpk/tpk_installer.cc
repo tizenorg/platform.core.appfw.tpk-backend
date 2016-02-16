@@ -123,6 +123,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::filesystem::StepCreateIcons>();
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
+  AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::PluginsLauncher::ActionType::Install);
@@ -154,6 +155,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::filesystem::StepCreateIcons>();
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
+  AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::PluginsLauncher::ActionType::Upgrade);
