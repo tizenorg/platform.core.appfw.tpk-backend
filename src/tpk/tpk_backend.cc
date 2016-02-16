@@ -11,8 +11,11 @@
 namespace ci = common_installer;
 
 int main(const int argc, char* argv[]) {
+  ci::PkgmgrInstaller pkgmgr_installer;
   tpk::TpkAppQueryInterface interface;
-  ci::PkgMgrPtr pkgmgr = ci::PkgMgrInterface::Create(argc, argv, &interface);
+  ci::PkgMgrPtr pkgmgr = ci::PkgMgrInterface::Create(argc, argv,
+                                                     &pkgmgr_installer,
+                                                     &interface);
   if (!pkgmgr) {
     LOG(ERROR) << "Failed to create pkgmgr interface";
     return -1;
