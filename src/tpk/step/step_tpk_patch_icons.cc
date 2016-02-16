@@ -107,7 +107,6 @@ common_installer::Step::Status StepTpkPatchIcons::process() {
             // remove it. Removing whole list as no valid copy made of any icon.
             g_list_free_full(app->icon, [](gpointer data) {
                   icon_x* icon = reinterpret_cast<icon_x*>(data);
-                  free(const_cast<char*>(icon->name));
                   free(const_cast<char*>(icon->text));
                   free(const_cast<char*>(icon->lang));
                   free(const_cast<char*>(icon->section));
