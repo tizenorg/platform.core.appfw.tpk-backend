@@ -32,6 +32,7 @@
 #include <common/step/step_remove_files.h>
 #include <common/step/step_revoke_security.h>
 #include <common/step/step_remove_temporary_directory.h>
+#include <common/step/step_remove_per_user_storage_directories.h>
 #include <common/step/step_register_security.h>
 #include <common/step/step_rollback_deinstallation_security.h>
 #include <common/step/step_rollback_installation_security.h>
@@ -174,6 +175,7 @@ void TpkInstaller::UninstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::PluginsLauncher::ActionType::Uninstall);
   AddStep<ci::pkgmgr::StepKillApps>();
+  AddStep<ci::filesystem::StepRemovePerUserStorageDirectories>();
   AddStep<ci::pkgmgr::StepUnregisterApplication>();
   AddStep<ci::security::StepRollbackDeinstallationSecurity>();
   AddStep<ci::filesystem::StepRemoveFiles>();
