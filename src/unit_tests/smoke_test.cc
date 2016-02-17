@@ -12,6 +12,7 @@
 #include <common/pkgmgr_registration.h>
 #include <common/request.h>
 #include <common/step/step_fail.h>
+#include <common/utils/subprocess.h>
 
 #include <gtest/gtest.h>
 #include <gtest/gtest-death-test.h>
@@ -46,15 +47,14 @@ const char KUserAppsDirBackup[] = "apps_rw.bck";
 
 enum class RequestResult {
   NORMAL,
-  FAIL,
-  CRASH
+  FAIL
 };
 
 class TestPkgmgrInstaller : public ci::PkgmgrInstallerInterface {
  public:
   bool CreatePkgMgrInstaller(pkgmgr_installer** installer,
                              ci::InstallationMode* mode) {
-    *installer = pkgmgr_installer_new();
+    *installer = pkgmgr_installer_offline_new();
     if (!*installer)
       return false;
     *mode = ci::InstallationMode::ONLINE;
@@ -64,19 +64,6 @@ class TestPkgmgrInstaller : public ci::PkgmgrInstallerInterface {
   bool ShouldCreateSignal() const {
     return false;
   }
-};
-
-class StepCrash : public ci::Step {
- public:
-  using Step::Step;
-
-  ci::Step::Status process() override {
-    raise(SIGSEGV);
-    return Status::OK;
-  }
-  ci::Step::Status clean() override { return ci::Step::Status::OK; }
-  ci::Step::Status undo() override { return ci::Step::Status::OK; }
-  ci::Step::Status precheck() override { return ci::Step::Status::OK; }
 };
 
 void RemoveAllRecoveryFiles() {
@@ -208,8 +195,6 @@ ci::AppInstaller::Result RunInstallerWithPkgrmgr(ci::PkgMgrPtr pkgmgr,
   case RequestResult::FAIL:
     installer->AddStep<ci::configuration::StepFail>();
     break;
-  case RequestResult::CRASH:
-    installer->AddStep<StepCrash>();
   default:
     break;
   }
@@ -399,7 +384,10 @@ TEST_F(SmokeTest, DeinstallationMode_Tpk) {
 
 TEST_F(SmokeTest, RecoveryMode_Tpk_Installation) {
   bf::path path = kSmokePackagesDirectory / "RecoveryMode_Tpk_Installation.tpk";
-  ASSERT_DEATH(Install(path, RequestResult::CRASH), ".*");
+  RemoveAllRecoveryFiles();
+  ci::Subprocess backend_crash("/usr/bin/tpk-backend-ut/smoke-test-helper");
+  backend_crash.Run("-i", path.string());
+  ASSERT_NE(backend_crash.Wait(), 0);
 
   std::string pkgid = "smokeapp15";
   std::string appid = "smokeapp15.RecoveryModeTpkInstallation";
@@ -413,7 +401,12 @@ TEST_F(SmokeTest, RecoveryMode_Tpk_Update) {
   bf::path path_old = kSmokePackagesDirectory / "RecoveryMode_Tpk_Update.tpk";
   bf::path path_new = kSmokePackagesDirectory / "RecoveryMode_Tpk_Update_2.tpk";
   RemoveAllRecoveryFiles();
-  ASSERT_DEATH(Update(path_old, path_new, RequestResult::CRASH), ".*");
+  ci::Subprocess backend("/usr/bin/tpk-backend");
+  backend.Run("-i", path_old.string());
+  ASSERT_EQ(backend.Wait(), 0);
+  ci::Subprocess backend_crash("/usr/bin/tpk-backend-ut/smoke-test-helper");
+  backend_crash.Run("-i", path_new.string());
+  ASSERT_NE(backend_crash.Wait(), 0);
 
   std::string pkgid = "smokeapp16";
   std::string appid = "smokeapp16.RecoveryModeTpkUpdate";

@@ -25,6 +25,9 @@ SET(CMAKE_CXX_FLAGS_CCOV       "-O0 -std=c++11 -g --coverage")
 SET(TARGET_LIBNAME_TPK "tpk-installer")
 SET(TARGET_TPK_BACKEND "tpk-backend")
 
+SET(TARGET_SMOKE_TEST "smoke-test")
+SET(TARGET_SMOKE_TEST_HELPER "smoke-test-helper")
+
 ADD_DEFINITIONS("-Wall")
 ADD_DEFINITIONS("-Wextra")
 ADD_DEFINITIONS("-fPIE")
