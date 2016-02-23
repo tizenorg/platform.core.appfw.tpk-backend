@@ -52,6 +52,7 @@ make %{?_smp_mflags}
 
 mkdir -p %{buildroot}/etc/package-manager/backend
 ln -s %{_bindir}/tpk-backend %{buildroot}%{_sysconfdir}/package-manager/backend/tpk
+ln -s %{_bindir}/tpk-backend %{buildroot}%{_sysconfdir}/package-manager/backend/rpm
 
 %files
 %{_sysconfdir}/package-manager/backend/tpk
