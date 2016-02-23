@@ -43,8 +43,18 @@ common_installer::Step::Status StepManifestAdjustment::process() {
 
   xmlNodePtr node = xmlDocGetRootElement(doc);
 
-  std::string preload_attrib = "preload";
+  std::string pkgtype_attrib = "type";
   auto attrib = xmlSetProp(node,
+      reinterpret_cast<libxml_char>(pkgtype_attrib.c_str()),
+      reinterpret_cast<libxml_char>(context_->manifest_data.get()->type));
+
+  if (attrib == nullptr) {
+    LOG(ERROR) << "Failed to set attribute pkgtype";
+    return Step::Status::ERROR;
+  }
+
+  std::string preload_attrib = "preload";
+  attrib = xmlSetProp(node,
       reinterpret_cast<libxml_char>(preload_attrib.c_str()),
       reinterpret_cast<libxml_char>(context_->manifest_data.get()->preload));
 
