@@ -88,7 +88,9 @@ common_installer::Step::Status StepConvertXml::process() {
   if (!ConvertXml(doc))
     return Step::Status::MANIFEST_ERROR;
 
-  bf::path new_path = bf::path(getUserManifestPath(context_->uid.get()))
+  bf::path new_path =
+      bf::path(getUserManifestPath(context_->uid.get(),
+         context_->is_preload_request.get()))
       / bf::path(context_->pkgid.get());
   new_path += ".xml";
   if (!bf::exists(new_path.parent_path())) {

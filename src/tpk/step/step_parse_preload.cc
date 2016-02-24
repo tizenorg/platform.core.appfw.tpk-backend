@@ -16,10 +16,6 @@
 #include "common/pkgmgr_interface.h"
 #include "common/utils/file_util.h"
 
-namespace {
-const char kPathManifestPrefix[] = "/usr/share/packages";
-}
-
 namespace common_installer {
 namespace tpk {
 

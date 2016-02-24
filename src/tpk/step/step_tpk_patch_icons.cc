@@ -21,12 +21,12 @@ namespace {
 
 // This function checks for alternative locations of icon file of tpk package
 bf::path LocateIcon(const bf::path& filename, const std::string& pkgid,
-                    const bf::path& root_path, uid_t uid) {
+                    const bf::path& root_path, uid_t uid, bool is_preload) {
   std::vector<bf::path> locations;
   // FIXME: icons for preloaded apps should also be moved to "shared/res"
-  bf::path system_location = bf::path(getIconPath(uid)) / filename;
+  bf::path system_location = bf::path(getIconPath(uid, is_preload)) / filename;
   bf::path small_system_location =
-      bf::path(getIconPath(uid)) / "default" / "small" / filename;
+      bf::path(getIconPath(uid, is_preload)) / "default" / "small" / filename;
   bf::path res_icons_location = root_path / pkgid / "res" / "icons" / filename;
 
   locations.push_back(system_location);
@@ -72,7 +72,8 @@ common_installer::Step::Status StepTpkPatchIcons::FixIconLocation(
   bf::path source = LocateIcon(icon_text.filename(),
                                context_->pkgid.get(),
                                context_->root_application_path.get(),
-                               context_->uid.get());
+                               context_->uid.get(),
+                               context_->is_preload_request.get());
   if (!source.empty()) {
     LOG(DEBUG) << "Fix location of icon: " << source << " to: " << icon_text;
     if (!common_installer::CopyFile(source, icon_text)) {
