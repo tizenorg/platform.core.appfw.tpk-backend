@@ -94,3 +94,128 @@ TEST_F(ManifestTest, ManifestElement_InvalidRootElement) {
   StepParseRunner runner(GetMyName());
   ASSERT_FALSE(runner.Run());
 }
+
+TEST_F(ManifestTest, ManifestElement_DoubleRootElement) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_InstallLocation_Auto) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->installlocation, "auto");
+}
+
+TEST_F(ManifestTest, ManifestElement_InstallLocation_InternalOnly) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->installlocation, "internal-only");
+}
+
+TEST_F(ManifestTest, ManifestElement_InstallLocation_PreferExternal) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->installlocation, "prefer-external");
+}
+
+TEST_F(ManifestTest, ManifestElement_InstallLocation_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->installlocation, "auto");
+}
+
+TEST_F(ManifestTest, ManifestElement_InstallLocation_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_Package_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_Package_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_Type_Tpk) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->type, "tpk");
+}
+
+TEST_F(ManifestTest, ManifestElement_Type_Rpm) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->type, "rpm");
+}
+
+TEST_F(ManifestTest, ManifestElement_Type_Wgt) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->type, "wgt");
+}
+
+TEST_F(ManifestTest, ManifestElement_Type_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_Type_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->type, "tpk");
+}
+
+TEST_F(ManifestTest, ManifestElement_Version_Valid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->version, "1.2.3");
+}
+
+TEST_F(ManifestTest, ManifestElement_Version_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_Version_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_ApiVersion_Valid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->api_version, "3.0");
+}
+
+TEST_F(ManifestTest, ManifestElement_ApiVersion_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ManifestElement_ApiVersion_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
