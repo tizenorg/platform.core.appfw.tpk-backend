@@ -219,3 +219,54 @@ TEST_F(ManifestTest, ManifestElement_ApiVersion_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_FALSE(runner.Run());
 }
+
+TEST_F(ManifestTest, AuthorElement_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto authors = GListRange<author_x*>(m->author);
+  ASSERT_EQ(Size(&authors), 0);
+}
+
+TEST_F(ManifestTest, AuthorElement_Valid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto authors = GListRange<author_x*>(m->author);
+  ASSERT_EQ(Size(&authors), 1);
+  author_x* author = *authors.begin();
+  ASSERT_CSTR_EQ(author->email, "valid@email.com");
+  ASSERT_CSTR_EQ(author->href, "http://site.domain.com");
+}
+
+TEST_F(ManifestTest, AuthorElement_Email_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, AuthorElement_Href_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, AuthorElement_Email_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, AuthorElement_Href_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, AuthorElement_Text_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, AuthorElement_Many) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
