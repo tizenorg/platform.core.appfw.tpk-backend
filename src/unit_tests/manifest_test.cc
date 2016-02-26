@@ -360,3 +360,41 @@ TEST_F(ManifestTest, PrivilegesElement_Many) {
   ASSERT_CSTR_EQ(*(++++privileges.begin()),
                  "http://tizen.org/privilege/appmanager.launch");
 }
+
+TEST_F(ManifestTest, ProfileElement_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto profiles = GListRange<char*>(m->deviceprofile);
+  ASSERT_EQ(Size(&profiles), 0);
+}
+
+TEST_F(ManifestTest, ProfileElement_Valid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto profiles = GListRange<char*>(m->deviceprofile);
+  ASSERT_EQ(Size(&profiles), 1);
+  const char* profile = *profiles.begin();
+  ASSERT_CSTR_EQ(profile, "mobile");
+}
+
+TEST_F(ManifestTest, ProfileElement_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, ProfileElement_Many) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto profiles = GListRange<char*>(m->deviceprofile);
+  ASSERT_EQ(Size(&profiles), 2);
+  const char* profile1 = *profiles.begin();
+  const char* profile2 = *++profiles.begin();
+  ASSERT_CSTR_EQ(profile1, "mobile");
+  ASSERT_CSTR_EQ(profile2, "wearable");
+}
