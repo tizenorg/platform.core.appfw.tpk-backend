@@ -51,6 +51,7 @@
 #include "tpk/step/step_parse_preload.h"
 #include "tpk/step/step_convert_xml.h"
 #include "tpk/step/step_tpk_patch_icons.h"
+#include "tpk/step/step_check_pkg_directory_path.h"
 
 namespace ci = common_installer;
 
@@ -235,6 +236,7 @@ void TpkInstaller::RecoverySteps() {
 
 void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<tpk::filesystem::StepCheckPkgDirPath>();
   AddStep<ci::parse::StepParseManifest>(
       ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
