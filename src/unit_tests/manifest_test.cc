@@ -316,3 +316,47 @@ TEST_F(ManifestTest, DescriptionElement_Lang_Invalid) {
   StepParseRunner runner(GetMyName());
   ASSERT_FALSE(runner.Run());
 }
+
+TEST_F(ManifestTest, PrivilegesElement_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto privileges = GListRange<const char*>(m->privileges);
+  ASSERT_EQ(Size(&privileges), 0);
+}
+
+TEST_F(ManifestTest, PrivilegesElement_None) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto privileges = GListRange<char*>(m->privileges);
+  ASSERT_EQ(Size(&privileges), 0);
+}
+
+TEST_F(ManifestTest, PrivilegesElement_Valid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto privileges = GListRange<char*>(m->privileges);
+  ASSERT_EQ(Size(&privileges), 1);
+  ASSERT_CSTR_EQ(*(privileges.begin()),
+                 "http://tizen.org/privilege/application.admin");
+}
+
+TEST_F(ManifestTest, PrivilegesElement_Many) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto privileges = GListRange<char*>(m->privileges);
+  ASSERT_EQ(Size(&privileges), 3);
+  ASSERT_CSTR_EQ(*(privileges.begin()),
+                 "http://tizen.org/privilege/account.read");
+  ASSERT_CSTR_EQ(*(++privileges.begin()),
+                 "http://tizen.org/privilege/application.admin");
+  ASSERT_CSTR_EQ(*(++++privileges.begin()),
+                 "http://tizen.org/privilege/appmanager.launch");
+}
