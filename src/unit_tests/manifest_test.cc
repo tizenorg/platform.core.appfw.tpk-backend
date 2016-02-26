@@ -270,3 +270,49 @@ TEST_F(ManifestTest, AuthorElement_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_FALSE(runner.Run());
 }
+
+TEST_F(ManifestTest, DescriptionElement_Missing) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto descriptions = GListRange<description_x*>(m->description);
+  ASSERT_EQ(Size(&descriptions), 0);
+}
+
+TEST_F(ManifestTest, DescriptionElement_Valid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto descriptions = GListRange<description_x*>(m->description);
+  ASSERT_EQ(Size(&descriptions), 1);
+  description_x* description = *descriptions.begin();
+  ASSERT_CSTR_EQ(description->text, "text");
+  ASSERT_CSTR_EQ(description->lang, "en-GB");
+}
+
+TEST_F(ManifestTest, DescriptionElement_Many) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  auto descriptions = GListRange<description_x*>(m->description);
+  ASSERT_EQ(Size(&descriptions), 2);
+  description_x* description1 = *descriptions.begin();
+  description_x* description2 = *++descriptions.begin();
+  ASSERT_CSTR_EQ(description1->text, "text");
+  ASSERT_CSTR_EQ(description1->lang, "en-GB");
+  ASSERT_CSTR_EQ(description2->text, "text2");
+  ASSERT_CSTR_EQ(description2->lang, DEFAULT_LOCALE);
+}
+
+TEST_F(ManifestTest, DescriptionElement_Text_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
+
+TEST_F(ManifestTest, DescriptionElement_Lang_Invalid) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_FALSE(runner.Run());
+}
