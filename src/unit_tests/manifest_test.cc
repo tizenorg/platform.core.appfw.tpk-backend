@@ -256,11 +256,6 @@ TEST_F(ManifestTest, AuthorElement_Href_Missing) {
   ASSERT_FALSE(runner.Run());
 }
 
-TEST_F(ManifestTest, AuthorElement_Text_Missing) {
-  StepParseRunner runner(GetMyName());
-  ASSERT_FALSE(runner.Run());
-}
-
 TEST_F(ManifestTest, AuthorElement_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_FALSE(runner.Run());
@@ -300,11 +295,6 @@ TEST_F(ManifestTest, DescriptionElement_Many) {
   ASSERT_CSTR_EQ(description1->lang, "en-GB");
   ASSERT_CSTR_EQ(description2->text, "text2");
   ASSERT_CSTR_EQ(description2->lang, DEFAULT_LOCALE);
-}
-
-TEST_F(ManifestTest, DescriptionElement_Text_Invalid) {
-  StepParseRunner runner(GetMyName());
-  ASSERT_FALSE(runner.Run());
 }
 
 TEST_F(ManifestTest, DescriptionElement_Lang_Invalid) {
