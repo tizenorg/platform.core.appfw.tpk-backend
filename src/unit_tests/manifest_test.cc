@@ -302,11 +302,6 @@ TEST_F(ManifestTest, DescriptionElement_Many) {
   ASSERT_CSTR_EQ(description2->lang, DEFAULT_LOCALE);
 }
 
-TEST_F(ManifestTest, DescriptionElement_Text_Invalid) {
-  StepParseRunner runner(GetMyName());
-  ASSERT_FALSE(runner.Run());
-}
-
 TEST_F(ManifestTest, DescriptionElement_Lang_Invalid) {
   StepParseRunner runner(GetMyName());
   ASSERT_FALSE(runner.Run());
