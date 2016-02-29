@@ -246,11 +246,6 @@ TEST_F(ManifestTest, AuthorElement_Email_Invalid) {
   ASSERT_FALSE(runner.Run());
 }
 
-TEST_F(ManifestTest, AuthorElement_Href_Invalid) {
-  StepParseRunner runner(GetMyName());
-  ASSERT_FALSE(runner.Run());
-}
-
 TEST_F(ManifestTest, AuthorElement_Email_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_FALSE(runner.Run());
