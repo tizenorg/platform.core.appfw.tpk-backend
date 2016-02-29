@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3" package="package0id" version="1.0.0">
+    <ui-application appid="package0id.appid" exec="testapp" type="capp">
+        <datacontrol providerid="providerid1" access="access1" type="type1" />
+        <datacontrol providerid="providerid2" access="access2" type="type2" />
+    </ui-application>
+</manifest>
