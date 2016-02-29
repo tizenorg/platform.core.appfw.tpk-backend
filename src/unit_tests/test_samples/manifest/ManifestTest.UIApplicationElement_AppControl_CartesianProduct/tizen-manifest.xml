@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3" package="package0id" version="1.0.0">
+    <ui-application appid="package0id.appid" exec="testapp" type="capp">
+        <app-control>
+            <operation name="http://tizen.org/appcontrol/operation/compose1" />
+            <operation name="http://tizen.org/appcontrol/operation/compose2" />
+            <uri name="scheme1://" />
+            <uri name="scheme2://" />
+            <mime name="application/pdf" />
+            <mime name="application/text" />
+        </app-control>
+    </ui-application>
+</manifest>
