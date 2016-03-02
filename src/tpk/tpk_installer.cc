@@ -242,6 +242,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::tpk::StepParsePreload>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
+  AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
@@ -260,6 +261,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::tpk::StepParsePreload>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
+  AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
