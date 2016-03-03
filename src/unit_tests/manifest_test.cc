@@ -4,6 +4,8 @@
 
 #include "unit_tests/manifest_test.h"
 
+#include <cassert>
+
 namespace bf = boost::filesystem;
 namespace ci = common_installer;
 
@@ -31,6 +33,10 @@ void StepParseRunner::PrepareContext() {
   context_->root_application_path.set(ci::GetRootAppPath(false));
   context_->unpacked_dir_path.set(
       bf::path(kManifestTestcaseData) / dir_suffix_);
+
+  // Make sure that there is manifest file for testcase
+  assert(bf::exists(context_->unpacked_dir_path.get() / "tizen-manifest.xml")
+         && "Failed to stat manifest file");
 }
 
 std::string ManifestTest::GetMyName() const {

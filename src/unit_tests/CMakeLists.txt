@@ -12,6 +12,7 @@ ADD_EXECUTABLE(${TARGET_SMOKE_TEST_HELPER}
 ADD_EXECUTABLE(${TARGET_MANIFEST_TEST}
   manifest_test.cc
   manifest_test_package.cc
+  manifest_test_service_application.cc
   manifest_test_ui_application.cc
 )
 
