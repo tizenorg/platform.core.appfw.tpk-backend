@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3" package="package0id" version="1.0.0">
+    <service-application appid="package0id.appid" exec="testapp" type="capp">
+        <app-control>
+            <operation name="http://tizen.org/appcontrol/operation/compose" />
+            <uri />
+            <mime name="application/pdf" />
+        </app-control>
+    </service-application>
+</manifest>
