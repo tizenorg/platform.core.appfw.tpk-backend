@@ -14,6 +14,7 @@ ADD_EXECUTABLE(${TARGET_MANIFEST_TEST}
   manifest_test_package.cc
   manifest_test_service_application.cc
   manifest_test_ui_application.cc
+  manifest_test_watch_application.cc
   manifest_test_widget_application.cc
 )
 
