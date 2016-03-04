@@ -46,3 +46,12 @@ std::string ManifestTest::GetMyName() const {
       testing::UnitTest::GetInstance()->current_test_info()->name();
   return suite + '.' + case_name;
 }
+
+application_x* GetSingleApp(manifest_x* m) {
+  if (!m)
+    return nullptr;
+  auto apps = GListRange<application_x*>(m->application);
+  if (Size(&apps) != 1)
+    return nullptr;
+  return *apps.begin();
+}
