@@ -14,6 +14,7 @@ ADD_EXECUTABLE(${TARGET_MANIFEST_TEST}
   manifest_test_package.cc
   manifest_test_service_application.cc
   manifest_test_ui_application.cc
+  manifest_test_widget_application.cc
 )
 
 TARGET_INCLUDE_DIRECTORIES(${TARGET_SMOKE_TEST} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../)
