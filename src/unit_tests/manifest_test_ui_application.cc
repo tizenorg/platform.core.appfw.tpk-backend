@@ -584,10 +584,9 @@ TEST_F(ManifestTest, UIApplicationElement_SetManifestXDefaults) {
   ASSERT_NE(m, nullptr);
   ASSERT_CSTR_EQ(m->package, "package0id");
   ASSERT_CSTR_EQ(m->version, "1.0.0");
-  ASSERT_CSTR_EQ(m->installlocation, "internal-only");
+  ASSERT_CSTR_EQ(m->installlocation, "auto");
   ASSERT_CSTR_EQ(m->appsetting, "false");
   ASSERT_CSTR_EQ(m->type, "tpk");
-  ASSERT_NE(m->package_size, nullptr);
   ASSERT_NE(m->installed_time, nullptr);
   ASSERT_CSTR_EQ(m->mainapp_id, "package0id.appid");
   ASSERT_CSTR_EQ(m->nodisplay_setting, "false");
@@ -604,7 +603,15 @@ TEST_F(ManifestTest, UIApplicationElement_SetManifestXDefaults) {
   ASSERT_CSTR_EQ(app->enabled, "true");
   ASSERT_CSTR_EQ(app->hwacceleration, "default");
   ASSERT_CSTR_EQ(app->screenreader, "use-system-setting");
-  ASSERT_CSTR_EQ(app->screenreader, "use-system-setting");
   ASSERT_CSTR_EQ(app->component_type, "uiapp");
   ASSERT_CSTR_EQ(app->mainapp, "true");
+  ASSERT_CSTR_EQ(app->recentimage, "false");
+  ASSERT_CSTR_EQ(app->launchcondition, "false");
+  ASSERT_CSTR_EQ(app->indicatordisplay, "true");
+  ASSERT_CSTR_EQ(app->effectimage_type, "image");
+  ASSERT_CSTR_EQ(app->guestmode_visibility, "true");
+  ASSERT_CSTR_EQ(app->permission_type, "normal");
+  ASSERT_CSTR_EQ(app->component_type, "uiapp");
+  ASSERT_CSTR_EQ(app->submode, "false");
+  ASSERT_CSTR_EQ(app->process_pool, "false");
 }
