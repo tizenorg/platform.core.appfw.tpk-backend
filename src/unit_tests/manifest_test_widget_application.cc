@@ -33,11 +33,8 @@ TEST_F(ManifestTest, WidgetApplicationElement_Appid_Invalid) {
 TEST_F(ManifestTest, WidgetApplicationElement_Label_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto labels = GListRange<label_x*>(app->label);
   ASSERT_EQ(Size(&labels), 0);
 }
@@ -45,11 +42,8 @@ TEST_F(ManifestTest, WidgetApplicationElement_Label_Missing) {
 TEST_F(ManifestTest, WidgetApplicationElement_Label_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto labels = GListRange<label_x*>(app->label);
   ASSERT_EQ(Size(&labels), 1);
   ASSERT_CSTR_EQ((*labels.begin())->text, "label");
@@ -69,11 +63,8 @@ TEST_F(ManifestTest, WidgetApplicationElement_Label_Lang_Invalid) {
 TEST_F(ManifestTest, WidgetApplicationElement_Label_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto labels = GListRange<label_x*>(app->label);
   ASSERT_EQ(Size(&labels), 2);
   ASSERT_CSTR_EQ((*labels.begin())->text, "label");
@@ -90,11 +81,8 @@ TEST_F(ManifestTest, WidgetApplicationElement_Label_Many_Invalid) {
 TEST_F(ManifestTest, WidgetApplicationElement_Icon_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto icons = GListRange<icon_x*>(app->icon);
   ASSERT_EQ(Size(&icons), 0);
 }
@@ -107,11 +95,8 @@ TEST_F(ManifestTest, WidgetApplicationElement_Icon_Invalid) {
 TEST_F(ManifestTest, WidgetApplicationElement_Icon_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto icons = GListRange<icon_x*>(app->icon);
   ASSERT_EQ(Size(&icons), 1);
   ASSERT_EQ(bf::path((*icons.begin())->text).filename().string(),

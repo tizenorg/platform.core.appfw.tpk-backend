@@ -34,11 +34,8 @@ TEST_F(ManifestTest, UIApplicationElement_MissingNoApp) {
 TEST_F(ManifestTest, UIApplicationElement_MissingOtherApp) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_NE(app->component_type, "uiapp");
 }
 
@@ -55,44 +52,32 @@ TEST_F(ManifestTest, UIApplicationElement_Appid_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_LaunchMode_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->launch_mode, "single");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_LaunchMode_Single) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->launch_mode, "single");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_LaunchMode_Group) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->launch_mode, "group");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_LaunchMode_Caller) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->launch_mode, "caller");
 }
 
@@ -104,33 +89,24 @@ TEST_F(ManifestTest, UIApplicationElement_LaunchMode_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_Multiple_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->multiple, "false");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Multiple_False) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);;
   ASSERT_CSTR_EQ(app->multiple, "false");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Multiple_True) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->multiple, "true");
 }
 
@@ -142,33 +118,24 @@ TEST_F(ManifestTest, UIApplicationElement_Multiple_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_Nodisplay_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->nodisplay, "false");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Nodisplay_False) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->nodisplay, "false");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Nodisplay_True) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->nodisplay, "true");
 }
 
@@ -180,33 +147,24 @@ TEST_F(ManifestTest, UIApplicationElement_Nodisplay_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_Taskmanage_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->taskmanage, "true");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Taskmanage_False) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->taskmanage, "false");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Taskmanage_True) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->taskmanage, "true");
 }
 
@@ -218,44 +176,32 @@ TEST_F(ManifestTest, UIApplicationElement_Taskmanage_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_HwAcceleration_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->hwacceleration, "default");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_HwAcceleration_Default) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->hwacceleration, "default");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_HwAcceleration_Off) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->hwacceleration, "off");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_HwAcceleration_On) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->hwacceleration, "on");
 }
 
@@ -267,33 +213,24 @@ TEST_F(ManifestTest, UIApplicationElement_Type_Missing) {
 TEST_F(ManifestTest, UIApplicationElement_Type_Capp) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->type, "capp");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Type_Webapp) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   ASSERT_CSTR_EQ(app->type, "webapp");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_Label_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto labels = GListRange<label_x*>(app->label);
   ASSERT_EQ(Size(&labels), 0);
 }
@@ -301,11 +238,8 @@ TEST_F(ManifestTest, UIApplicationElement_Label_Missing) {
 TEST_F(ManifestTest, UIApplicationElement_Label_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto labels = GListRange<label_x*>(app->label);
   ASSERT_EQ(Size(&labels), 1);
   ASSERT_CSTR_EQ((*labels.begin())->text, "label");
@@ -325,11 +259,8 @@ TEST_F(ManifestTest, UIApplicationElement_Label_Lang_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_Label_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto labels = GListRange<label_x*>(app->label);
   ASSERT_EQ(Size(&labels), 2);
   ASSERT_CSTR_EQ((*labels.begin())->text, "label");
@@ -346,11 +277,8 @@ TEST_F(ManifestTest, UIApplicationElement_Label_Many_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_Metadata_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto labels = GListRange<label_x*>(app->metadata);
   ASSERT_EQ(Size(&labels), 0);
 }
@@ -358,11 +286,8 @@ TEST_F(ManifestTest, UIApplicationElement_Metadata_Missing) {
 TEST_F(ManifestTest, UIApplicationElement_Metadata_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto metadata = GListRange<metadata_x*>(app->metadata);
   ASSERT_EQ(Size(&metadata), 1);
   ASSERT_CSTR_EQ((*metadata.begin())->key, "key");
@@ -377,11 +302,8 @@ TEST_F(ManifestTest, UIApplicationElement_Metadata_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_Metadata_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto metadata = GListRange<metadata_x*>(app->metadata);
   ASSERT_EQ(Size(&metadata), 2);
   ASSERT_CSTR_EQ((*metadata.begin())->key, "key1");
@@ -393,11 +315,8 @@ TEST_F(ManifestTest, UIApplicationElement_Metadata_Many) {
 TEST_F(ManifestTest, UIApplicationElement_BackgroundCategory_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto bg_categories = GListRange<char*>(app->background_category);
   ASSERT_EQ(Size(&bg_categories), 0);
 }
@@ -405,11 +324,8 @@ TEST_F(ManifestTest, UIApplicationElement_BackgroundCategory_Missing) {
 TEST_F(ManifestTest, UIApplicationElement_BackgroundCategory_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto bg_categories = GListRange<char*>(app->background_category);
   ASSERT_EQ(Size(&bg_categories), 1);
   ASSERT_CSTR_EQ(*bg_categories.begin(), "bgcategory");
@@ -423,11 +339,8 @@ TEST_F(ManifestTest, UIApplicationElement_BackgroundCategory_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_BackgroundCategory_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto bg_categories = GListRange<char*>(app->background_category);
   ASSERT_EQ(Size(&bg_categories), 2);
   ASSERT_CSTR_EQ(*bg_categories.begin(), "bgcategory1");
@@ -437,11 +350,8 @@ TEST_F(ManifestTest, UIApplicationElement_BackgroundCategory_Many) {
 TEST_F(ManifestTest, UIApplicationElement_DataControl_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto datacontrols = GListRange<datacontrol_x*>(app->datacontrol);
   ASSERT_EQ(Size(&datacontrols), 0);
 }
@@ -449,11 +359,8 @@ TEST_F(ManifestTest, UIApplicationElement_DataControl_Missing) {
 TEST_F(ManifestTest, UIApplicationElement_DataControl_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto datacontrols = GListRange<datacontrol_x*>(app->datacontrol);
   ASSERT_EQ(Size(&datacontrols), 1);
   ASSERT_CSTR_EQ((*datacontrols.begin())->providerid, "providerid");
@@ -464,11 +371,8 @@ TEST_F(ManifestTest, UIApplicationElement_DataControl_Valid) {
 TEST_F(ManifestTest, UIApplicationElement_DataControl_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto datacontrols = GListRange<datacontrol_x*>(app->datacontrol);
   ASSERT_EQ(Size(&datacontrols), 2);
   ASSERT_CSTR_EQ((*datacontrols.begin())->providerid, "providerid1");
@@ -482,11 +386,8 @@ TEST_F(ManifestTest, UIApplicationElement_DataControl_Many) {
 TEST_F(ManifestTest, UIApplicationElement_AppControl_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 0);
 }
@@ -494,11 +395,8 @@ TEST_F(ManifestTest, UIApplicationElement_AppControl_Missing) {
 TEST_F(ManifestTest, UIApplicationElement_AppControl_Operation_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 0);
 }
@@ -526,11 +424,8 @@ TEST_F(ManifestTest, UIApplicationElement_AppControl_Uri_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_AppControl_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 1);
   ASSERT_CSTR_EQ((*appcontrols.begin())->operation,
@@ -542,11 +437,8 @@ TEST_F(ManifestTest, UIApplicationElement_AppControl_Valid) {
 TEST_F(ManifestTest, UIApplicationElement_AppControl_Many) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 2);
   ASSERT_CSTR_EQ((*appcontrols.begin())->operation,
@@ -562,11 +454,8 @@ TEST_F(ManifestTest, UIApplicationElement_AppControl_Many) {
 TEST_F(ManifestTest, UIApplicationElement_AppControl_SkipUri) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 1);
   ASSERT_CSTR_EQ((*appcontrols.begin())->operation,
@@ -578,11 +467,8 @@ TEST_F(ManifestTest, UIApplicationElement_AppControl_SkipUri) {
 TEST_F(ManifestTest, UIApplicationElement_AppControl_SkipMime) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 1);
   ASSERT_CSTR_EQ((*appcontrols.begin())->operation,
@@ -594,11 +480,8 @@ TEST_F(ManifestTest, UIApplicationElement_AppControl_SkipMime) {
 TEST_F(ManifestTest, UIApplicationElement_AppControl_CartesianProduct) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 8);
 
@@ -622,11 +505,8 @@ TEST_F(ManifestTest,
        UIApplicationElement_AppControl_CartesianProduct_SkipMime) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 4);
 
@@ -648,11 +528,8 @@ TEST_F(ManifestTest,
 TEST_F(ManifestTest, UIApplicationElement_AppControl_CartesianProduct_SkipUri) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto appcontrols = GListRange<appcontrol_x*>(app->appcontrol);
   ASSERT_EQ(Size(&appcontrols), 4);
 
@@ -674,11 +551,8 @@ TEST_F(ManifestTest, UIApplicationElement_AppControl_CartesianProduct_SkipUri) {
 TEST_F(ManifestTest, UIApplicationElement_Icon_Missing) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto icons = GListRange<icon_x*>(app->icon);
   ASSERT_EQ(Size(&icons), 0);
 }
@@ -691,11 +565,8 @@ TEST_F(ManifestTest, UIApplicationElement_Icon_Invalid) {
 TEST_F(ManifestTest, UIApplicationElement_Icon_Valid) {
   StepParseRunner runner(GetMyName());
   ASSERT_TRUE(runner.Run());
-  manifest_x* m = runner.GetManifest();
-  ASSERT_NE(m, nullptr);
-  auto apps = GListRange<application_x*>(m->application);
-  ASSERT_EQ(Size(&apps), 1);
-  application_x* app = *apps.begin();
+  application_x* app = GetSingleApp(runner.GetManifest());
+  ASSERT_NE(app, nullptr);
   auto icons = GListRange<icon_x*>(app->icon);
   ASSERT_EQ(Size(&icons), 1);
   ASSERT_EQ(bf::path((*icons.begin())->text).filename().string(),
@@ -705,3 +576,35 @@ TEST_F(ManifestTest, UIApplicationElement_Icon_Valid) {
 // TODO(t.iwanek): there should be more tests for ui application icon but
 // implementation differs much from the content on tizen.org so I have
 // implemented only basic correct scenario test for icon
+
+TEST_F(ManifestTest, UIApplicationElement_SetManifestXDefaults) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->package, "package0id");
+  ASSERT_CSTR_EQ(m->version, "1.0.0");
+  ASSERT_CSTR_EQ(m->installlocation, "internal-only");
+  ASSERT_CSTR_EQ(m->appsetting, "false");
+  ASSERT_CSTR_EQ(m->type, "tpk");
+  ASSERT_NE(m->package_size, nullptr);
+  ASSERT_NE(m->installed_time, nullptr);
+  ASSERT_CSTR_EQ(m->mainapp_id, "package0id.appid");
+  ASSERT_CSTR_EQ(m->nodisplay_setting, "false");
+  ASSERT_CSTR_EQ(m->support_disable, "false");
+  ASSERT_CSTR_EQ(m->api_version, "2.3");
+  auto apps = GListRange<application_x*>(m->application);
+  ASSERT_EQ(Size(&apps), 1);
+  application_x* app = *apps.begin();
+  ASSERT_CSTR_EQ(app->appid, "package0id.appid");
+  ASSERT_NE(app->exec, nullptr);
+  ASSERT_CSTR_EQ(app->nodisplay, "false");
+  ASSERT_CSTR_EQ(app->multiple, "false");
+  ASSERT_CSTR_EQ(app->taskmanage, "true");
+  ASSERT_CSTR_EQ(app->enabled, "true");
+  ASSERT_CSTR_EQ(app->hwacceleration, "default");
+  ASSERT_CSTR_EQ(app->screenreader, "use-system-setting");
+  ASSERT_CSTR_EQ(app->screenreader, "use-system-setting");
+  ASSERT_CSTR_EQ(app->component_type, "uiapp");
+  ASSERT_CSTR_EQ(app->mainapp, "true");
+}

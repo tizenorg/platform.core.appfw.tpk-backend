@@ -57,4 +57,6 @@ class ManifestTest : public testing::Test {
   std::string GetMyName() const;
 };
 
+application_x* GetSingleApp(manifest_x* m);
+
 #endif  // UNIT_TESTS_MANIFEST_TEST_H_
