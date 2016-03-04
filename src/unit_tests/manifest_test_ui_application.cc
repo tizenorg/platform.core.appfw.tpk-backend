@@ -23,6 +23,7 @@ TEST_F(ManifestTest, UIApplicationElement_Valid) {
   application_x* app = *apps.begin();
   ASSERT_CSTR_EQ(app->appid, "package0id.appid");
   ASSERT_CSTR_EQ(app->component_type, "uiapp");
+  ASSERT_CSTR_EQ(app->mainapp, "true");
 }
 
 TEST_F(ManifestTest, UIApplicationElement_MissingNoApp) {
