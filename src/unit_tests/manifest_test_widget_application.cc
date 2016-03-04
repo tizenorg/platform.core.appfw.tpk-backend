@@ -148,3 +148,41 @@ TEST_F(ManifestTest, WidgetApplicationElement_Main_TakeMarked) {
 }
 
 // preview, update-period, support-size are supposed to be parsed by plugin
+
+TEST_F(ManifestTest, WidgetApplicationElement_SetManifestXDefaults) {
+  StepParseRunner runner(GetMyName());
+  ASSERT_TRUE(runner.Run());
+  manifest_x* m = runner.GetManifest();
+  ASSERT_NE(m, nullptr);
+  ASSERT_CSTR_EQ(m->package, "package0id");
+  ASSERT_CSTR_EQ(m->version, "1.0.0");
+  ASSERT_CSTR_EQ(m->installlocation, "auto");
+  ASSERT_CSTR_EQ(m->appsetting, "false");
+  ASSERT_CSTR_EQ(m->type, "tpk");
+  ASSERT_NE(m->installed_time, nullptr);
+  ASSERT_CSTR_EQ(m->mainapp_id, "package0id.appid");
+  ASSERT_CSTR_EQ(m->nodisplay_setting, "false");
+  ASSERT_CSTR_EQ(m->support_disable, "false");
+  ASSERT_CSTR_EQ(m->api_version, "2.3");
+  auto apps = GListRange<application_x*>(m->application);
+  ASSERT_EQ(Size(&apps), 1);
+  application_x* app = *apps.begin();
+  ASSERT_CSTR_EQ(app->appid, "package0id.appid");
+  ASSERT_NE(app->exec, nullptr);
+  ASSERT_CSTR_EQ(app->nodisplay, "true");
+  ASSERT_CSTR_EQ(app->multiple, "false");
+  ASSERT_CSTR_EQ(app->taskmanage, "false");
+  ASSERT_CSTR_EQ(app->enabled, "true");
+  ASSERT_CSTR_EQ(app->hwacceleration, "default");
+  ASSERT_CSTR_EQ(app->screenreader, "use-system-setting");
+  ASSERT_CSTR_EQ(app->component_type, "widgetapp");
+  ASSERT_CSTR_EQ(app->mainapp, "true");
+  ASSERT_CSTR_EQ(app->recentimage, "false");
+  ASSERT_CSTR_EQ(app->launchcondition, "false");
+  ASSERT_CSTR_EQ(app->indicatordisplay, "false");
+  ASSERT_CSTR_EQ(app->effectimage_type, "image");
+  ASSERT_CSTR_EQ(app->guestmode_visibility, "true");
+  ASSERT_CSTR_EQ(app->permission_type, "normal");
+  ASSERT_CSTR_EQ(app->submode, "false");
+  ASSERT_CSTR_EQ(app->process_pool, "false");
+}
