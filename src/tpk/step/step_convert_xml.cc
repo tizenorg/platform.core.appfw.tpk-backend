@@ -35,7 +35,7 @@ namespace tpk {
 namespace pkgmgr {
 
 common_installer::Step::Status StepConvertXml::precheck() {
-  bf::path xml_path = context_->pkg_path.get();
+  bf::path xml_path = context_->package_storage->path();
   xml_path /= "tizen-manifest.xml";
 
   if (!bf::exists(xml_path)) {
