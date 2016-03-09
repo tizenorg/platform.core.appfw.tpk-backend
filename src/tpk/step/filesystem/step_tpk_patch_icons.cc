@@ -84,7 +84,8 @@ common_installer::Step::Status StepTpkPatchIcons::FixIconLocation(
 }
 
 common_installer::Step::Status StepTpkPatchIcons::process() {
-  bf::path common_icon_location = context_->pkg_path.get() / "shared" / "res";
+  bf::path common_icon_location =
+      context_->package_storage->path() / "shared" / "res";
   bs::error_code error;
   bf::create_directories(common_icon_location, error);
   for (application_x* app :

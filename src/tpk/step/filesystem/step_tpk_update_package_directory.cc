@@ -42,7 +42,7 @@ namespace filesystem {
 
 ci::Step::Status StepTpkUpdatePackageDirectory::BackupDirectory(
     const std::string& entry, const boost::filesystem::path& backup_path) {
-  bf::path source = context_->pkg_path.get() / entry;
+  bf::path source = context_->package_storage->path() / entry;
   if (bf::exists(source)) {
     bf::path destination = backup_path / entry;
     if (!ReplacePaths(source, destination))
@@ -56,7 +56,7 @@ ci::Step::Status StepTpkUpdatePackageDirectory::RestoreDirectory(
   // restore backup if directory exists
   if (bf::exists(backup_path / entry)) {
     bf::path source = backup_path / entry;
-    bf::path destination = context_->pkg_path.get() / entry;
+    bf::path destination = context_->package_storage->path() / entry;
     if (!ReplacePaths(source, destination))
       return Status::APP_DIR_ERROR;
   }
@@ -65,7 +65,7 @@ ci::Step::Status StepTpkUpdatePackageDirectory::RestoreDirectory(
 
 ci::Step::Status StepTpkUpdatePackageDirectory::BackupEntries() {
   bf::path backup_path =
-      ci::GetBackupPathForPackagePath(context_->pkg_path.get());
+      ci::GetBackupPathForPackagePath(context_->package_storage->path());
   for (auto& entry : GetExtractEntries()) {
     auto status = BackupDirectory(entry, backup_path);
     if (status != Status::OK)
@@ -86,7 +86,7 @@ ci::Step::Status StepTpkUpdatePackageDirectory::process() {
 
 ci::Step::Status StepTpkUpdatePackageDirectory::clean() {
   bf::path backup_path =
-      ci::GetBackupPathForPackagePath(context_->pkg_path.get());
+      ci::GetBackupPathForPackagePath(context_->package_storage->path());
   if (bf::exists(backup_path)) {
     bs::error_code error;
     bf::remove(backup_path, error);
@@ -100,7 +100,7 @@ ci::Step::Status StepTpkUpdatePackageDirectory::clean() {
 
 ci::Step::Status StepTpkUpdatePackageDirectory::undo() {
   bf::path backup_path =
-      ci::GetBackupPathForPackagePath(context_->pkg_path.get());
+      ci::GetBackupPathForPackagePath(context_->package_storage->path());
 
   for (auto& entry : GetExtractEntries()) {
     auto status = RestoreDirectory(entry, backup_path);

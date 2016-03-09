@@ -43,7 +43,7 @@ ci::Step::Status StepTpkPreparePackageDirectory::PrepareDirectory(
   // simple string filter so we append slash character here
   std::string filter = entry + '/';
   if (!ci::ExtractToTmpDir(context_->file_path.get().c_str(),
-                           context_->pkg_path.get(), entry)) {
+                           context_->package_storage->path(), entry)) {
     LOG(ERROR) << "Failed to extract from zip files in: " << filter;
     return Status::UNZIP_ERROR;
   }
@@ -55,7 +55,7 @@ ci::Step::Status StepTpkPreparePackageDirectory::PrepareLink(
   bs::error_code error;
   bf::path mount_point_entry = mount_point / entry;
   if (bf::exists(mount_point_entry)) {
-    bf::path destination = context_->pkg_path.get() / entry;
+    bf::path destination = context_->package_storage->path() / entry;
     if (bf::exists(destination)) {
       if (!bf::is_symlink(destination)) {
         LOG(ERROR) << "Cannot proceed. "
@@ -90,7 +90,8 @@ ci::Step::Status StepTpkPreparePackageDirectory::ExtractEntries() {
 }
 
 ci::Step::Status StepTpkPreparePackageDirectory::PrepareLinks() {
-  bf::path mount_point = ci::GetMountLocation(context_->pkg_path.get());
+  bf::path mount_point =
+      ci::GetMountLocation(context_->package_storage->path());
   LOG(DEBUG) << "Creating symlinks to zip package...";
   for (auto& link_entry : kSymlinkEntries) {
     LOG(DEBUG) << "Symlink: " << link_entry;
@@ -109,7 +110,7 @@ ci::Step::Status StepTpkPreparePackageDirectory::process() {
 }
 
 ci::Step::Status StepTpkPreparePackageDirectory::precheck() {
-  if (context_->pkg_path.get().empty()) {
+  if (context_->package_storage->path().empty()) {
     LOG(ERROR) << "Package installation path is not set";
     return Status::INVALID_VALUE;
   }

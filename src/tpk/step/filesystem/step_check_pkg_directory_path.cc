@@ -14,16 +14,16 @@ namespace bf = boost::filesystem;
 namespace bs = boost::system;
 
 common_installer::Step::Status StepCheckPkgDirPath::process() {
-  if (!bf::exists(context_->pkg_path.get())) {
+  bf::path pkg_path = context_->package_storage->path();
+  if (!bf::exists(pkg_path)) {
     LOG(INFO) << "Create pkg_path("
-              << context_->pkg_path.get()
+              << pkg_path
               << ") for package("
               << context_->pkgid.get() << ")";
     bs::error_code error;
-    bf::create_directories(context_->pkg_path.get(), error);
+    bf::create_directories(pkg_path, error);
     if (error) {
-      LOG(ERROR) << "Cannot create directory: "
-                 << context_->pkg_path.get().string();
+      LOG(ERROR) << "Cannot create directory: " << pkg_path;
       return Step::Status::APP_DIR_ERROR;
     }
   }

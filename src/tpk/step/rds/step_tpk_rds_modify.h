@@ -31,4 +31,4 @@ class StepTpkRDSModify : public common_installer::rds::StepRDSModify {
 }  // namespace rds
 }  // namespace tpk
 
-#endif // TPK_STEP_RDS_STEP_TPK_RDS_MODIFY_H_
+#endif  // TPK_STEP_RDS_STEP_TPK_RDS_MODIFY_H_
