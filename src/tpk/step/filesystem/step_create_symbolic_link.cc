@@ -26,7 +26,7 @@ typedef common_installer::Step::Status Status;
 
 bool CreateSymLink(application_x* app, InstallerContext* context) {
   boost::system::error_code boost_error;
-  bf::path bindir = context->pkg_path.get() /
+  bf::path bindir = context->package_storage->path() /
       bf::path("bin");
   LOG(DEBUG) << "Creating dir: " << bindir;
   if (!common_installer::CreateDir(bindir)) {
