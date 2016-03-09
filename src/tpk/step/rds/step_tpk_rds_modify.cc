@@ -8,7 +8,7 @@ namespace tpk {
 namespace rds {
 
 std::string StepTpkRDSModify::GetAppPath() {
-  return context_->pkg_path.get().string();
+  return context_->package_storage->path().string();
 }
 
 }  // namespace rds
