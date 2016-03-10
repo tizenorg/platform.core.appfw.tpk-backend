@@ -2,12 +2,12 @@
 // Use of this source code is governed by a apache 2.0 license that can be
 // found in the LICENSE file.
 
-#ifndef TPK_STEP_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_
-#define TPK_STEP_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_
+#ifndef TPK_STEP_SECURITY_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_
+#define TPK_STEP_SECURITY_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_
 
 #include <manifest_parser/utils/version_number.h>
 
-#include <common/step/step_check_background_category.h>
+#include <common/step/security/step_check_background_category.h>
 
 namespace tpk {
 namespace security {
@@ -29,4 +29,4 @@ class StepCheckTpkBackgroundCategory :
 }  // namespace security
 }  // namespace tpk
 
-#endif  // TPK_STEP_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_
+#endif  // TPK_STEP_SECURITY_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_

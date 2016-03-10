@@ -18,9 +18,9 @@ const char kManifestTestcaseData[] =
 
 bool StepParseRunner::Run() {
   PrepareContext();
-  ci::parse::StepParseManifest step(context_.get(),
-      ci::parse::StepParseManifest::ManifestLocation::PACKAGE,
-      ci::parse::StepParseManifest::StoreLocation::NORMAL);
+  ci::configuration::StepParseManifest step(context_.get(),
+      ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
+      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   return step.process() == ci::Step::Status::OK;
 }
 

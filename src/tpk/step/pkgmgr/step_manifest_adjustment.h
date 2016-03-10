@@ -1,21 +1,20 @@
-// Copyright (c) 2015 Samsung Electronics Co., Ltd All Rights Reserved
+// Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
 // Use of this source code is governed by a apache 2.0 license that can be
 // found in the LICENSE file.
 
-#ifndef TPK_STEP_STEP_CONVERT_XML_H_
-#define TPK_STEP_STEP_CONVERT_XML_H_
+#ifndef TPK_STEP_PKGMGR_STEP_MANIFEST_ADJUSTMENT_H_
+#define TPK_STEP_PKGMGR_STEP_MANIFEST_ADJUSTMENT_H_
 
 #include <manifest_parser/utils/logging.h>
 
 #include <boost/filesystem/path.hpp>
-#include <libxml/tree.h>
 
 #include <common/step/step.h>
 
 namespace tpk {
 namespace pkgmgr {
 
-class StepConvertXml : public common_installer::Step {
+class StepManifestAdjustment : public common_installer::Step {
  public:
   using Step::Step;
 
@@ -26,12 +25,11 @@ class StepConvertXml : public common_installer::Step {
 
  private:
   boost::filesystem::path xml_path_;
-  bool ConvertXml(xmlDocPtr doc);
 
-  SCOPE_LOG_TAG(ConvertXml)
+  SCOPE_LOG_TAG(StepManifestAdjustment)
 };
 
 }  // namespace pkgmgr
 }  // namespace tpk
 
-#endif  // TPK_STEP_STEP_CONVERT_XML_H_
+#endif  // TPK_STEP_PKGMGR_STEP_MANIFEST_ADJUSTMENT_H_
