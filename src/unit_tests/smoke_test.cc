@@ -50,6 +50,14 @@ enum class RequestResult {
   FAIL
 };
 
+bool TouchFile(const bf::path& path) {
+  FILE* f = fopen(path.c_str(), "w+");
+  if (!f)
+    return false;
+  fclose(f);
+  return true;
+}
+
 class TestPkgmgrInstaller : public ci::PkgmgrInstallerInterface {
  public:
   bool CreatePkgMgrInstaller(pkgmgr_installer** installer,
@@ -133,7 +141,8 @@ void ValidatePackageFS(const std::string& pkgid, const std::string& appid) {
 
   bf::path manifest_path =
       bf::path(getUserManifestPath(getuid(), false)) / (pkgid + ".xml");
-  bf::path icon_path = bf::path(getIconPath(getuid(), false)) / (appid + ".png");
+  bf::path icon_path =
+      bf::path(getIconPath(getuid(), false)) / (appid + ".png");
   ASSERT_TRUE(bf::exists(manifest_path));
   ASSERT_TRUE(bf::exists(icon_path));
 
@@ -153,7 +162,8 @@ void PackageCheckCleanup(const std::string& pkgid, const std::string& appid) {
 
   bf::path manifest_path =
       bf::path(getUserManifestPath(getuid(), false)) / (pkgid + ".xml");
-  bf::path icon_path = bf::path(getIconPath(getuid(), false)) / (appid + ".png");
+  bf::path icon_path =
+      bf::path(getIconPath(getuid(), false)) / (appid + ".png");
   ASSERT_FALSE(bf::exists(manifest_path));
   ASSERT_FALSE(bf::exists(icon_path));
 
@@ -243,6 +253,24 @@ ci::AppInstaller::Result Uninstall(const std::string& pkgid,
   }
   return RunInstallerWithPkgrmgr(pkgmgr, mode);
 }
+
+ci::AppInstaller::Result Clear(const bf::path& path,
+                                 RequestResult mode = RequestResult::NORMAL) {
+  const char* argv[] = {"", "-c", path.c_str()};
+  TestPkgmgrInstaller pkgmgr_installer;
+  std::unique_ptr<ci::AppQueryInterface> query_interface =
+      CreateQueryInterface();
+  auto pkgmgr =
+      ci::PkgMgrInterface::Create(SIZEOFARRAY(argv), const_cast<char**>(argv),
+                                  &pkgmgr_installer,
+                                  query_interface.get());
+  if (!pkgmgr) {
+    LOG(ERROR) << "Failed to initialize pkgmgr interface";
+    return ci::AppInstaller::Result::UNKNOWN;
+  }
+  return RunInstallerWithPkgrmgr(pkgmgr, mode);
+}
+
 
 ci::AppInstaller::Result Reinstall(const bf::path& path,
                                    const bf::path& delta_dir,
@@ -380,6 +408,23 @@ TEST_F(SmokeTest, DeinstallationMode_Tpk) {
   ASSERT_EQ(Install(path), ci::AppInstaller::Result::OK);
   ASSERT_EQ(Uninstall(pkgid), ci::AppInstaller::Result::OK);
   CheckPackageNonExistance(pkgid, appid);
+}
+
+TEST_F(SmokeTest, ClearMode_Tpk) {
+  bf::path path = kSmokePackagesDirectory / "ClearMode_Tpk.tpk";
+  std::string pkgid = "smokeapp21";
+  std::string appid = "smokeapp21.ClearModeTpk";
+  ASSERT_EQ(Install(path), ci::AppInstaller::Result::OK);
+  bf::path root_path = ci::GetRootAppPath(false);
+  bs::error_code error;
+  bf::create_directory(root_path / pkgid / "data" / "dir", error);
+  ASSERT_FALSE(error);
+  ASSERT_TRUE(TouchFile(root_path / pkgid / "data" / "dir" / "file"));
+  ASSERT_TRUE(TouchFile(root_path / pkgid / "data" / "file"));
+  ASSERT_EQ(Clear(pkgid), ci::AppInstaller::Result::OK);
+  ValidatePackage(pkgid, {appid});
+  ASSERT_FALSE(bf::exists(root_path / pkgid / "data" / "dir" / "file"));
+  ASSERT_FALSE(bf::exists(root_path / pkgid / "res" / "file"));
 }
 
 TEST_F(SmokeTest, RecoveryMode_Tpk_Installation) {
