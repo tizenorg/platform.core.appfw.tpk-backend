@@ -2,8 +2,8 @@
 // Use of this source code is governed by an apache-2.0 license that can be
 // found in the LICENSE file.
 
-#ifndef TPK_STEP_STEP_TPK_PATCH_ICONS_H_
-#define TPK_STEP_STEP_TPK_PATCH_ICONS_H_
+#ifndef TPK_STEP_FILESYSTEM_STEP_TPK_PATCH_ICONS_H_
+#define TPK_STEP_FILESYSTEM_STEP_TPK_PATCH_ICONS_H_
 
 #include <boost/filesystem/path.hpp>
 
@@ -40,4 +40,4 @@ class StepTpkPatchIcons : public common_installer::Step {
 }  // namespace filesystem
 }  // namespace tpk
 
-#endif  // TPK_STEP_STEP_TPK_PATCH_ICONS_H_
+#endif  // TPK_STEP_FILESYSTEM_STEP_TPK_PATCH_ICONS_H_

@@ -1,5 +1,6 @@
 /* Copyright 2015 Samsung Electronics, license APACHE-2.0, see LICENSE file */
-#include "tpk/step/step_create_symbolic_link.h"
+
+#include "tpk/step/filesystem/step_create_symbolic_link.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/system/error_code.hpp>

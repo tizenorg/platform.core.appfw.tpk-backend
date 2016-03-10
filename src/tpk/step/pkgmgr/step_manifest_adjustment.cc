@@ -2,7 +2,7 @@
 // Use of this source code is governed by a apache 2.0 license that can be
 // found in the LICENSE file.
 
-#include "tpk/step/step_manifest_adjustment.h"
+#include "tpk/step/pkgmgr/step_manifest_adjustment.h"
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>

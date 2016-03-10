@@ -64,7 +64,7 @@ ln -s %{_bindir}/tpk-backend %{buildroot}%{_sysconfdir}/package-manager/backend/
 
 %files devel
 %{_includedir}/app-installers/tpk/*.h
-%{_includedir}/app-installers/tpk/*/*.h
+%{_includedir}/app-installers/tpk/*/*/*.h
 %{_libdir}/pkgconfig/tpk-installer.pc
 
 %files tests

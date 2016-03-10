@@ -2,7 +2,7 @@
 // Use of this source code is governed by a apache 2.0 license that can be
 // found in the LICENSE file.
 
-#include "tpk/step/step_check_tpk_background_category.h"
+#include "tpk/step/security/step_check_tpk_background_category.h"
 
 #include <common/installer_context.h>
 
