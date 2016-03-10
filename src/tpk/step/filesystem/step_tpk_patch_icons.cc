@@ -2,7 +2,7 @@
 // Use of this source code is governed by an apache-2.0 license that can be
 // found in the LICENSE file.
 
-#include "tpk/step/step_tpk_patch_icons.h"
+#include "tpk/step/filesystem/step_tpk_patch_icons.h"
 
 #include <boost/filesystem/operations.hpp>
 #include <boost/system/error_code.hpp>

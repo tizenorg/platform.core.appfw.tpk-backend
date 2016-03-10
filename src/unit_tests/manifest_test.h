@@ -9,7 +9,7 @@
 
 #include <common/installer_context.h>
 #include <common/request.h>
-#include <common/step/step_parse_manifest.h>
+#include <common/step/configuration/step_parse_manifest.h>
 #include <common/utils/glist_range.h>
 
 #include <glib.h>

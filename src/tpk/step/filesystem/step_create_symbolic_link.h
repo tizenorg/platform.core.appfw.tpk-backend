@@ -1,6 +1,7 @@
 /* Copyright 2015 Samsung Electronics, license APACHE-2.0, see LICENSE file */
-#ifndef TPK_STEP_STEP_CREATE_SYMBOLIC_LINK_H_
-#define TPK_STEP_STEP_CREATE_SYMBOLIC_LINK_H_
+
+#ifndef TPK_STEP_FILESYSTEM_STEP_CREATE_SYMBOLIC_LINK_H_
+#define TPK_STEP_FILESYSTEM_STEP_CREATE_SYMBOLIC_LINK_H_
 
 #include <manifest_parser/utils/logging.h>
 
@@ -23,4 +24,4 @@ class StepCreateSymbolicLink : public common_installer::Step {
 }  // namespace filesystem
 }  // namespace tpk
 
-#endif  // TPK_STEP_STEP_CREATE_SYMBOLIC_LINK_H_
+#endif  // TPK_STEP_FILESYSTEM_STEP_CREATE_SYMBOLIC_LINK_H_

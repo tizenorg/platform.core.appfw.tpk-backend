@@ -2,7 +2,7 @@
 // Use of this source code is governed by a apache 2.0 license that can be
 // found in the LICENSE file.
 
-#include "tpk/step/step_parse_preload.h"
+#include "tpk/step/configuration/step_parse_preload.h"
 
 #include <pkgmgr-info.h>
 #include <unistd.h>
@@ -16,12 +16,13 @@
 #include "common/pkgmgr_interface.h"
 #include "common/utils/file_util.h"
 
-namespace common_installer {
-namespace tpk {
-
 namespace bf = boost::filesystem;
+namespace ci = common_installer;
 
-Step::Status StepParsePreload::process() {
+namespace tpk {
+namespace configuration {
+
+ci::Step::Status StepParsePreload::process() {
   const char* preload_manifest_val = context_->manifest_data.get()->preload;
 
   if (strcmp(preload_manifest_val, "true") != 0) {
@@ -44,5 +45,5 @@ Step::Status StepParsePreload::process() {
   return Status::OK;
 }
 
+}  // namespace configuration
 }  // namespace tpk
-}  // namespace common_installer
