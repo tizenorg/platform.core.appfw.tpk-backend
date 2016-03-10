@@ -2,8 +2,8 @@
 // Use of this source code is governed by a apache 2.0 license that can be
 // found in the LICENSE file.
 
-#ifndef TPK_STEP_STEP_CHECK_PKG_DIRECTORY_PATH_H_
-#define TPK_STEP_STEP_CHECK_PKG_DIRECTORY_PATH_H_
+#ifndef TPK_STEP_CONFIGURATION_STEP_PARSE_PRELOAD_H_
+#define TPK_STEP_CONFIGURATION_STEP_PARSE_PRELOAD_H_
 
 #include <manifest_parser/utils/logging.h>
 
@@ -11,9 +11,9 @@
 #include "common/step/step.h"
 
 namespace tpk {
-namespace filesystem {
+namespace configuration {
 
-class StepCheckPkgDirPath : public common_installer::Step {
+class StepParsePreload : public common_installer::Step {
  public:
   using Step::Step;
 
@@ -22,10 +22,10 @@ class StepCheckPkgDirPath : public common_installer::Step {
   Status undo() override { return Status::OK; }
   Status precheck() override { return Status::OK; }
 
-  SCOPE_LOG_TAG(CheckPkgDirPath)
+  SCOPE_LOG_TAG(ParsePreload)
 };
 
-}  // namespace filesystem
+}  // namespace configuration
 }  // namespace tpk
 
-#endif  // TPK_STEP_STEP_CHECK_PKG_DIRECTORY_PATH_H_
+#endif  // TPK_STEP_CONFIGURATION_STEP_PARSE_PRELOAD_H_
