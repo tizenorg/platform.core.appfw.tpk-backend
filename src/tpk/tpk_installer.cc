@@ -15,6 +15,7 @@
 #include <common/step/step_copy_storage_directories.h>
 #include <common/step/step_check_old_certificate.h>
 #include <common/step/step_check_blacklist.h>
+#include <common/step/step_check_removable.h>
 #include <common/step/step_delta_patch.h>
 #include <common/step/step_fail.h>
 #include <common/step/step_kill_apps.h>
@@ -169,6 +170,7 @@ void TpkInstaller::UpdateSteps() {
 
 void TpkInstaller::UninstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepCheckRemovable>();
   AddStep<ci::parse::StepParseManifest>(
       ci::parse::StepParseManifest::ManifestLocation::INSTALLED,
       ci::parse::StepParseManifest::StoreLocation::NORMAL);
