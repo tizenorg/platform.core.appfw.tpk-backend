@@ -130,7 +130,7 @@ TEST_F(ManifestTest, WatchApplicationElement_SetManifestXDefaults) {
   application_x* app = *apps.begin();
   ASSERT_CSTR_EQ(app->appid, "package0id.appid");
   ASSERT_NE(app->exec, nullptr);
-  ASSERT_CSTR_EQ(app->nodisplay, "false");
+  ASSERT_CSTR_EQ(app->nodisplay, "true");
   ASSERT_CSTR_EQ(app->multiple, "false");
   ASSERT_CSTR_EQ(app->taskmanage, "false");
   ASSERT_CSTR_EQ(app->enabled, "true");
