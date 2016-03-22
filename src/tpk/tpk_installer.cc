@@ -38,7 +38,6 @@
 #include <common/step/recovery/step_open_recovery_file.h>
 #include <common/step/security/step_check_old_certificate.h>
 #include <common/step/security/step_check_signature.h>
-#include <common/step/security/step_privilege_compatibility.h>
 #include <common/step/security/step_recover_security.h>
 #include <common/step/security/step_register_security.h>
 #include <common/step/security/step_revoke_security.h>
@@ -116,7 +115,6 @@ void TpkInstaller::InstallSteps() {
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<ci::pkgmgr::StepCheckBlacklist>();
   AddStep<ci::security::StepCheckSignature>();
-  AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::filesystem::StepCopy>();
@@ -143,7 +141,6 @@ void TpkInstaller::UpdateSteps() {
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<ci::pkgmgr::StepCheckBlacklist>();
   AddStep<ci::security::StepCheckSignature>();
-  AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepCheckOldCertificate>();
   AddStep<ci::configuration::StepParseManifest>(
@@ -199,7 +196,6 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::filesystem::StepDeltaPatch>();
   AddStep<ci::pkgmgr::StepCheckBlacklist>();
   AddStep<ci::security::StepCheckSignature>();
-  AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepCheckOldCertificate>();
   AddStep<ci::configuration::StepParseManifest>(
@@ -243,7 +239,6 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepCheckSignature>();
-  AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<tpk::filesystem::StepTpkPatchIcons>();
@@ -261,7 +256,6 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepCheckSignature>();
-  AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<tpk::filesystem::StepTpkPatchIcons>();
