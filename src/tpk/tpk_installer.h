@@ -33,6 +33,9 @@ class TpkInstaller : public common_installer::AppInstaller {
   void ManifestDirectInstallSteps();
   void ManifestDirectUpdateSteps();
   void ClearSteps();
+  void DisableSteps();
+  void EnableSteps();
+
 
   SCOPE_LOG_TAG(TpkInstaller)
 };
