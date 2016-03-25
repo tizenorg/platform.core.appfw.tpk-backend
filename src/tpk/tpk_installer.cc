@@ -35,6 +35,8 @@
 #include <common/step/pkgmgr/step_unregister_app.h>
 #include <common/step/pkgmgr/step_update_app.h>
 #include <common/step/pkgmgr/step_update_tep.h>
+#include <common/step/pkgmgr/step_enable_app.h>
+#include <common/step/pkgmgr/step_disable_app.h>
 #include <common/step/recovery/step_open_recovery_file.h>
 #include <common/step/security/step_check_old_certificate.h>
 #include <common/step/security/step_check_signature.h>
@@ -100,6 +102,12 @@ void TpkInstaller::Prepare() {
       break;
     case ci::RequestType::Clear:
       ClearSteps();
+      break;
+    case ci::RequestType::Disable:
+      DisableSteps();
+      break;
+    case ci::RequestType::Enable:
+      EnableSteps();
       break;
     default:
       AddStep<ci::configuration::StepFail>();
@@ -275,6 +283,19 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
 void TpkInstaller::ClearSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
   AddStep<ci::filesystem::StepClearData>();
+}
+
+void TpkInstaller::DisableSteps() {
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepDisableApplication>();
+  //AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Uninstall);
+  // TODO(jungh.yeon) : uninstall plugin?
+}
+
+void TpkInstaller::EnableSteps() {
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepEnableApplication>();
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
 }
 
 }  // namespace tpk
