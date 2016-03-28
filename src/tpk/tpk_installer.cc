@@ -251,6 +251,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
+  AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
 }
 
 void TpkInstaller::ManifestDirectUpdateSteps() {
