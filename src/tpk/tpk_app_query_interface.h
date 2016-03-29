@@ -9,7 +9,7 @@
 
 namespace tpk {
 
-class TpkAppQueryInterface : public common_installer::AppQueryInterface {
+class __attribute__ ((visibility ("default"))) TpkAppQueryInterface : public common_installer::AppQueryInterface {
  public:
   bool IsAppInstalledByArgv(int argc, char** argv) override;
 };

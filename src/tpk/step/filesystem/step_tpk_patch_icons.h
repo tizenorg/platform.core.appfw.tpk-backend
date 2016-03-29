@@ -18,7 +18,7 @@ namespace filesystem {
  *        Fixes location of icons for tpk apps if icons are not located in
  *        "shared/res/" directory.
  */
-class StepTpkPatchIcons : public common_installer::Step {
+class __attribute__ ((visibility ("default"))) StepTpkPatchIcons : public common_installer::Step {
  public:
   using Step::Step;
 

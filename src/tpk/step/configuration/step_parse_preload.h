@@ -13,7 +13,7 @@
 namespace tpk {
 namespace configuration {
 
-class StepParsePreload : public common_installer::Step {
+class __attribute__ ((visibility ("default"))) StepParsePreload : public common_installer::Step {
  public:
   using Step::Step;
 

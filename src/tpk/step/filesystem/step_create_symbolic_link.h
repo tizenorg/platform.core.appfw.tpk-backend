@@ -10,7 +10,7 @@
 namespace tpk {
 namespace filesystem {
 
-class StepCreateSymbolicLink : public common_installer::Step {
+class __attribute__ ((visibility ("default"))) StepCreateSymbolicLink : public common_installer::Step {
  public:
   using Step::Step;
   Status process() override;

@@ -17,7 +17,7 @@ namespace tpk {
  * packages. Pkgmgr request is parsed within and sequence of steps is built to
  * be run.
  */
-class TpkInstaller : public common_installer::AppInstaller {
+class __attribute__ ((visibility ("default"))) TpkInstaller : public common_installer::AppInstaller {
  public:
   explicit TpkInstaller(common_installer::PkgMgrPtr pkgmgr);
   ~TpkInstaller();

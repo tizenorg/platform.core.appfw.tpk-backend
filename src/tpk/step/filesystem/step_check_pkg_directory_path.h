@@ -13,7 +13,7 @@
 namespace tpk {
 namespace filesystem {
 
-class StepCheckPkgDirPath : public common_installer::Step {
+class __attribute__ ((visibility ("default"))) StepCheckPkgDirPath : public common_installer::Step {
  public:
   using Step::Step;
 
