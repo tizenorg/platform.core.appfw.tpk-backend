@@ -187,7 +187,33 @@ void TpkInstaller::UninstallSteps() {
 }
 
 void TpkInstaller::ReinstallSteps() {
-  AddStep<ci::configuration::StepFail>();
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::configuration::StepParseManifest>(
+     ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
+     ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::pkgmgr::StepCheckBlacklist>();
+  // TODO(t.iwanek): add StepCheckSignature which is missing
+  // this step is temporary removed because of validation problems as files
+  // not exising in signature but existing is fs will cause error (data files)
+  AddStep<ci::security::StepPrivilegeCompatibility>();
+  AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
+  // TODO(t.iwanek): add StepCheckOldCertificate which is missing
+  AddStep<ci::configuration::StepParseManifest>(
+     ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
+     ci::configuration::StepParseManifest::StoreLocation::BACKUP);
+  AddStep<ci::pkgmgr::StepKillApps>();
+  AddStep<ci::backup::StepBackupManifest>();
+  AddStep<ci::backup::StepBackupIcons>();
+  // TODO(t.iwanek): implement me - add RDS steps...
+  AddStep<tpk::filesystem::StepCreateSymbolicLink>();
+  AddStep<tpk::filesystem::StepTpkPatchIcons>();
+  AddStep<ci::filesystem::StepCreateIcons>();
+  AddStep<ci::security::StepUpdateSecurity>();
+  AddStep<tpk::pkgmgr::StepConvertXml>();
+  AddStep<tpk::pkgmgr::StepManifestAdjustment>();
+  AddStep<ci::pkgmgr::StepUpdateApplication>();
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
 }
 
 void TpkInstaller::DeltaSteps() {
