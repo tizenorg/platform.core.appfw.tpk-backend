@@ -382,6 +382,23 @@ TEST_F(SmokeTest, DeltaMode_Tpk) {
   ValidateFileContentInPackage(pkgid, "MODIFIED", "version 2\n");
 }
 
+TEST_F(SmokeTest, ReinstallMode_Tpk) {
+  bf::path path = kSmokePackagesDirectory / "ReinstallMode_Tpk.tpk";
+  bf::path rds_directory = kSmokePackagesDirectory / "delta_dir";
+  std::string pkgid = "smokeapp25";
+  std::string appid = "smokeapp25.ReinstallModeTpk";
+  ASSERT_EQ(Reinstall(path, rds_directory), ci::AppInstaller::Result::OK);
+  ValidatePackage(pkgid, appid);
+
+  // Check rds modifications
+  bf::path root_path = ci::GetRootAppPath(false);
+  ASSERT_FALSE(bf::exists(root_path / pkgid / "DELETED"));
+  ASSERT_TRUE(bf::exists(root_path / pkgid / "ADDED"));
+  ASSERT_TRUE(bf::exists(root_path / pkgid / "bin" / "native"));
+  ASSERT_TRUE(bf::exists(root_path / pkgid / "shared" / "res" / "native.png"));
+  ValidateFileContentInPackage(pkgid, "MODIFIED", "version 2\n");
+}
+
 TEST_F(SmokeTest, InstallationMode_Tpk) {
   bf::path path = kSmokePackagesDirectory / "InstallationMode_Tpk.tpk";
   std::string pkgid = "smokeapp12";
