@@ -5,6 +5,7 @@ SET(SRCS
   step/filesystem/step_tpk_patch_icons.cc
   step/pkgmgr/step_convert_xml.cc
   step/pkgmgr/step_manifest_adjustment.cc
+  step/rds/step_tpk_rds_modify.cc
   step/security/step_check_tpk_background_category.cc
   tpk_app_query_interface.cc
   tpk_installer.cc
