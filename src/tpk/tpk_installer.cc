@@ -35,6 +35,7 @@
 #include <common/step/pkgmgr/step_unregister_app.h>
 #include <common/step/pkgmgr/step_update_app.h>
 #include <common/step/pkgmgr/step_update_tep.h>
+#include <common/step/rds/step_rds_parse.h>
 #include <common/step/recovery/step_open_recovery_file.h>
 #include <common/step/security/step_check_old_certificate.h>
 #include <common/step/security/step_check_signature.h>
@@ -52,6 +53,7 @@
 #include "tpk/step/filesystem/step_check_pkg_directory_path.h"
 #include "tpk/step/pkgmgr/step_convert_xml.h"
 #include "tpk/step/pkgmgr/step_manifest_adjustment.h"
+#include "tpk/step/rds/step_tpk_rds_modify.h"
 #include "tpk/step/security/step_check_tpk_background_category.h"
 
 namespace ci = common_installer;
@@ -187,7 +189,34 @@ void TpkInstaller::UninstallSteps() {
 }
 
 void TpkInstaller::ReinstallSteps() {
-  AddStep<ci::configuration::StepFail>();
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::configuration::StepParseManifest>(
+     ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
+     ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::pkgmgr::StepCheckBlacklist>();
+  // TODO(t.iwanek): add StepCheckSignature which is missing
+  // this step is temporary removed because of validation problems as files
+  // not exising in signature but existing is fs will cause error (data files)
+  AddStep<ci::security::StepPrivilegeCompatibility>();
+  AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
+  // TODO(t.iwanek): add StepCheckOldCertificate which is missing
+  AddStep<ci::configuration::StepParseManifest>(
+     ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
+     ci::configuration::StepParseManifest::StoreLocation::BACKUP);
+  AddStep<ci::pkgmgr::StepKillApps>();
+  AddStep<ci::backup::StepBackupManifest>();
+  AddStep<ci::backup::StepBackupIcons>();
+  AddStep<ci::rds::StepRDSParse>();
+  AddStep<tpk::rds::StepTpkRDSModify>();
+  AddStep<tpk::filesystem::StepCreateSymbolicLink>();
+  AddStep<tpk::filesystem::StepTpkPatchIcons>();
+  AddStep<ci::filesystem::StepCreateIcons>();
+  AddStep<ci::security::StepUpdateSecurity>();
+  AddStep<tpk::pkgmgr::StepConvertXml>();
+  AddStep<tpk::pkgmgr::StepManifestAdjustment>();
+  AddStep<ci::pkgmgr::StepUpdateApplication>();
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
 }
 
 void TpkInstaller::DeltaSteps() {
