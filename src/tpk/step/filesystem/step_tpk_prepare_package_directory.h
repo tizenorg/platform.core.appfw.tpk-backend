@@ -5,6 +5,10 @@
 #ifndef TPK_STEP_FILESYSTEM_STEP_TPK_PREPARE_PACKAGE_DIRECTORY_H_
 #define TPK_STEP_FILESYSTEM_STEP_TPK_PREPARE_PACKAGE_DIRECTORY_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <manifest_parser/utils/logging.h>
 
 #include <boost/filesystem/path.hpp>
@@ -38,7 +42,8 @@ namespace filesystem {
  *    - signature*.xml
  *    - res/
  */
-class StepTpkPreparePackageDirectory : public common_installer::Step {
+class TPK_BACKEND_EXPORT_API StepTpkPreparePackageDirectory
+    : public common_installer::Step {
  public:
   using Step::Step;
 
