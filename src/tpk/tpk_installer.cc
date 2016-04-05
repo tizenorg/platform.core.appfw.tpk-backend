@@ -156,6 +156,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::backup::StepBackupIcons>();
   AddStep<ci::backup::StepCopyBackup>();
   AddStep<ci::filesystem::StepCopyTep>();
+  AddStep<ci::pkgmgr::StepUpdateTep>();
   AddStep<ci::filesystem::StepCopyStorageDirectories>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<tpk::filesystem::StepTpkPatchIcons>();
@@ -165,9 +166,6 @@ void TpkInstaller::UpdateSteps() {
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
-  /* TODO(jungh.yeon): this temporary step will be removed
-  * when secondary parsing procedure has removed*/
-  AddStep<ci::pkgmgr::StepUpdateTep>();
 }
 
 void TpkInstaller::UninstallSteps() {
