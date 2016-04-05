@@ -13,13 +13,13 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 # Compiler flags
-SET(CMAKE_C_FLAGS_PROFILING    "-O2")
-SET(CMAKE_CXX_FLAGS_PROFILING  "-O2 -std=c++11")
-SET(CMAKE_C_FLAGS_DEBUG        "-O0 -g")
-SET(CMAKE_CXX_FLAGS_DEBUG      "-O0 -std=c++11 -g")
-SET(CMAKE_C_FLAGS_RELEASE      "-O2 -g")
-SET(CMAKE_CXX_FLAGS_RELEASE    "-O2 -std=c++11 -g")
-SET(CMAKE_CXX_FLAGS_CCOV       "-O0 -std=c++11 -g --coverage")
+SET(CMAKE_C_FLAGS_PROFILING    "-O2 -fvisibility=hidden -flto")
+SET(CMAKE_CXX_FLAGS_PROFILING  "-O2 -std=c++11 -fvisibility=hidden -flto")
+SET(CMAKE_C_FLAGS_DEBUG        "-O0 -g -fvisibility=hidden -flto")
+SET(CMAKE_CXX_FLAGS_DEBUG      "-O0 -std=c++11 -g -fvisibility=hidden -flto")
+SET(CMAKE_C_FLAGS_RELEASE      "-O2 -g -fvisibility=hidden -flto")
+SET(CMAKE_CXX_FLAGS_RELEASE    "-O2 -std=c++11 -g -fvisibility=hidden -flto")
+SET(CMAKE_CXX_FLAGS_CCOV       "-O0 -std=c++11 -g --coverage -fvisibility=hidden -flto")
 
 # Targets
 SET(TARGET_LIBNAME_TPK "tpk-installer")
@@ -33,6 +33,7 @@ ADD_DEFINITIONS("-Wall")
 ADD_DEFINITIONS("-Wextra")
 ADD_DEFINITIONS("-fPIE")
 ADD_DEFINITIONS("-fPIC")
+ADD_DEFINITIONS("-DTPK_BACKEND_EXPORT_API=__attribute__((visibility(\"default\")))")
 
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
 INCLUDE(FindPkgConfig)

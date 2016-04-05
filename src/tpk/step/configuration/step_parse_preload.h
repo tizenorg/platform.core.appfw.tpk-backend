@@ -5,6 +5,10 @@
 #ifndef TPK_STEP_CONFIGURATION_STEP_PARSE_PRELOAD_H_
 #define TPK_STEP_CONFIGURATION_STEP_PARSE_PRELOAD_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <manifest_parser/utils/logging.h>
 
 #include "common/installer_context.h"
@@ -13,7 +17,7 @@
 namespace tpk {
 namespace configuration {
 
-class StepParsePreload : public common_installer::Step {
+class TPK_BACKEND_EXPORT_API StepParsePreload : public common_installer::Step {
  public:
   using Step::Step;
 
