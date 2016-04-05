@@ -16,8 +16,8 @@ namespace security {
  * \brief This step check background category value and modify it depending on
  *        required version, cert level, background support, and value itself
  */
-class StepCheckTpkBackgroundCategory :
-    public common_installer::security::StepCheckBackgroundCategory {
+class StepCheckTpkBackgroundCategory
+    : public common_installer::security::StepCheckBackgroundCategory {
  public:
   explicit StepCheckTpkBackgroundCategory(
       common_installer::InstallerContext* context);

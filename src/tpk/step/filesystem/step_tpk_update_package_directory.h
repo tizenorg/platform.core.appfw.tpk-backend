@@ -5,6 +5,10 @@
 #ifndef TPK_STEP_FILESYSTEM_STEP_TPK_UPDATE_PACKAGE_DIRECTORY_H_
 #define TPK_STEP_FILESYSTEM_STEP_TPK_UPDATE_PACKAGE_DIRECTORY_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <boost/filesystem/path.hpp>
 #include <manifest_parser/utils/logging.h>
 
@@ -22,7 +26,8 @@ namespace filesystem {
  * This step will, additionally to base step actions, ,aintain backup
  * of directories from point 1) for operation rollback scenario.
  */
-class StepTpkUpdatePackageDirectory : public StepTpkPreparePackageDirectory {
+class TPK_BACKEND_EXPORT_API StepTpkUpdatePackageDirectory
+    : public StepTpkPreparePackageDirectory {
  public:
   using StepTpkPreparePackageDirectory::StepTpkPreparePackageDirectory;
 

@@ -5,6 +5,10 @@
 #ifndef TPK_STEP_FILESYSTEM_STEP_TPK_PATCH_ICONS_H_
 #define TPK_STEP_FILESYSTEM_STEP_TPK_PATCH_ICONS_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <boost/filesystem/path.hpp>
 
 #include <common/step/step.h>
@@ -18,7 +22,7 @@ namespace filesystem {
  *        Fixes location of icons for tpk apps if icons are not located in
  *        "shared/res/" directory.
  */
-class StepTpkPatchIcons : public common_installer::Step {
+class TPK_BACKEND_EXPORT_API StepTpkPatchIcons : public common_installer::Step {
  public:
   using Step::Step;
 
