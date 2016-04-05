@@ -3,6 +3,10 @@
 #ifndef TPK_TPK_INSTALLER_H_
 #define TPK_TPK_INSTALLER_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <common/app_installer.h>
 #include <common/pkgmgr_interface.h>
 #include <manifest_parser/utils/logging.h>
@@ -17,7 +21,7 @@ namespace tpk {
  * packages. Pkgmgr request is parsed within and sequence of steps is built to
  * be run.
  */
-class TpkInstaller : public common_installer::AppInstaller {
+class TPK_BACKEND_EXPORT_API TpkInstaller : public common_installer::AppInstaller {
  public:
   explicit TpkInstaller(common_installer::PkgMgrPtr pkgmgr);
   ~TpkInstaller();

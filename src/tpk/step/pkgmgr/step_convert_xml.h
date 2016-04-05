@@ -5,6 +5,10 @@
 #ifndef TPK_STEP_PKGMGR_STEP_CONVERT_XML_H_
 #define TPK_STEP_PKGMGR_STEP_CONVERT_XML_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <manifest_parser/utils/logging.h>
 
 #include <boost/filesystem/path.hpp>
@@ -15,7 +19,7 @@
 namespace tpk {
 namespace pkgmgr {
 
-class StepConvertXml : public common_installer::Step {
+class TPK_BACKEND_EXPORT_API StepConvertXml : public common_installer::Step {
  public:
   using Step::Step;
 

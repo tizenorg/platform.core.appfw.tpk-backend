@@ -5,6 +5,10 @@
 #ifndef TPK_STEP_SECURITY_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_
 #define TPK_STEP_SECURITY_STEP_CHECK_TPK_BACKGROUND_CATEGORY_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <manifest_parser/utils/version_number.h>
 
 #include <common/step/security/step_check_background_category.h>
@@ -16,7 +20,7 @@ namespace security {
  * \brief This step check background category value and modify it depending on
  *        required version, cert level, background support, and value itself
  */
-class StepCheckTpkBackgroundCategory :
+class TPK_BACKEND_EXPORT_API StepCheckTpkBackgroundCategory :
     public common_installer::security::StepCheckBackgroundCategory {
  public:
   explicit StepCheckTpkBackgroundCategory(

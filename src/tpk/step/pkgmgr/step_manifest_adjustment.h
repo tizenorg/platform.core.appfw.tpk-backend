@@ -5,6 +5,10 @@
 #ifndef TPK_STEP_PKGMGR_STEP_MANIFEST_ADJUSTMENT_H_
 #define TPK_STEP_PKGMGR_STEP_MANIFEST_ADJUSTMENT_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <manifest_parser/utils/logging.h>
 
 #include <boost/filesystem/path.hpp>
@@ -14,7 +18,7 @@
 namespace tpk {
 namespace pkgmgr {
 
-class StepManifestAdjustment : public common_installer::Step {
+class TPK_BACKEND_EXPORT_API StepManifestAdjustment : public common_installer::Step {
  public:
   using Step::Step;
 

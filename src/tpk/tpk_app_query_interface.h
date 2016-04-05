@@ -5,11 +5,15 @@
 #ifndef TPK_TPK_APP_QUERY_INTERFACE_H_
 #define TPK_TPK_APP_QUERY_INTERFACE_H_
 
+#ifndef TPK_BACKEND_EXPORT_API
+#define TPK_BACKEND_EXPORT_API
+#endif
+
 #include <common/app_query_interface.h>
 
 namespace tpk {
 
-class TpkAppQueryInterface : public common_installer::AppQueryInterface {
+class TPK_BACKEND_EXPORT_API TpkAppQueryInterface : public common_installer::AppQueryInterface {
  public:
   bool IsAppInstalledByArgv(int argc, char** argv) override;
 };
