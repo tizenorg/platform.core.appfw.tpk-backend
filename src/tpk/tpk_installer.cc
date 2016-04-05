@@ -34,7 +34,6 @@
 #include <common/step/pkgmgr/step_run_parser_plugins.h>
 #include <common/step/pkgmgr/step_unregister_app.h>
 #include <common/step/pkgmgr/step_update_app.h>
-#include <common/step/pkgmgr/step_update_tep.h>
 #include <common/step/recovery/step_open_recovery_file.h>
 #include <common/step/security/step_check_old_certificate.h>
 #include <common/step/security/step_check_signature.h>
@@ -163,9 +162,6 @@ void TpkInstaller::UpdateSteps() {
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
-  /* TODO(jungh.yeon): this temporary step will be removed
-  * when secondary parsing procedure has removed*/
-  AddStep<ci::pkgmgr::StepUpdateTep>();
 }
 
 void TpkInstaller::UninstallSteps() {
