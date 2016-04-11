@@ -34,7 +34,7 @@ const char kManifestFileName[] = "tizen-manifest.xml";
 std::string GetInstallationPackagePath(int argc, char** argv) {
   std::string path;
   for (int i = 0; i < argc; ++i) {
-    if (!strcmp(argv[i], "-i")) {
+    if (!strcmp(argv[i], "-i") || !strcmp(argv[i], "-w")) {
       if (i + 1 < argc) {
         path = argv[i + 1];
         break;
