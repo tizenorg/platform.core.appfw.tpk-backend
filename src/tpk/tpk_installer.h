@@ -30,6 +30,8 @@ class TpkInstaller : public common_installer::AppInstaller {
   void ReinstallSteps();
   void DeltaSteps();
   void RecoverySteps();
+  void MountInstallSteps();
+  void MountUpdateSteps();
   void ManifestDirectInstallSteps();
   void ManifestDirectUpdateSteps();
   void ClearSteps();
