@@ -3,6 +3,8 @@ SET(SRCS
   step/filesystem/step_check_pkg_directory_path.cc
   step/filesystem/step_create_symbolic_link.cc
   step/filesystem/step_tpk_patch_icons.cc
+  step/filesystem/step_tpk_prepare_package_directory.cc
+  step/filesystem/step_tpk_update_package_directory.cc
   step/pkgmgr/step_convert_xml.cc
   step/pkgmgr/step_manifest_adjustment.cc
   step/rds/step_tpk_rds_modify.cc
