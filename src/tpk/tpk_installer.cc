@@ -91,6 +91,9 @@ void TpkInstaller::Prepare() {
     case ci::RequestType::Delta:
       DeltaSteps();
       break;
+    case ci::RequestType::Move:
+      //
+      break;
     case ci::RequestType::Recovery:
       RecoverySteps();
       break;
