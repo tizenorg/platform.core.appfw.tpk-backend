@@ -12,6 +12,7 @@
 #include <common/pkgmgr_registration.h>
 #include <common/request.h>
 #include <common/step/configuration/step_fail.h>
+#include <common/tzip_interface.h>
 #include <common/utils/subprocess.h>
 
 #include <gtest/gtest.h>
@@ -48,6 +49,23 @@ const char KUserAppsDirBackup[] = "apps_rw.bck";
 enum class RequestResult {
   NORMAL,
   FAIL
+};
+
+class ScopedTzipInterface {
+ public:
+  explicit ScopedTzipInterface(const std::string& pkgid)
+      : pkg_path_(bf::path(ci::GetRootAppPath(false)) / pkgid),
+        interface_(ci::GetMountLocation(pkg_path_)) {
+    interface_.MountZip(ci::GetZipPackageLocation(pkg_path_, pkgid));
+  }
+
+  ~ScopedTzipInterface() {
+    interface_.UnmountZip();
+  }
+
+ private:
+  bf::path pkg_path_;
+  ci::TzipInterface interface_;
 };
 
 bool TouchFile(const bf::path& path) {
@@ -236,6 +254,33 @@ ci::AppInstaller::Result Update(const bf::path& path_old,
     return ci::AppInstaller::Result::UNKNOWN;
   }
   return Install(path_new, mode);
+}
+
+ci::AppInstaller::Result MountInstall(const bf::path& path,
+                                 RequestResult mode = RequestResult::NORMAL) {
+  const char* argv[] = {"", "-w", path.c_str()};
+  TestPkgmgrInstaller pkgmgr_installer;
+  std::unique_ptr<ci::AppQueryInterface> query_interface =
+      CreateQueryInterface();
+  auto pkgmgr =
+      ci::PkgMgrInterface::Create(SIZEOFARRAY(argv), const_cast<char**>(argv),
+                                  &pkgmgr_installer,
+                                  query_interface.get());
+  if (!pkgmgr) {
+    LOG(ERROR) << "Failed to initialize pkgmgr interface";
+    return ci::AppInstaller::Result::UNKNOWN;
+  }
+  return RunInstallerWithPkgrmgr(pkgmgr, mode);
+}
+
+ci::AppInstaller::Result MountUpdate(const bf::path& path_old,
+                                const bf::path& path_new,
+                                RequestResult mode = RequestResult::NORMAL) {
+  if (MountInstall(path_old) != ci::AppInstaller::Result::OK) {
+    LOG(ERROR) << "Failed to mount-install application. Cannot mount-update";
+    return ci::AppInstaller::Result::UNKNOWN;
+  }
+  return MountInstall(path_new, mode);
 }
 
 ci::AppInstaller::Result Uninstall(const std::string& pkgid,
@@ -478,6 +523,27 @@ TEST_F(SmokeTest, RecoveryMode_Tpk_Update) {
   ValidatePackage(pkgid, appid);
 
   ASSERT_TRUE(ValidateFileContentInPackage(pkgid, "VERSION", "1\n"));
+}
+
+TEST_F(SmokeTest, MountInstallationMode_Tpk) {
+  bf::path path = kSmokePackagesDirectory / "MountInstallationMode_Tpk.tpk";
+  std::string pkgid = "smokeapp26";
+  std::string appid = "smokeapp26.MountInstallationModeTpk";
+  ASSERT_EQ(MountInstall(path), ci::AppInstaller::Result::OK);
+  ScopedTzipInterface package_mount(pkgid);
+  ValidatePackage(pkgid, appid);
+}
+
+TEST_F(SmokeTest, MountUpdateMode_Tpk) {
+  bf::path path_old = kSmokePackagesDirectory / "MountUpdateMode_Tpk.tpk";
+  bf::path path_new = kSmokePackagesDirectory / "MountUpdateMode_Tpk_2.tpk";
+  std::string pkgid = "smokeapp27";
+  std::string appid = "smokeapp27.MountUpdateModeTpk";
+  ASSERT_EQ(MountUpdate(path_old, path_new), ci::AppInstaller::Result::OK);
+  ScopedTzipInterface package_mount(pkgid);
+  ValidatePackage(pkgid, appid);
+
+  ASSERT_TRUE(ValidateFileContentInPackage(pkgid, "res/VERSION", "2\n"));
 }
 
 }  // namespace common_installer
