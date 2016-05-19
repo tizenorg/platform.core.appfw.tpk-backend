@@ -30,23 +30,6 @@ const std::vector<std::string> kSymlinkEntries = {
   "signature2.xml"
 };
 
-bool ReplacePaths(const bf::path& source, const bf::path& destination) {
-  if (!bf::exists(destination.parent_path())) {
-    bs::error_code error;
-    bf::create_directories(destination.parent_path(), error);
-    if (error) {
-      LOG(ERROR) << "Failed to create destination directory for directory "
-                 << "backup";
-      return false;
-    }
-  }
-  if (!ci::MoveDir(source, destination)) {
-    LOG(ERROR) << "Failed to move " << source << " to " << destination;
-    return false;
-  }
-  return true;
-}
-
 }  // namespace
 
 namespace tpk {
