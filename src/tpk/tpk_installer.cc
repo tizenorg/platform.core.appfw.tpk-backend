@@ -235,14 +235,14 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::configuration::StepParseManifest>(
+      ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::configuration::StepParseManifest::StoreLocation::BACKUP);
   AddStep<ci::filesystem::StepDeltaPatch>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepCheckOldCertificate>();
-  AddStep<ci::configuration::StepParseManifest>(
-      ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
-      ci::configuration::StepParseManifest::StoreLocation::BACKUP);
   AddStep<ci::configuration::StepBlockCrossUpdate>();
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
