@@ -30,6 +30,7 @@
 #include <common/step/mount/step_mount_unpacked.h>
 #include <common/step/mount/step_mount_install.h>
 #include <common/step/mount/step_mount_update.h>
+#include <common/step/pkgmgr/step_check_restriction.h>
 #include <common/step/pkgmgr/step_check_removable.h>
 #include <common/step/pkgmgr/step_kill_apps.h>
 #include <common/step/pkgmgr/step_recover_application.h>
@@ -128,6 +129,7 @@ void TpkInstaller::InstallSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -154,6 +156,7 @@ void TpkInstaller::UpdateSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -204,6 +207,7 @@ void TpkInstaller::ReinstallSteps() {
      ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   // TODO(t.iwanek): add StepCheckSignature which is missing
   // this step is temporary removed because of validation problems as files
   // not exising in signature but existing is fs will cause error (data files)
@@ -239,6 +243,7 @@ void TpkInstaller::DeltaSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::BACKUP);
   AddStep<ci::filesystem::StepDeltaPatch>();
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -280,6 +285,7 @@ void TpkInstaller::MountInstallSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -307,6 +313,7 @@ void TpkInstaller::MountUpdateSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
