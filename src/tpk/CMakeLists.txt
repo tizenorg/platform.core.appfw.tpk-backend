@@ -2,6 +2,7 @@ SET(SRCS
   step/configuration/step_parse_preload.cc
   step/filesystem/step_check_pkg_directory_path.cc
   step/filesystem/step_create_symbolic_link.cc
+  step/filesystem/step_grant_permission.cc
   step/filesystem/step_tpk_patch_icons.cc
   step/filesystem/step_tpk_prepare_package_directory.cc
   step/filesystem/step_tpk_update_package_directory.cc

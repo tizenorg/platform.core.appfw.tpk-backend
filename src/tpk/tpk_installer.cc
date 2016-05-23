@@ -54,6 +54,7 @@
 #include "tpk/step/configuration/step_parse_preload.h"
 #include "tpk/step/filesystem/step_create_symbolic_link.h"
 #include "tpk/step/filesystem/step_check_pkg_directory_path.h"
+#include "tpk/step/filesystem/step_grant_permission.h"
 #include "tpk/step/filesystem/step_tpk_patch_icons.h"
 #include "tpk/step/filesystem/step_tpk_prepare_package_directory.h"
 #include "tpk/step/filesystem/step_tpk_update_package_directory.h"
@@ -141,6 +142,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
+  AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
@@ -174,6 +176,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::filesystem::StepCreateIcons>();
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
+  AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
@@ -224,6 +227,7 @@ void TpkInstaller::ReinstallSteps() {
   AddStep<ci::filesystem::StepCreateIcons>();
   AddStep<ci::security::StepUpdateSecurity>();
   AddStep<tpk::pkgmgr::StepConvertXml>();
+  AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
@@ -295,6 +299,7 @@ void TpkInstaller::MountInstallSteps() {
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
+  AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
@@ -329,6 +334,7 @@ void TpkInstaller::MountUpdateSteps() {
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
+  AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
 }
 
@@ -348,6 +354,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::pkgmgr::StepRegisterApplication>();
+  AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
 }
@@ -368,6 +375,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::security::StepRegisterSecurity>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
+  AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
 }
 
