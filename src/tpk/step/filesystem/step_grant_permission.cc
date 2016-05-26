@@ -37,14 +37,20 @@ ci::Step::Status StepTpkGrantPermission::process() {
     auto path = entry.path();
 
     if (bf::is_directory(path) && path.filename() == "bin") {
+      auto permission = bf::perms::owner_all |
+          bf::perms::group_read | bf::perms::group_exe |
+          bf::perms::others_read | bf::perms::others_exe;
+      if (!ci::SetDirPermissions(path, permission)) {
+        LOG(ERROR) << "Grant permission error" << " path: " << path
+            << " permission: " << permission;
+        return Status::ERROR;
+      }
       for (auto& entry :
           boost::make_iterator_range(bf::directory_iterator(path), {})) {
+        auto path = entry.path();
         if (bf::is_regular_file(path)) {
-          auto permission = bf::perms::owner_all |
-              bf::perms::group_read | bf::perms::group_exe |
-              bf::perms::others_read | bf::perms::others_exe;
           if (!ci::SetDirPermissions(path, permission)) {
-            LOG(ERROR) << "Grand permission error" << " path: " << path
+            LOG(ERROR) << "Grant permission error" << " path: " << path
                 << " permission: " << permission;
             return Status::ERROR; /* temp error, TODO */
           }
@@ -54,13 +60,19 @@ ci::Step::Status StepTpkGrantPermission::process() {
     }
 
     if (bf::is_directory(path) && path.filename() == "lib") {
+      auto permission = bf::perms::owner_read | bf::perms::owner_write |
+          bf::perms::group_read | bf::perms::others_read;
+      if (!ci::SetDirPermissions(path, permission)) {
+        LOG(ERROR) << "Grant permission error" << " path: " << path
+            << " permission: " << permission;
+        return Status::ERROR;
+      }
       for (auto& entry :
           boost::make_iterator_range(bf::directory_iterator(path), {})) {
+        auto path = entry.path();
         if (bf::is_regular_file(path)) {
-          auto permission = bf::perms::owner_read | bf::perms::owner_write |
-              bf::perms::group_read | bf::perms::others_read;
           if (!ci::SetDirPermissions(path, permission)) {
-            LOG(ERROR) << "Grand permission error" << " path: " << path
+            LOG(ERROR) << "Grant permission error" << " path: " << path
                 << " permission: " << permission;
             return Status::ERROR;
           }
@@ -74,7 +86,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
           bf::perms::group_read | bf::perms::group_exe |
           bf::perms::others_read | bf::perms::others_exe;
       if (!ci::SetDirPermissions(path, permission)) {
-        LOG(ERROR) << "Grand permission error" << " path: " << path
+        LOG(ERROR) << "Grant permission error" << " path: " << path
             << " permission: " << permission;
         return Status::ERROR;
       }
@@ -85,7 +97,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
       auto permission = bf::perms::owner_read | bf::perms::owner_write |
           bf::perms::group_read | bf::perms::others_read;
       if (!ci::SetDirPermissions(path, permission)) {
-        LOG(ERROR) << "Grand permission error" << " path: " << path
+        LOG(ERROR) << "Grant permission error" << " path: " << path
             << " permission: " << permission;
         return Status::ERROR;
       }
