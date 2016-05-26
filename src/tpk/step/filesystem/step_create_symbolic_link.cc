@@ -110,7 +110,8 @@ Status StepCreateSymbolicLink::process() {
   manifest_x* m = context_->manifest_data.get();
   for (application_x* app : GListRange<application_x*>(m->application)) {
     // filter out non-tpk apps as this step is run for hybrid backend too
-    if (strcmp("capp", app->type) != 0 && strcmp("jsapp", app->type) != 0)
+    if (strcmp("capp", app->type) != 0 && strcmp("jsapp", app->type) != 0
+        && strcmp("csapp", app->type) != 0)
       continue;
     if (!CreateSymLink(app, context_))
       return Status::ERROR;
