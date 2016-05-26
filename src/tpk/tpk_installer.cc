@@ -6,6 +6,7 @@
 #include <common/step/backup/step_backup_manifest.h>
 #include <common/step/backup/step_copy_backup.h>
 #include <common/step/configuration/step_block_cross_update.h>
+#include <common/step/configuration/step_check_tizen_version.h>
 #include <common/step/configuration/step_configure.h>
 #include <common/step/configuration/step_fail.h>
 #include <common/step/configuration/step_parse_manifest.h>
@@ -129,6 +130,7 @@ void TpkInstaller::InstallSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -156,6 +158,7 @@ void TpkInstaller::UpdateSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -207,6 +210,7 @@ void TpkInstaller::ReinstallSteps() {
      ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   // TODO(t.iwanek): add StepCheckSignature which is missing
   // this step is temporary removed because of validation problems as files
   // not exising in signature but existing is fs will cause error (data files)
@@ -242,6 +246,7 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::BACKUP);
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::filesystem::StepDeltaPatch>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
@@ -284,6 +289,7 @@ void TpkInstaller::MountInstallSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -312,6 +318,7 @@ void TpkInstaller::MountUpdateSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
@@ -345,6 +352,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
@@ -365,6 +373,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
