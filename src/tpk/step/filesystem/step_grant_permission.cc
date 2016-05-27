@@ -60,8 +60,9 @@ ci::Step::Status StepTpkGrantPermission::process() {
     }
 
     if (bf::is_directory(path) && path.filename() == "lib") {
-      auto permission = bf::perms::owner_read | bf::perms::owner_write |
-          bf::perms::group_read | bf::perms::others_read;
+      auto permission = bf::perms::owner_all |
+          bf::perms::group_read | bf::perms::group_exe |
+          bf::perms::others_read | bf::perms::others_exe;
       if (!ci::SetDirPermissions(path, permission)) {
         LOG(ERROR) << "Grant permission error" << " path: " << path
             << " permission: " << permission;
