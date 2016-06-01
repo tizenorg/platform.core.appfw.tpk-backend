@@ -11,6 +11,8 @@
 
 #include <common/utils/file_util.h>
 
+#include "tpk/tpk_mount_path.h"
+
 namespace bf = boost::filesystem;
 namespace bs = boost::system;
 namespace ci = common_installer;
@@ -35,6 +37,26 @@ ci::Step::Status StepTpkGrantPermission::process() {
   for (auto& entry :
       boost::make_iterator_range(bf::directory_iterator(app_root), {})) {
     auto path = entry.path();
+
+    // skip path, which is related to mount or directory installer creates
+    if (bf::is_directory(path) &&
+        (path.filename() == ".mmc" || path.filename() == ".pkg" ||
+        path.filename() == "tep"))
+      continue;
+
+    // if mount-install, apply to extracted directories only
+    if (context_->request_type.get() == ci::RequestType::MountInstall ||
+        context_->request_type.get() == ci::RequestType::MountUpdate) {
+      bool skip = true;
+      for (auto& entry : tpk::GetExtractEntries()) {
+        if (bf::is_directory(path) && path.filename() == entry) {
+          skip = false;
+          break;
+        }
+      }
+      if (skip)
+        continue;
+    }
 
     if (bf::is_directory(path) && path.filename() == "bin") {
       auto permission = bf::perms::owner_all |

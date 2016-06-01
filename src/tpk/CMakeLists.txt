@@ -1,4 +1,5 @@
 SET(SRCS
+  tpk_mount_path.cc
   step/configuration/step_parse_preload.cc
   step/filesystem/step_check_pkg_directory_path.cc
   step/filesystem/step_create_symbolic_link.cc
