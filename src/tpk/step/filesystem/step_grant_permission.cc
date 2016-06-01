@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 #include "tpk/step/filesystem/step_grant_permission.h"
+#include "tpk/step/filesystem/step_tpk_prepare_package_directory.h"
 
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
@@ -35,6 +36,26 @@ ci::Step::Status StepTpkGrantPermission::process() {
   for (auto& entry :
       boost::make_iterator_range(bf::directory_iterator(app_root), {})) {
     auto path = entry.path();
+
+    // skip path, which is related to mount or directory installer creates
+    if (bf::is_directory(path) &&
+        (path.filename() == ".mmc" || path.filename() == ".pkg" ||
+        path.filename() == "tep"))
+      continue;
+
+    // if mount-install, apply to extracted directories only
+    if (context_->request_type.get() == ci::RequestType::MountInstall ||
+        context_->request_type.get() == ci::RequestType::MountUpdate) {
+      bool skip = true;
+      for (auto& entry : kExtractEntries) {
+        if (bf::is_directory(path) && path.filename() == entry) {
+          skip = false;
+          break;
+        }
+      }
+      if (skip)
+        continue;
+    }
 
     if (bf::is_directory(path) && path.filename() == "bin") {
       auto permission = bf::perms::owner_all |
