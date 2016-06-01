@@ -12,6 +12,8 @@
 
 #include <vector>
 
+#include "tpk/tpk_mount_path.h"
+
 namespace bf = boost::filesystem;
 namespace bs = boost::system;
 namespace ci = common_installer;
@@ -66,7 +68,7 @@ ci::Step::Status StepTpkUpdatePackageDirectory::RestoreDirectory(
 ci::Step::Status StepTpkUpdatePackageDirectory::BackupEntries() {
   bf::path backup_path =
       ci::GetBackupPathForPackagePath(context_->pkg_path.get());
-  for (auto& entry : GetExtractEntries()) {
+  for (auto& entry : tpk::GetExtractEntries()) {
     auto status = BackupDirectory(entry, backup_path);
     if (status != Status::OK)
       return status;
@@ -102,7 +104,7 @@ ci::Step::Status StepTpkUpdatePackageDirectory::undo() {
   bf::path backup_path =
       ci::GetBackupPathForPackagePath(context_->pkg_path.get());
 
-  for (auto& entry : GetExtractEntries()) {
+  for (auto& entry : tpk::GetExtractEntries()) {
     auto status = RestoreDirectory(entry, backup_path);
     if (status != Status::OK)
       return status;

@@ -10,27 +10,11 @@
 #include <common/backup_paths.h>
 #include <common/utils/file_util.h>
 
+#include "tpk/tpk_mount_path.h"
+
 namespace bf = boost::filesystem;
 namespace bs = boost::system;
 namespace ci = common_installer;
-
-namespace {
-
-const std::vector<std::string> kExtractEntries = {
-  "bin",
-  "lib",
-  "shared/res"
-};
-
-const std::vector<std::string> kSymlinkEntries = {
-  "res",
-  "tizen-manifest.xml",
-  "author-signature.xml",
-  "signature1.xml",
-  "signature2.xml"
-};
-
-}  // namespace
 
 namespace tpk {
 namespace filesystem {
@@ -80,7 +64,7 @@ ci::Step::Status StepTpkPreparePackageDirectory::PrepareLink(
 
 ci::Step::Status StepTpkPreparePackageDirectory::ExtractEntries() {
   LOG(DEBUG) << "Extracting entries from zip package...";
-  for (auto& entry : GetExtractEntries()) {
+  for (auto& entry : tpk::GetExtractEntries()) {
     LOG(DEBUG) << "Extracting: " << entry;
     auto status = PrepareDirectory(entry);
     if (status != Status::OK)
@@ -92,7 +76,7 @@ ci::Step::Status StepTpkPreparePackageDirectory::ExtractEntries() {
 ci::Step::Status StepTpkPreparePackageDirectory::PrepareLinks() {
   bf::path mount_point = ci::GetMountLocation(context_->pkg_path.get());
   LOG(DEBUG) << "Creating symlinks to zip package...";
-  for (auto& link_entry : kSymlinkEntries) {
+  for (auto& link_entry : tpk::GetSymlinkEntries()) {
     LOG(DEBUG) << "Symlink: " << link_entry;
     auto status = PrepareLink(link_entry, mount_point);
     if (status != Status::OK)
@@ -114,11 +98,6 @@ ci::Step::Status StepTpkPreparePackageDirectory::precheck() {
     return Status::INVALID_VALUE;
   }
   return Status::OK;
-}
-
-const std::vector<std::string>&
-StepTpkPreparePackageDirectory::GetExtractEntries() const {
-  return kExtractEntries;
 }
 
 }  // namespace filesystem

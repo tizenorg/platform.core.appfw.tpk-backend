@@ -53,7 +53,6 @@ class StepTpkPreparePackageDirectory : public common_installer::Step {
   Status ExtractEntries();
   Status PrepareLink(const std::string& entry,
                      const boost::filesystem::path& mount_point);
-  const std::vector<std::string>& GetExtractEntries() const;
 
   SCOPE_LOG_TAG(TpkPreparePackageDirectory)
 };
