@@ -36,6 +36,12 @@ ci::Step::Status StepTpkGrantPermission::process() {
       boost::make_iterator_range(bf::directory_iterator(app_root), {})) {
     auto path = entry.path();
 
+    /* skip path, which is related to mount or directory installer creates */
+    if (bf::is_directory(path) &&
+        (path.filename() == ".mmc" || path.filename() == ".pkg" ||
+        path.filename() == "tep"))
+      continue;
+
     if (bf::is_directory(path) && path.filename() == "bin") {
       auto permission = bf::perms::owner_all |
           bf::perms::group_read | bf::perms::group_exe |
