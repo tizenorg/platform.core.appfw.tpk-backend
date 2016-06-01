@@ -20,6 +20,20 @@
 namespace tpk {
 namespace filesystem {
 
+const std::vector<std::string> kExtractEntries = {
+  "bin",
+  "lib",
+  "shared/res"
+};
+
+const std::vector<std::string> kSymlinkEntries = {
+  "res",
+  "tizen-manifest.xml",
+  "author-signature.xml",
+  "signature1.xml",
+  "signature2.xml"
+};
+
 /**
  * \brief Responsible for adjusting package directory after mounting zip package
  *        by StepMountInstall

@@ -14,24 +14,6 @@ namespace bf = boost::filesystem;
 namespace bs = boost::system;
 namespace ci = common_installer;
 
-namespace {
-
-const std::vector<std::string> kExtractEntries = {
-  "bin",
-  "lib",
-  "shared/res"
-};
-
-const std::vector<std::string> kSymlinkEntries = {
-  "res",
-  "tizen-manifest.xml",
-  "author-signature.xml",
-  "signature1.xml",
-  "signature2.xml"
-};
-
-}  // namespace
-
 namespace tpk {
 namespace filesystem {
 
