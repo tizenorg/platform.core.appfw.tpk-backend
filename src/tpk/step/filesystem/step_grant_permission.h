@@ -2,9 +2,8 @@
 // Use of this source code is governed by an apache-2.0 license that can be
 // found in the LICENSE file.
 
-
-#ifndef TPK_STEP_FILESYSTEM_TPK_GRANT_PERMISSION_H_
-#define TPK_STEP_FILESYSTEM_TPK_GRANT_PERMISSION_H_
+#ifndef TPK_STEP_FILESYSTEM_STEP_GRANT_PERMISSION_H_
+#define TPK_STEP_FILESYSTEM_STEP_GRANT_PERMISSION_H_
 
 #include <manifest_parser/utils/logging.h>
 
@@ -34,4 +33,4 @@ class StepTpkGrantPermission : public common_installer::Step {
 }  // namespace filesystem
 }  // namespace tpk
 
-#endif  // TPK_STEP_FILESYSTEM_TPK_GRANT_PERMISSION_H_
+#endif  // TPK_STEP_FILESYSTEM_STEP_GRANT_PERMISSION_H_
