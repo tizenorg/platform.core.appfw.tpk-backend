@@ -101,6 +101,9 @@ void TpkInstaller::Prepare() {
     case ci::RequestType::Delta:
       DeltaSteps();
       break;
+    case ci::RequestType::Move:
+      MoveSteps();
+      break;
     case ci::RequestType::Recovery:
       RecoverySteps();
       break;
@@ -272,6 +275,14 @@ void TpkInstaller::DeltaSteps() {
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
+}
+
+void TpkInstaller::MoveSteps() {
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::configuration::StepParseManifest>(
+      ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::filesystem::StepAcquireExternalStorage>();
 }
 
 void TpkInstaller::RecoverySteps() {
