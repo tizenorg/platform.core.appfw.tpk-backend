@@ -26,6 +26,8 @@ class StepCrash : public ci::Step {
   ci::Step::Status clean() override { return ci::Step::Status::OK; }
   ci::Step::Status undo() override { return ci::Step::Status::OK; }
   ci::Step::Status precheck() override { return ci::Step::Status::OK; }
+
+  STEP_NAME(Crash)
 };
 
 }  // namespace

@@ -26,7 +26,7 @@ class StepManifestAdjustment : public common_installer::Step {
  private:
   boost::filesystem::path xml_path_;
 
-  SCOPE_LOG_TAG(StepManifestAdjustment)
+  STEP_NAME(StepManifestAdjustment)
 };
 
 }  // namespace pkgmgr

@@ -55,7 +55,7 @@ class StepTpkPreparePackageDirectory : public common_installer::Step {
                      const boost::filesystem::path& mount_point);
   const std::vector<std::string>& GetExtractEntries() const;
 
-  SCOPE_LOG_TAG(TpkPreparePackageDirectory)
+  STEP_NAME(TpkPreparePackageDirectory)
 };
 
 }  // namespace filesystem
