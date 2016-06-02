@@ -26,6 +26,8 @@ class StepTpkRDSModify : public common_installer::rds::StepRDSModify {
 
  protected:
   std::string GetAppPath() override;
+
+  STEP_NAME(TpkRDSModify)
 };
 
 }  // namespace rds

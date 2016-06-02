@@ -22,7 +22,7 @@ class StepCheckPkgDirPath : public common_installer::Step {
   Status undo() override { return Status::OK; }
   Status precheck() override { return Status::OK; }
 
-  SCOPE_LOG_TAG(CheckPkgDirPath)
+  STEP_NAME(CheckPkgDirPath)
 };
 
 }  // namespace filesystem

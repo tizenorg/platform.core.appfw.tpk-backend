@@ -18,7 +18,7 @@ class StepCreateSymbolicLink : public common_installer::Step {
   Status undo() override { return Status::OK; }
   Status precheck() override;
 
-  SCOPE_LOG_TAG(SymbolicLink)
+  STEP_NAME(SymbolicLink)
 };
 
 }  // namespace filesystem

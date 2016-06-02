@@ -22,7 +22,7 @@ class StepParsePreload : public common_installer::Step {
   Status undo() override { return Status::OK; }
   Status precheck() override { return Status::OK; }
 
-  SCOPE_LOG_TAG(ParsePreload)
+  STEP_NAME(ParsePreload)
 };
 
 }  // namespace configuration

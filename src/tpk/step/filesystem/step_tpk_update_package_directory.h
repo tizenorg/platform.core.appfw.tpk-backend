@@ -37,7 +37,7 @@ class StepTpkUpdatePackageDirectory : public StepTpkPreparePackageDirectory {
   Status RestoreDirectory(const std::string& entry,
                           const boost::filesystem::path& backup_path);
 
-  SCOPE_LOG_TAG(TpkUpdatePackageDirectory)
+  STEP_NAME(TpkUpdatePackageDirectory)
 };
 
 }  // namespace filesystem
