@@ -28,7 +28,7 @@ class StepConvertXml : public common_installer::Step {
   boost::filesystem::path xml_path_;
   bool ConvertXml(xmlDocPtr doc);
 
-  SCOPE_LOG_TAG(ConvertXml)
+  STEP_NAME(ConvertXml)
 };
 
 }  // namespace pkgmgr
