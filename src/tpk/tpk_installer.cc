@@ -19,6 +19,7 @@
 #include <common/step/filesystem/step_create_per_user_storage_directories.h>
 #include <common/step/filesystem/step_create_storage_directories.h>
 #include <common/step/filesystem/step_delta_patch.h>
+#include <common/step/filesystem/step_move_installed_storage.h>
 #include <common/step/filesystem/step_recover_files.h>
 #include <common/step/filesystem/step_recover_icons.h>
 #include <common/step/filesystem/step_recover_manifest.h>
@@ -100,6 +101,9 @@ void TpkInstaller::Prepare() {
       break;
     case ci::RequestType::Delta:
       DeltaSteps();
+      break;
+    case ci::RequestType::Move:
+      MoveSteps();
       break;
     case ci::RequestType::Recovery:
       RecoverySteps();
@@ -272,6 +276,15 @@ void TpkInstaller::DeltaSteps() {
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
+}
+
+void TpkInstaller::MoveSteps() {
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::configuration::StepParseManifest>(
+      ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::pkgmgr::StepKillApps>();
+  AddStep<ci::filesystem::StepMoveInstalledStorage>();
 }
 
 void TpkInstaller::RecoverySteps() {
