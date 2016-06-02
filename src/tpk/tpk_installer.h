@@ -29,6 +29,7 @@ class TpkInstaller : public common_installer::AppInstaller {
   void UninstallSteps();
   void ReinstallSteps();
   void DeltaSteps();
+	void MoveSteps();
   void RecoverySteps();
   void MountInstallSteps();
   void MountUpdateSteps();
