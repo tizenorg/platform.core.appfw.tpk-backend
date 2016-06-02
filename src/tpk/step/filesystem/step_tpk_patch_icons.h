@@ -34,7 +34,7 @@ class StepTpkPatchIcons : public common_installer::Step {
       application_x* app, icon_x* icon);
   Status FixIconLocation(const boost::filesystem::path& icon_text);
 
-  SCOPE_LOG_TAG(TpkPatchIcons)
+  STEP_NAME(TpkPatchIcons)
 };
 
 }  // namespace filesystem

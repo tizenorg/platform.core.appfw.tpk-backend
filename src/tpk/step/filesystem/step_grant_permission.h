@@ -27,7 +27,7 @@ class StepTpkGrantPermission : public common_installer::Step {
   Status clean() override { return Status::OK; }
   Status precheck() override;
 
-  SCOPE_LOG_TAG(GrantPermission)
+  STEP_NAME(GrantPermission)
 };
 
 }  // namespace filesystem
