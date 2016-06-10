@@ -285,6 +285,7 @@ void TpkInstaller::MoveSteps() {
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::filesystem::StepMoveInstalledStorage>();
+  AddStep<ci::security::StepRegisterSecurity>();
 }
 
 void TpkInstaller::RecoverySteps() {
