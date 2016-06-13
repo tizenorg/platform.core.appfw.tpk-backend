@@ -29,8 +29,10 @@
 #include <common/step/filesystem/step_remove_icons.h>
 #include <common/step/filesystem/step_remove_per_user_storage_directories.h>
 #include <common/step/filesystem/step_remove_temporary_directory.h>
+#include <common/step/filesystem/step_remove_tep.h>
 #include <common/step/filesystem/step_remove_zip_image.h>
 #include <common/step/filesystem/step_unzip.h>
+#include <common/step/filesystem/step_update_tep.h>
 #include <common/step/mount/step_mount_unpacked.h>
 #include <common/step/mount/step_mount_install.h>
 #include <common/step/mount/step_mount_update.h>
@@ -43,7 +45,6 @@
 #include <common/step/pkgmgr/step_run_parser_plugins.h>
 #include <common/step/pkgmgr/step_unregister_app.h>
 #include <common/step/pkgmgr/step_update_app.h>
-#include <common/step/pkgmgr/step_update_tep.h>
 #include <common/step/rds/step_rds_parse.h>
 #include <common/step/recovery/step_open_recovery_file.h>
 #include <common/step/security/step_check_old_certificate.h>
@@ -185,8 +186,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::backup::StepBackupIcons>();
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::backup::StepCopyBackup>();
-  AddStep<ci::filesystem::StepCopyTep>();
-  AddStep<ci::pkgmgr::StepUpdateTep>();
+  AddStep<ci::filesystem::StepUpdateTep>();
   AddStep<ci::filesystem::StepCopyStorageDirectories>();
   AddStep<tpk::filesystem::StepUpdateExternalStorageDirectories>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
@@ -215,6 +215,7 @@ void TpkInstaller::UninstallSteps() {
   AddStep<tpk::filesystem::StepRemoveExternalStorageDirectories>();
   AddStep<ci::pkgmgr::StepUnregisterApplication>();
   AddStep<ci::security::StepRollbackDeinstallationSecurity>();
+  AddStep<ci::filesystem::StepRemoveTep>();
   AddStep<ci::filesystem::StepRemoveFiles>();
   AddStep<ci::filesystem::StepRemoveZipImage>();
   AddStep<ci::filesystem::StepRemoveIcons>();
@@ -246,6 +247,7 @@ void TpkInstaller::ReinstallSteps() {
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::rds::StepRDSParse>();
   AddStep<tpk::rds::StepTpkRDSModify>();
+  AddStep<ci::filesystem::StepUpdateTep>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<tpk::filesystem::StepTpkPatchIcons>();
   AddStep<ci::filesystem::StepCreateIcons>();
@@ -279,6 +281,7 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::backup::StepBackupIcons>();
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::backup::StepCopyBackup>();
+  AddStep<ci::filesystem::StepUpdateTep>();
   AddStep<ci::filesystem::StepCopyStorageDirectories>();
   AddStep<tpk::filesystem::StepUpdateExternalStorageDirectories>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
@@ -371,8 +374,7 @@ void TpkInstaller::MountUpdateSteps() {
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::mount::StepMountUpdate>();
   AddStep<tpk::filesystem::StepTpkPreparePackageDirectory>();
-  AddStep<ci::filesystem::StepCopyTep>();
-  AddStep<ci::pkgmgr::StepUpdateTep>();
+  AddStep<ci::filesystem::StepUpdateTep>();
   AddStep<tpk::filesystem::StepCreateSymbolicLink>();
   AddStep<tpk::filesystem::StepTpkPatchIcons>();
   AddStep<tpk::filesystem::StepUpdateExternalStorageDirectories>();
