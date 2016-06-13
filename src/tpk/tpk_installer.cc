@@ -35,6 +35,7 @@
 #include <common/step/mount/step_mount_install.h>
 #include <common/step/mount/step_mount_update.h>
 #include <common/step/pkgmgr/step_check_removable.h>
+#include <common/step/pkgmgr/step_check_restriction.h>
 #include <common/step/pkgmgr/step_kill_apps.h>
 #include <common/step/pkgmgr/step_recover_application.h>
 #include <common/step/pkgmgr/step_register_app.h>
@@ -131,6 +132,7 @@ void TpkInstaller::Prepare() {
 
 void TpkInstaller::InstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::filesystem::StepUnzip>();
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
@@ -195,6 +197,7 @@ void TpkInstaller::UpdateSteps() {
 
 void TpkInstaller::UninstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::pkgmgr::StepCheckRemovable>();
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
@@ -215,6 +218,7 @@ void TpkInstaller::UninstallSteps() {
 
 void TpkInstaller::ReinstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::configuration::StepParseManifest>(
      ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
@@ -280,6 +284,7 @@ void TpkInstaller::DeltaSteps() {
 
 void TpkInstaller::MoveSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
@@ -305,6 +310,7 @@ void TpkInstaller::RecoverySteps() {
 
 void TpkInstaller::MountInstallSteps() {
   AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::mount::StepMountUnpacked>();
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
