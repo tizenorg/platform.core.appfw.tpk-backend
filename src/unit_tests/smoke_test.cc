@@ -7,7 +7,7 @@
 #include <boost/range/iterator_range.hpp>
 #include <boost/system/error_code.hpp>
 
-#include <common/backup_paths.h>
+#include <common/paths.h>
 #include <common/pkgmgr_interface.h>
 #include <common/pkgmgr_registration.h>
 #include <common/request.h>
