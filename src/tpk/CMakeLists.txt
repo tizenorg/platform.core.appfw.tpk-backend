@@ -1,17 +1,21 @@
 SET(SRCS
-  tpk_mount_path.cc
+  external_dirs.cc
   step/configuration/step_parse_preload.cc
   step/filesystem/step_check_pkg_directory_path.cc
+  step/filesystem/step_create_external_storage_directories.cc
   step/filesystem/step_create_symbolic_link.cc
   step/filesystem/step_grant_permission.cc
+  step/filesystem/step_remove_external_storage_directories.cc
   step/filesystem/step_tpk_patch_icons.cc
   step/filesystem/step_tpk_prepare_package_directory.cc
   step/filesystem/step_tpk_update_package_directory.cc
+  step/filesystem/step_update_external_storage_directories.cc
   step/pkgmgr/step_convert_xml.cc
   step/pkgmgr/step_manifest_adjustment.cc
   step/rds/step_tpk_rds_modify.cc
   step/security/step_check_tpk_background_category.cc
   tpk_app_query_interface.cc
+  tpk_mount_path.cc
   tpk_installer.cc
 )
 ADD_LIBRARY(${TARGET_LIBNAME_TPK} SHARED ${SRCS})
