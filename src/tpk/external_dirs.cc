@@ -25,21 +25,15 @@ bool HasExternalAppdataPrivilege(manifest_x* manifest) {
 
 bool CreateExternalAppdataDirectories(const std::string& pkgid,
                                       ci::RequestMode request_mode, uid_t uid) {
-  // TODO(t.iwanek): trusted in this context means that we have signature
-  // this argument is not longer needed as all package must be signed
-  // so that trusted directory may be labeled correctly by security-manager in
-  // all cases. This parameter and its propagation should be removed.
-  bool trusted = true;
-
   switch (request_mode) {
     case ci::RequestMode::GLOBAL: {
       LOG(DEBUG) << "Creating external directories for all users";
-      ci::PerformExternalDirectoryCreationForAllUsers(pkgid, trusted);
+      ci::PerformExternalDirectoryCreationForAllUsers(pkgid);
       break;
     }
     case ci::RequestMode::USER: {
       LOG(DEBUG) << "Creating external directories for user: " << uid;
-      ci::PerformExternalDirectoryCreationForUser(uid, pkgid, trusted);
+      ci::PerformExternalDirectoryCreationForUser(uid, pkgid);
       break;
     }
   }
