@@ -11,7 +11,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/system/error_code.hpp>
 
-#include <common/pkgmgr_registration.h>
+#include <common/pkgmgr_query.h>
 #include <common/request.h>
 #include <common/utils/file_util.h>
 
@@ -102,7 +102,7 @@ bool TpkAppQueryInterface::IsAppInstalledByArgv(int argc, char** argv) {
 
   if (pkg_id.empty())
     return false;
-  return ci::IsPackageInstalled(pkg_id, ci::GetRequestMode());
+  return ci::QueryIsPackageInstalled(pkg_id, ci::GetRequestMode());
 }
 
 }  // namespace tpk

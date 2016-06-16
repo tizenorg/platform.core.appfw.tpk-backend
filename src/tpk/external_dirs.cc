@@ -6,10 +6,11 @@
 
 #include <common/pkgdir_tool_request.h>
 #include <common/privileges.h>
-#include <common/pkgmgr_registration.h>
+#include <common/pkgmgr_query.h>
 #include <common/shared_dirs.h>
 #include <common/utils/glist_range.h>
 #include <manifest_parser/utils/logging.h>
+#include <pkgmgr_parser.h>
 
 #include <algorithm>
 
@@ -51,7 +52,7 @@ bool DeleteExternalAppdataDirectories(const std::string& pkgid,
     }
     case ci::RequestMode::USER: {
       // if package is globally installed, leave directories
-      if (ci::IsPackageInstalled(pkgid, GLOBAL_USER))
+      if (ci::QueryIsPackageInstalled(pkgid, GLOBAL_USER))
         return true;
 
       LOG(DEBUG) << "Removing external directories for user: " << uid;
