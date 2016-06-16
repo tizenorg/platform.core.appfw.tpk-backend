@@ -9,7 +9,7 @@
 
 #include <common/backup_paths.h>
 #include <common/pkgmgr_interface.h>
-#include <common/pkgmgr_registration.h>
+#include <common/pkgmgr_query.h>
 #include <common/request.h>
 #include <common/step/configuration/step_fail.h>
 #include <common/tzip_interface.h>
