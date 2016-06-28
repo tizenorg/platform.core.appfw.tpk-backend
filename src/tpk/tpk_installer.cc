@@ -244,7 +244,6 @@ void TpkInstaller::ReinstallSteps() {
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
-  AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::rds::StepRDSParse>();
   AddStep<tpk::rds::StepTpkRDSModify>();
   AddStep<ci::filesystem::StepUpdateTep>();
@@ -333,7 +332,6 @@ void TpkInstaller::MountInstallSteps() {
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
-  AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::mount::StepMountInstall>();
   AddStep<tpk::filesystem::StepTpkPreparePackageDirectory>();
   AddStep<ci::filesystem::StepCopyTep>();
@@ -371,7 +369,6 @@ void TpkInstaller::MountUpdateSteps() {
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
-  AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::mount::StepMountUpdate>();
   AddStep<tpk::filesystem::StepTpkPreparePackageDirectory>();
   AddStep<ci::filesystem::StepUpdateTep>();
@@ -392,7 +389,6 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<tpk::filesystem::StepCheckPkgDirPath>();
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
@@ -415,7 +411,6 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
@@ -437,7 +432,6 @@ void TpkInstaller::ClearSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::filesystem::StepClearData>();
 }
 
