@@ -65,7 +65,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
       if (!ci::SetDirPermissions(path, permission)) {
         LOG(ERROR) << "Grant permission error" << " path: " << path
             << " permission: " << permission;
-        return Status::ERROR;
+        return Status::GRANT_PERMISSION_ERROR;
       }
       for (auto& entry :
           boost::make_iterator_range(bf::directory_iterator(path), {})) {
@@ -74,7 +74,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
           if (!ci::SetDirPermissions(path, permission)) {
             LOG(ERROR) << "Grant permission error" << " path: " << path
                 << " permission: " << permission;
-            return Status::ERROR; /* temp error, TODO */
+            return Status::GRANT_PERMISSION_ERROR;
           }
         }
       }
@@ -88,7 +88,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
       if (!ci::SetDirPermissions(path, permission)) {
         LOG(ERROR) << "Grant permission error" << " path: " << path
             << " permission: " << permission;
-        return Status::ERROR;
+        return Status::GRANT_PERMISSION_ERROR;
       }
       for (auto& entry :
           boost::make_iterator_range(bf::directory_iterator(path), {})) {
@@ -99,7 +99,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
           if (!ci::SetDirPermissions(path, permission)) {
             LOG(ERROR) << "Grant permission error" << " path: " << path
                 << " permission: " << permission;
-            return Status::ERROR;
+            return Status::GRANT_PERMISSION_ERROR;
           }
         }
       }
@@ -113,7 +113,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
       if (!ci::SetDirPermissions(path, permission)) {
         LOG(ERROR) << "Grant permission error" << " path: " << path
             << " permission: " << permission;
-        return Status::ERROR;
+        return Status::GRANT_PERMISSION_ERROR;
       }
       continue;
     }
@@ -124,7 +124,7 @@ ci::Step::Status StepTpkGrantPermission::process() {
       if (!ci::SetDirPermissions(path, permission)) {
         LOG(ERROR) << "Grant permission error" << " path: " << path
             << " permission: " << permission;
-        return Status::ERROR;
+        return Status::GRANT_PERMISSION_ERROR;
       }
       continue;
     }
