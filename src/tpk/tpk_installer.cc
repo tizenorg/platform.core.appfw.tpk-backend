@@ -45,6 +45,7 @@
 #include <common/step/pkgmgr/step_run_parser_plugins.h>
 #include <common/step/pkgmgr/step_unregister_app.h>
 #include <common/step/pkgmgr/step_update_app.h>
+#include <common/step/pkgmgr/step_update_pkg_disable_info.h>
 #include <common/step/rds/step_rds_parse.h>
 #include <common/step/recovery/step_open_recovery_file.h>
 #include <common/step/security/step_check_old_certificate.h>
@@ -127,6 +128,12 @@ void TpkInstaller::Prepare() {
       break;
     case ci::RequestType::Clear:
       ClearSteps();
+      break;
+    case ci::RequestType::EnablePkg:
+      EnablePkgSteps();
+      break;
+    case ci::RequestType::DisablePkg:
+      DisablePkgSteps();
       break;
     default:
       AddStep<ci::configuration::StepFail>();
@@ -439,6 +446,29 @@ void TpkInstaller::ClearSteps() {
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::filesystem::StepClearData>();
+}
+
+void TpkInstaller::DisablePkgSteps() {
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::configuration::StepParseManifest>(
+      ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::pkgmgr::StepKillApps>();
+  AddStep<ci::pkgmgr::StepUpdatePkgDisableInfo>(
+    ci::pkgmgr::StepUpdatePkgDisableInfo::ActionType::Disable);
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(
+    ci::Plugin::ActionType::Uninstall);
+}
+
+void TpkInstaller::EnablePkgSteps() {
+  AddStep<ci::configuration::StepConfigure>(pkgmgr_);
+  AddStep<ci::configuration::StepParseManifest>(
+      ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
+      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::pkgmgr::StepUpdatePkgDisableInfo>(
+    ci::pkgmgr::StepUpdatePkgDisableInfo::ActionType::Enable);
+  AddStep<ci::pkgmgr::StepRunParserPlugin>(
+    ci::Plugin::ActionType::Install);
 }
 
 }  // namespace tpk
