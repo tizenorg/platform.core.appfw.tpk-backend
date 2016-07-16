@@ -17,6 +17,7 @@
 #include <common/step/filesystem/step_copy_tep.h>
 #include <common/step/filesystem/step_create_icons.h>
 #include <common/step/filesystem/step_create_per_user_storage_directories.h>
+#include <common/step/filesystem/step_create_legacy_directories.h>
 #include <common/step/filesystem/step_create_storage_directories.h>
 #include <common/step/filesystem/step_delta_patch.h>
 #include <common/step/filesystem/step_move_installed_storage.h>
@@ -28,6 +29,7 @@
 #include <common/step/filesystem/step_remove_files.h>
 #include <common/step/filesystem/step_remove_icons.h>
 #include <common/step/filesystem/step_remove_per_user_storage_directories.h>
+#include <common/step/filesystem/step_remove_legacy_directories.h>
 #include <common/step/filesystem/step_remove_temporary_directory.h>
 #include <common/step/filesystem/step_remove_tep.h>
 #include <common/step/filesystem/step_remove_zip_image.h>
@@ -163,6 +165,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
+  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
 }
 
 void TpkInstaller::UpdateSteps() {
@@ -217,6 +220,7 @@ void TpkInstaller::UninstallSteps() {
   AddStep<ci::security::StepRollbackDeinstallationSecurity>();
   AddStep<ci::filesystem::StepRemoveTep>();
   AddStep<ci::filesystem::StepRemoveFiles>();
+  AddStep<ci::filesystem::StepRemoveLegacyDirectories>();
   AddStep<ci::filesystem::StepRemoveZipImage>();
   AddStep<ci::filesystem::StepRemoveIcons>();
   AddStep<ci::security::StepRevokeSecurity>();
@@ -350,6 +354,7 @@ void TpkInstaller::MountInstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
+  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
 }
 
 void TpkInstaller::MountUpdateSteps() {
@@ -408,6 +413,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
+  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
 }
 
 void TpkInstaller::ManifestDirectUpdateSteps() {
