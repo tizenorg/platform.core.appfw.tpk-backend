@@ -163,6 +163,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
+  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
 }
 
 void TpkInstaller::UpdateSteps() {
@@ -221,6 +222,7 @@ void TpkInstaller::UninstallSteps() {
   AddStep<ci::filesystem::StepRemoveIcons>();
   AddStep<ci::security::StepRevokeSecurity>();
   AddStep<ci::pkgmgr::StepRemoveManifest>();
+  AddStep<ci::filesystem::StepDeleteLegacyDirectories>();
 }
 
 void TpkInstaller::ReinstallSteps() {
@@ -350,6 +352,7 @@ void TpkInstaller::MountInstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
+  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
 }
 
 void TpkInstaller::MountUpdateSteps() {
@@ -408,6 +411,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
+  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
 }
 
 void TpkInstaller::ManifestDirectUpdateSteps() {
