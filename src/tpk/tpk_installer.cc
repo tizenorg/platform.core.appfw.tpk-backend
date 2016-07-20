@@ -11,6 +11,7 @@
 #include <common/step/configuration/step_fail.h>
 #include <common/step/configuration/step_parse_manifest.h>
 #include <common/step/filesystem/step_acquire_external_storage.h>
+#include <common/step/filesystem/step_change_owner.h>
 #include <common/step/filesystem/step_clear_data.h>
 #include <common/step/filesystem/step_copy.h>
 #include <common/step/filesystem/step_copy_storage_directories.h>
@@ -170,6 +171,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
+  AddStep<ci::filesystem::StepChangeOwner>();
 }
 
 void TpkInstaller::UpdateSteps() {

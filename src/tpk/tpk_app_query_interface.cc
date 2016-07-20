@@ -31,6 +31,20 @@ namespace {
 
 const char kManifestFileName[] = "tizen-manifest.xml";
 
+uid_t GetUid(int argc, char** argv) {
+  uid_t uid = 0;
+  for (int i = 0; i < argc; ++i) {
+    if (!strcmp(argv[i], "-u")) {
+      if (i + 1 < argc) {
+        uid = atoi(argv[i + 1]);
+        break;
+      }
+    }
+  }
+
+  return uid;
+}
+
 std::string GetInstallationPackagePath(int argc, char** argv) {
   std::string path;
   for (int i = 0; i < argc; ++i) {
@@ -102,7 +116,8 @@ bool TpkAppQueryInterface::IsAppInstalledByArgv(int argc, char** argv) {
 
   if (pkg_id.empty())
     return false;
-  return ci::QueryIsPackageInstalled(pkg_id, ci::GetRequestMode());
+  uid_t uid = GetUid(argc, argv);
+  return ci::QueryIsPackageInstalled(pkg_id, ci::GetRequestMode(uid), uid);
 }
 
 }  // namespace tpk

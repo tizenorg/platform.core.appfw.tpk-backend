@@ -30,7 +30,7 @@ manifest_x* StepParseRunner::GetManifest() const {
 
 void StepParseRunner::PrepareContext() {
   context_.reset(new ci::InstallerContext());
-  context_->root_application_path.set(ci::GetRootAppPath(false));
+  context_->root_application_path.set(ci::GetRootAppPath(false, getuid()));
   context_->unpacked_dir_path.set(
       bf::path(kManifestTestcaseData) / dir_suffix_);
 
