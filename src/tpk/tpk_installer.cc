@@ -16,8 +16,8 @@
 #include <common/step/filesystem/step_copy_storage_directories.h>
 #include <common/step/filesystem/step_copy_tep.h>
 #include <common/step/filesystem/step_create_icons.h>
+#include <common/step/filesystem/step_create_globalapp_symlinks.h>
 #include <common/step/filesystem/step_create_per_user_storage_directories.h>
-#include <common/step/filesystem/step_create_legacy_directories.h>
 #include <common/step/filesystem/step_create_storage_directories.h>
 #include <common/step/filesystem/step_delta_patch.h>
 #include <common/step/filesystem/step_disable_external_mount.h>
@@ -29,9 +29,9 @@
 #include <common/step/filesystem/step_recover_external_storage.h>
 #include <common/step/filesystem/step_recover_storage_directories.h>
 #include <common/step/filesystem/step_remove_files.h>
+#include <common/step/filesystem/step_remove_globalapp_symlinks.h>
 #include <common/step/filesystem/step_remove_icons.h>
 #include <common/step/filesystem/step_remove_per_user_storage_directories.h>
-#include <common/step/filesystem/step_remove_legacy_directories.h>
 #include <common/step/filesystem/step_remove_temporary_directory.h>
 #include <common/step/filesystem/step_remove_tep.h>
 #include <common/step/filesystem/step_remove_zip_image.h>
@@ -157,6 +157,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
   AddStep<ci::filesystem::StepCopy>();
@@ -174,7 +175,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
-  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::UpdateSteps() {
@@ -196,6 +197,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::backup::StepCopyBackup>();
   AddStep<ci::filesystem::StepUpdateTep>();
@@ -210,6 +212,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::UninstallSteps() {
@@ -222,6 +225,7 @@ void TpkInstaller::UninstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Uninstall);
   AddStep<ci::pkgmgr::StepKillApps>();
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::filesystem::StepRemovePerUserStorageDirectories>();
   AddStep<tpk::filesystem::StepRemoveExternalStorageDirectories>();
@@ -229,11 +233,11 @@ void TpkInstaller::UninstallSteps() {
   AddStep<ci::security::StepRollbackDeinstallationSecurity>();
   AddStep<ci::filesystem::StepRemoveTep>();
   AddStep<ci::filesystem::StepRemoveFiles>();
-  AddStep<ci::filesystem::StepRemoveLegacyDirectories>();
   AddStep<ci::filesystem::StepRemoveZipImage>();
   AddStep<ci::filesystem::StepRemoveIcons>();
   AddStep<ci::security::StepRevokeSecurity>();
   AddStep<ci::pkgmgr::StepRemoveManifest>();
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::ReinstallSteps() {
@@ -257,6 +261,7 @@ void TpkInstaller::ReinstallSteps() {
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<ci::rds::StepRDSParse>();
   AddStep<tpk::rds::StepTpkRDSModify>();
   AddStep<ci::filesystem::StepUpdateTep>();
@@ -270,6 +275,7 @@ void TpkInstaller::ReinstallSteps() {
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::DeltaSteps() {
@@ -293,6 +299,7 @@ void TpkInstaller::DeltaSteps() {
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<ci::filesystem::StepAcquireExternalStorage>();
   AddStep<ci::backup::StepCopyBackup>();
   AddStep<ci::filesystem::StepUpdateTep>();
@@ -305,6 +312,7 @@ void TpkInstaller::DeltaSteps() {
   AddStep<tpk::pkgmgr::StepConvertXml>();
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::MoveSteps() {
@@ -347,6 +355,7 @@ void TpkInstaller::MountInstallSteps() {
   AddStep<ci::security::StepPrivilegeCompatibility>();
   AddStep<tpk::security::StepCheckTpkBackgroundCategory>();
   AddStep<ci::security::StepRollbackInstallationSecurity>();
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<ci::mount::StepMountInstall>();
   AddStep<tpk::filesystem::StepTpkPreparePackageDirectory>();
   AddStep<ci::filesystem::StepCopyTep>();
@@ -363,7 +372,7 @@ void TpkInstaller::MountInstallSteps() {
   AddStep<ci::pkgmgr::StepRunParserPlugin>(
       ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
-  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::MountUpdateSteps() {
@@ -385,6 +394,7 @@ void TpkInstaller::MountUpdateSteps() {
   AddStep<ci::pkgmgr::StepKillApps>();
   AddStep<ci::backup::StepBackupManifest>();
   AddStep<ci::backup::StepBackupIcons>();
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<ci::mount::StepMountUpdate>();
   AddStep<tpk::filesystem::StepTpkPreparePackageDirectory>();
   AddStep<ci::filesystem::StepUpdateTep>();
@@ -398,6 +408,7 @@ void TpkInstaller::MountUpdateSteps() {
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::ManifestDirectInstallSteps() {
@@ -405,6 +416,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<tpk::filesystem::StepCheckPkgDirPath>();
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
@@ -420,7 +432,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
   AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Install);
   AddStep<ci::filesystem::StepCreatePerUserStorageDirectories>();
-  AddStep<ci::filesystem::StepCreateLegacyDirectories>();
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::ManifestDirectUpdateSteps() {
@@ -428,6 +440,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
+  AddStep<ci::filesystem::StepRemoveGlobalAppSymlinks>();
   AddStep<tpk::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
@@ -442,6 +455,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::pkgmgr::StepUpdateApplication>();
   AddStep<tpk::filesystem::StepTpkGrantPermission>();
   AddStep<ci::pkgmgr::StepRunParserPlugin>(ci::Plugin::ActionType::Upgrade);
+  AddStep<ci::filesystem::StepCreateGlobalAppSymlinks>();
 }
 
 void TpkInstaller::ClearSteps() {

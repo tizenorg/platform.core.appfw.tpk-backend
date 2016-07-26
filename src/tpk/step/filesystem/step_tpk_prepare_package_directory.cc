@@ -41,7 +41,7 @@ ci::Step::Status StepTpkPreparePackageDirectory::PrepareLink(
   if (bf::exists(mount_point_entry)) {
     bf::path destination = context_->pkg_path.get() / entry;
     if (bf::exists(destination)) {
-      if (!bf::is_symlink(destination)) {
+      if (!bf::is_symlink(symlink_status(destination))) {
         LOG(ERROR) << "Cannot proceed. "
                    << "Location of link is used by another file";
         return Status::APP_DIR_ERROR;
