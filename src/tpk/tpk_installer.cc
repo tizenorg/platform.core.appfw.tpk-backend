@@ -10,6 +10,7 @@
 #include <common/step/configuration/step_configure.h>
 #include <common/step/configuration/step_fail.h>
 #include <common/step/configuration/step_parse_manifest.h>
+#include <common/step/configuration/step_parse_preload.h>
 #include <common/step/filesystem/step_acquire_external_storage.h>
 #include <common/step/filesystem/step_clear_data.h>
 #include <common/step/filesystem/step_copy.h>
@@ -62,7 +63,6 @@
 #include <common/step/security/step_rollback_installation_security.h>
 #include <common/step/security/step_update_security.h>
 
-#include "tpk/step/configuration/step_parse_preload.h"
 #include "tpk/step/filesystem/step_create_external_storage_directories.h"
 #include "tpk/step/filesystem/step_create_symbolic_link.h"
 #include "tpk/step/filesystem/step_check_pkg_directory_path.h"
@@ -151,7 +151,7 @@ void TpkInstaller::InstallSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepParsePreload>();
   AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
@@ -183,7 +183,7 @@ void TpkInstaller::UpdateSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
@@ -241,7 +241,7 @@ void TpkInstaller::ReinstallSteps() {
   AddStep<ci::configuration::StepParseManifest>(
      ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
      ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepParsePreload>();
   AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   // TODO(t.iwanek): add StepCheckSignature which is missing
@@ -340,7 +340,7 @@ void TpkInstaller::MountInstallSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepParsePreload>();
   AddStep<ci::pkgmgr::StepCheckRestriction>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
@@ -372,7 +372,7 @@ void TpkInstaller::MountUpdateSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::PACKAGE,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<ci::security::StepCheckSignature>();
   AddStep<ci::security::StepPrivilegeCompatibility>();
@@ -406,7 +406,7 @@ void TpkInstaller::ManifestDirectInstallSteps() {
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
   AddStep<tpk::filesystem::StepCheckPkgDirPath>();
-  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepCheckSignature>();
@@ -428,7 +428,7 @@ void TpkInstaller::ManifestDirectUpdateSteps() {
   AddStep<ci::configuration::StepParseManifest>(
       ci::configuration::StepParseManifest::ManifestLocation::INSTALLED,
       ci::configuration::StepParseManifest::StoreLocation::NORMAL);
-  AddStep<tpk::configuration::StepParsePreload>();
+  AddStep<ci::configuration::StepParsePreload>();
   AddStep<ci::configuration::StepCheckTizenVersion>();
   AddStep<tpk::pkgmgr::StepManifestAdjustment>();
   AddStep<ci::security::StepCheckSignature>();
