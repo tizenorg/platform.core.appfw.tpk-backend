@@ -1,6 +1,5 @@
 SET(SRCS
   external_dirs.cc
-  step/configuration/step_parse_preload.cc
   step/filesystem/step_check_pkg_directory_path.cc
   step/filesystem/step_create_external_storage_directories.cc
   step/filesystem/step_create_symbolic_link.cc
